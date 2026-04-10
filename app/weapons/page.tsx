@@ -55,31 +55,56 @@ export default function WeaponsPage() {
       meta={["Planet Weapons", "Blades and hidden tech", "Combat lore"]}
     >
       <div className="grid gap-4 lg:grid-cols-2">
-        {weapons.map((weapon) => (
-          <article
-            key={weapon.name}
-            className="rounded-md border-[3px] border-[#7f1d1d]/70 bg-gradient-to-b from-[#160909] to-[#050505] p-5 shadow-[inset_0_0_32px_rgba(0,0,0,0.72)] md:p-6"
-          >
-            <p className="font-mono text-[10px] uppercase tracking-[0.36em] text-[#fb923c]">
-              {weapon.type}
-            </p>
-            <h2 className="mt-3 font-[family-name:var(--font-display)] text-3xl uppercase tracking-[0.04em] text-[#fecaca]">
-              {weapon.name}
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-zinc-400">{weapon.note}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {weapon.links.map((href) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="rounded border border-[#9a3412]/70 bg-black/65 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
-                >
-                  {href.replace(/^\//, "")}
-                </Link>
-              ))}
-            </div>
-          </article>
-        ))}
+        {weapons.map((weapon) => {
+          const isSpada = weapon.name === "Spada Virina";
+          return isSpada ? (
+            <Link
+              key={weapon.name}
+              href="/weapons/spada-virina"
+              className="rounded-md border-[3px] border-[#7f1d1d]/70 bg-gradient-to-b from-[#160909] to-[#050505] p-5 shadow-[inset_0_0_32px_rgba(0,0,0,0.72)] transition hover:border-[#f97316] md:p-6"
+            >
+              <p className="font-mono text-[10px] uppercase tracking-[0.36em] text-[#fb923c]">
+                {weapon.type}
+              </p>
+              <h2 className="mt-3 font-[family-name:var(--font-display)] text-3xl uppercase tracking-[0.04em] text-[#fecaca]">
+                {weapon.name}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-400">{weapon.note}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {weapon.links.map((href) => (
+                  <span key={href} className="rounded border border-[#9a3412]/70 bg-black/65 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[#fde68a]">
+                    {href.replace(/^\//, "")}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.28em] text-[#fb923c]">Open detail</p>
+            </Link>
+          ) : (
+            <article
+              key={weapon.name}
+              className="rounded-md border-[3px] border-[#7f1d1d]/70 bg-gradient-to-b from-[#160909] to-[#050505] p-5 shadow-[inset_0_0_32px_rgba(0,0,0,0.72)] md:p-6"
+            >
+              <p className="font-mono text-[10px] uppercase tracking-[0.36em] text-[#fb923c]">
+                {weapon.type}
+              </p>
+              <h2 className="mt-3 font-[family-name:var(--font-display)] text-3xl uppercase tracking-[0.04em] text-[#fecaca]">
+                {weapon.name}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-400">{weapon.note}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {weapon.links.map((href) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className="rounded border border-[#9a3412]/70 bg-black/65 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
+                  >
+                    {href.replace(/^\//, "")}
+                  </Link>
+                ))}
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       <section className="mt-12 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
