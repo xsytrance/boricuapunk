@@ -32,6 +32,9 @@ export default function Header() {
           <Link href="/ships" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] xl:inline-flex">
             Ships
           </Link>
+          <Link href="/weapons" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] xl:inline-flex">
+            Weapons
+          </Link>
         </nav>
       </div>
     </header>

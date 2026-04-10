@@ -5,10 +5,10 @@
 
 ## Current repo state
 - Boricuapunk has been expanded into a multi-page archive.
-- Key routes exist: /archive, /characters, /factions, /lore, /locations, /logs, /ships, /timeline, /relationships, /about.
+- Key routes exist: /archive, /characters, /factions, /lore, /locations, /logs, /ships, /weapons, /timeline, /relationships, /about.
 - Header nav and the archive hub both surface the major routes.
 - Character detail pages now include faction context, related quotes, and cross-links.
-- The new ships page centers the Jibaro and links ship lore into the archive network.
+- The ships page centers the Jibaro and the new weapons page covers Cuatroblade, Spada Virina, Planet Weapons, and Hackermouth.
 
 ## Runtime / environment
 - Local dev server target: http://127.0.0.1:9999

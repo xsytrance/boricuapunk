@@ -13,6 +13,7 @@ const relationships = [
   { source: "Saint Flamingo", target: "Spada Virina", type: "weapon conflict", note: "The blade is not just a tool, but a hinge between tyranny and revolt.", links: ["/characters/saint-flamingo", "/characters/spada-virina", "/lore"] },
   { source: "Jibaro", target: "The Bloom", type: "aerial pursuit", note: "The ship’s chase dynamic is one of the best ways to understand the saga’s motion and pressure at sea and sky alike.", links: ["/ships", "/characters/yulania-friz", "/timeline"] },
   { source: "Jibaro", target: "Asopao", type: "parts lineage", note: "Jibaro’s parts echo into later craft, proving the archive’s machines are as historical as its people.", links: ["/ships", "/lore", "/timeline"] },
+  { source: "Cuatroblade", target: "Spada Virina", type: "weapon myth", note: "The archive’s blades and hidden instruments form a symbolic line between music, violence, and inheritance.", links: ["/weapons", "/characters/manus-neco", "/lore"] },
 ];
 
 export default function RelationshipsPage() {

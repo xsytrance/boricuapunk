@@ -15,8 +15,8 @@ export default function Home() {
           </h2>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-zinc-400">
             The site now has a route set for browsing the world in different ways: people,
-            factions, lore, locations, logs, ships, timeline, and relationships. Start with the
-            Archive link in the header if you want the new route map.
+            factions, lore, locations, logs, ships, weapons, timeline, and relationships. Start
+            with the Archive link in the header if you want the new route map.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Link

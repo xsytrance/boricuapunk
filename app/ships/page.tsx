@@ -24,6 +24,13 @@ const ships = [
     links: ["/lore", "/locations"],
   },
   {
+    name: "Mabaho Paa",
+    role: "Ojipati craft / assault ship",
+    note:
+      "A mocassin-shaped skycraft used during the hunt for the Planet Weapons. It deserves a place alongside Jibaro as a major craft of the saga.",
+    links: ["/relationships", "/timeline", "/logs"],
+  },
+  {
     name: "Asopao",
     role: "Anti-gravity racer",
     note:

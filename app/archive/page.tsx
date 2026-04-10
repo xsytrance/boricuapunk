@@ -11,6 +11,7 @@ const pageLinks = [
   { href: "/locations", title: "Locations", copy: "Jump between city zones, hidden venues, and iconic story landmarks." },
   { href: "/logs", title: "Signal Logs", copy: "Archive quotes, transmissions, and the system’s latest signal bursts." },
   { href: "/ships", title: "Ships & Skycraft", copy: "Track the Jibaro and the other vessels that keep the saga in motion." },
+  { href: "/weapons", title: "Weapons", copy: "Study the Cuatroblade, Spada Virina, Planet Weapons, and the rest of the armory." },
   { href: "/timeline", title: "Timeline", copy: "Trace the archive’s major narrative milestones in order." },
   { href: "/relationships", title: "Relationship Graph", copy: "Follow the important bonds and conflicts between people, groups, and icons." },
   { href: "/about", title: "About the Archive", copy: "A short mission brief for new visitors and future collaborators." },
@@ -21,7 +22,7 @@ export default function ArchiveHubPage() {
     <ArchivePageShell
       eyebrow="Archive Hub"
       title="Mission Control"
-      description="A central jump-off for the Boricuapunk archive. Use this hub to move through the site like a living dossier system: characters, factions, lore, locations, logs, ships, timeline, and relationship graphs all branch from here."
+      description="A central jump-off for the Boricuapunk archive. Use this hub to move through the site like a living dossier system: characters, factions, lore, locations, logs, ships, weapons, timeline, and relationship graphs all branch from here."
       meta={[`${characters.length} known figures`, `${factions.length} factions`, `${quotes.length} recorded quotes`]}
     >
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -52,8 +53,8 @@ export default function ArchiveHubPage() {
           </h3>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-400">
             If you’re new to the site, the strongest first pass is the character archive, followed
-            by factions and locations. Then move into timeline, ships, and relationship views to
-            see how the archive’s tension lines connect.
+            by factions and locations. Then move into timeline, ships, weapons, and relationship
+            views to see how the archive’s tension lines connect.
           </p>
         </div>
 
@@ -63,7 +64,7 @@ export default function ArchiveHubPage() {
           </p>
           <ul className="mt-4 space-y-3 text-sm leading-relaxed text-zinc-400">
             <li>• Fresh route structure for easier story expansion</li>
-            <li>• Cross-links between characters, factions, lore, timeline, and ships</li>
+            <li>• Cross-links between characters, factions, lore, timeline, ships, and weapons</li>
             <li>• Pages built to scale as new manuscript entries appear</li>
             <li>• Works as both a site map and in-world index</li>
           </ul>
