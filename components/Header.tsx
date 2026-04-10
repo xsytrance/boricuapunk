@@ -10,12 +10,18 @@ export default function Header() {
         >
           Boricuapunk Archive
         </Link>
-        <nav className="flex items-center gap-8 text-[11px] font-bold uppercase tracking-[0.2em] md:text-xs md:tracking-[0.25em]">
+        <nav className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.18em] md:gap-8 md:text-xs md:tracking-[0.25em]">
           <Link
             href="/"
             className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]"
           >
             Home
+          </Link>
+          <Link
+            href="/archive"
+            className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]"
+          >
+            Archive
           </Link>
           <Link
             href="/characters"

@@ -22,9 +22,12 @@ const display = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: "The Boricuapunk Archive",
+  title: {
+    default: "Boricuapunk Archive",
+    template: "%s | Boricuapunk Archive",
+  },
   description:
-    "Enter the world of the Red Noodle Clan — a stylized archive of the Poetic Saga universe.",
+    "A living archive for the Red Noodle Clan universe — characters, factions, lore, locations, and logs.",
 };
 
 export default function RootLayout({
