@@ -63,36 +63,12 @@ export default async function CharacterDetailPage({ params }: Props) {
             Related archive nodes
           </p>
           <div className="mt-4 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.18em]">
-            <Link
-              href="/archive"
-              className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
-            >
-              Archive Hub
-            </Link>
-            <Link
-              href="/characters"
-              className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
-            >
-              Character Archive
-            </Link>
-            <Link
-              href="/factions"
-              className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
-            >
-              Factions
-            </Link>
-            <Link
-              href="/locations"
-              className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
-            >
-              Locations
-            </Link>
-            <Link
-              href="/logs"
-              className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
-            >
-              Logs
-            </Link>
+            <Link href="/archive" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Archive Hub</Link>
+            <Link href="/characters" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Character Archive</Link>
+            <Link href="/factions" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Factions</Link>
+            <Link href="/locations" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Locations</Link>
+            <Link href="/ships" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Ships</Link>
+            <Link href="/logs" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Logs</Link>
           </div>
         </div>
 
@@ -106,21 +82,16 @@ export default async function CharacterDetailPage({ params }: Props) {
                 {faction.name}
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-zinc-400">{faction.description}</p>
+              <Link
+                href="/factions"
+                className="mt-4 inline-flex rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
+              >
+                Open faction index
+              </Link>
             </>
           ) : (
-            <p className="mt-3 text-sm leading-relaxed text-zinc-500">
-              No faction record was found for this dossier.
-            </p>
+            <p className="mt-3 text-sm leading-relaxed text-zinc-500">No faction record was found for this dossier.</p>
           )}
-
-          {faction ? (
-            <Link
-              href="/factions"
-              className="mt-4 inline-flex rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
-            >
-              Open faction index
-            </Link>
-          ) : null}
         </div>
       </section>
 
@@ -131,13 +102,8 @@ export default async function CharacterDetailPage({ params }: Props) {
           </p>
           <div className="mt-4 grid gap-3 md:grid-cols-3">
             {quotes.map((quote) => (
-              <article
-                key={quote.id}
-                className="rounded border border-[#9a3412]/70 bg-black/65 p-4 shadow-[inset_0_0_24px_rgba(0,0,0,0.5)]"
-              >
-                <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-[#fb923c]">
-                  {quote.style}
-                </p>
+              <article key={quote.id} className="rounded border border-[#9a3412]/70 bg-black/65 p-4 shadow-[inset_0_0_24px_rgba(0,0,0,0.5)]">
+                <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-[#fb923c]">{quote.style}</p>
                 <p className="mt-3 text-sm leading-relaxed text-zinc-300">“{quote.text}”</p>
               </article>
             ))}
@@ -152,18 +118,8 @@ export default async function CharacterDetailPage({ params }: Props) {
           </h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
             {character.images.map((src, i) => (
-              <div
-                key={`${src}-${i}`}
-                className="relative aspect-video overflow-hidden rounded-md border-[3px] border-[#9a3412]/70 bg-[#111] shadow-[inset_0_0_24px_rgba(0,0,0,0.6),0_4px_16px_rgba(0,0,0,0.5)]"
-              >
-                <Image
-                  src={src}
-                  alt={`${character.name} reference ${i + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width:768px) 50vw, 25vw"
-                  unoptimized
-                />
+              <div key={`${src}-${i}`} className="relative aspect-video overflow-hidden rounded-md border-[3px] border-[#9a3412]/70 bg-[#111] shadow-[inset_0_0_24px_rgba(0,0,0,0.6),0_4px_16px_rgba(0,0,0,0.5)]">
+                <Image src={src} alt={`${character.name} reference ${i + 1}`} fill className="object-cover" sizes="(max-width:768px) 50vw, 25vw" unoptimized />
                 <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.4)]" />
               </div>
             ))}

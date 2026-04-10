@@ -29,6 +29,9 @@ export default function Header() {
           <Link href="/relationships" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] lg:inline-flex">
             Graph
           </Link>
+          <Link href="/ships" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] xl:inline-flex">
+            Ships
+          </Link>
         </nav>
       </div>
     </header>

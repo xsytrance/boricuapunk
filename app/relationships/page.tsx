@@ -2,69 +2,17 @@ import Link from "next/link";
 import ArchivePageShell from "@/components/ArchivePageShell";
 
 const relationships = [
-  {
-    source: "Manus Neco",
-    target: "The GRATS",
-    type: "ally / legacy bond",
-    note: "The childhood blade-squad that protects the Central Socket myth and reflects the hero’s original tribe.",
-    links: ["/characters/manus-neco", "/characters/gratitude-frogs-grats", "/factions"],
-  },
-  {
-    source: "Manus Neco",
-    target: "La Mofongo",
-    type: "internal ally",
-    note: "A support-unit relationship that grounds the archive in food, care, and practical survival.",
-    links: ["/characters/manus-neco", "/characters/la-mofongo", "/characters"],
-  },
-  {
-    source: "Manus Neco",
-    target: "Vera Córdoba",
-    type: "signal ally",
-    note: "A grid-adjacent oracle connection that links the physical world to the archive’s electric underlayer.",
-    links: ["/characters/vera-cordoba", "/logs", "/lore"],
-  },
-  {
-    source: "Manus Neco",
-    target: "Yulania Friz",
-    type: "hostile thread",
-    note: "The Neverminds hunt the black; Manus stands in the path of that pressure.",
-    links: ["/characters/yulania-friz", "/factions", "/logs"],
-  },
-  {
-    source: "Perfect Abuelo",
-    target: "Manus Neco",
-    type: "ancestral mentorship",
-    note: "Bladecraft and musiccraft fuse into the hero’s style, making inheritance feel like action instead of history.",
-    links: ["/characters/manus-neco", "/lore"],
-  },
-  {
-    source: "Tito Kaiju",
-    target: "Dockside Syndicate",
-    type: "tension / dependency",
-    note: "Debt flows through the harbor as much as water does; the syndicate is both shelter and hook.",
-    links: ["/factions", "/locations", "/logs"],
-  },
-  {
-    source: "DJ Astro",
-    target: "Skywave Collective",
-    type: "signal clergy",
-    note: "Music as map and bass as law—this is one of the clearest examples of faction identity becoming atmosphere.",
-    links: ["/factions", "/locations", "/logs"],
-  },
-  {
-    source: "Sifu Kinoko",
-    target: "The Lily Pad Clan",
-    type: "cult hierarchy",
-    note: "The clearest enemy pressure point in the archive: doctrine, citadels, and obsession dressed as scripture.",
-    links: ["/factions", "/lore"],
-  },
-  {
-    source: "Saint Flamingo",
-    target: "Spada Virina",
-    type: "weapon conflict",
-    note: "The blade is not just a tool, but a hinge between tyranny and revolt.",
-    links: ["/characters/saint-flamingo", "/characters/spada-virina", "/lore"],
-  },
+  { source: "Manus Neco", target: "The GRATS", type: "ally / legacy bond", note: "The childhood blade-squad that protects the Central Socket myth and reflects the hero’s original tribe.", links: ["/characters/manus-neco", "/characters/gratitude-frogs-grats", "/factions"] },
+  { source: "Manus Neco", target: "La Mofongo", type: "internal ally", note: "A support-unit relationship that grounds the archive in food, care, and practical survival.", links: ["/characters/manus-neco", "/characters/la-mofongo", "/characters"] },
+  { source: "Manus Neco", target: "Vera Córdoba", type: "signal ally", note: "A grid-adjacent oracle connection that links the physical world to the archive’s electric underlayer.", links: ["/characters/vera-cordoba", "/logs", "/lore"] },
+  { source: "Manus Neco", target: "Yulania Friz", type: "hostile thread", note: "The Neverminds hunt the black; Manus stands in the path of that pressure.", links: ["/characters/yulania-friz", "/factions", "/logs"] },
+  { source: "Perfect Abuelo", target: "Manus Neco", type: "ancestral mentorship", note: "Bladecraft and musiccraft fuse into the hero’s style, making inheritance feel like action instead of history.", links: ["/characters/manus-neco", "/lore"] },
+  { source: "Tito Kaiju", target: "Dockside Syndicate", type: "tension / dependency", note: "Debt flows through the harbor as much as water does; the syndicate is both shelter and hook.", links: ["/factions", "/locations", "/logs"] },
+  { source: "DJ Astro", target: "Skywave Collective", type: "signal clergy", note: "Music as map and bass as law—this is one of the clearest examples of faction identity becoming atmosphere.", links: ["/factions", "/locations", "/logs"] },
+  { source: "Sifu Kinoko", target: "The Lily Pad Clan", type: "cult hierarchy", note: "The clearest enemy pressure point in the archive: doctrine, citadels, and obsession dressed as scripture.", links: ["/factions", "/lore"] },
+  { source: "Saint Flamingo", target: "Spada Virina", type: "weapon conflict", note: "The blade is not just a tool, but a hinge between tyranny and revolt.", links: ["/characters/saint-flamingo", "/characters/spada-virina", "/lore"] },
+  { source: "Jibaro", target: "The Bloom", type: "aerial pursuit", note: "The ship’s chase dynamic is one of the best ways to understand the saga’s motion and pressure at sea and sky alike.", links: ["/ships", "/characters/yulania-friz", "/timeline"] },
+  { source: "Jibaro", target: "Asopao", type: "parts lineage", note: "Jibaro’s parts echo into later craft, proving the archive’s machines are as historical as its people.", links: ["/ships", "/lore", "/timeline"] },
 ];
 
 export default function RelationshipsPage() {
@@ -73,11 +21,7 @@ export default function RelationshipsPage() {
       eyebrow="Relationship Graph"
       title="Connection Map"
       description="A narrative network for the archive. These links show who matters to whom, which tensions drive the story, and how the universe starts to behave when characters are read together instead of alone."
-      meta={[
-        "Allies and tensions",
-        "Character-to-character links",
-        "Faction and lore bridges",
-      ]}
+      meta={["Allies and tensions", "Character-to-character links", "Faction, weapon, and ship bridges"]}
     >
       <div className="grid gap-4 lg:grid-cols-2">
         {relationships.map((rel) => (
@@ -114,7 +58,8 @@ export default function RelationshipsPage() {
           </p>
           <p className="mt-3 text-sm leading-relaxed text-zinc-400">
             This page is meant to answer “who is connected to who?” fast. It gives the site a
-            relationship layer that can keep expanding as new characters or story threads appear.
+            relationship layer that can keep expanding as new characters, ships, or story threads
+            appear.
           </p>
         </div>
 

@@ -2,48 +2,12 @@ import Link from "next/link";
 import ArchivePageShell from "@/components/ArchivePageShell";
 
 const timeline = [
-  {
-    era: "Origin",
-    title: "The handwritten myth takes shape",
-    description:
-      "The archive begins as a story about Manus Neco, the Red Noodle Clan, and the gravity of a world where music and bladecraft share the same breath.",
-    links: ["/about", "/characters/manus-neco", "/lore"],
-  },
-  {
-    era: "Stage 01",
-    title: "The Folded Borough appears",
-    description:
-      "Flower City bends into a crease in reality. The borough stops feeling like a map and starts behaving like a memory trap.",
-    links: ["/lore", "/locations"],
-  },
-  {
-    era: "Stage 02",
-    title: "People of Pisces becomes a meeting ground",
-    description:
-      "A seven-story ale joint becomes a nexus for music, tension, and the first strong proof that the archive is larger than one hero.",
-    links: ["/locations", "/logs", "/characters/manus-neco"],
-  },
-  {
-    era: "Stage 03",
-    title: "Faction pressure rises",
-    description:
-      "The Lily Pad Clan, the Neverminds, Dockside Syndicate, and the rest shape the city into a map of alliances and threats.",
-    links: ["/factions", "/characters"],
-  },
-  {
-    era: "Stage 04",
-    title: "The archive gains a public face",
-    description:
-      "The site evolves from a single hero page into a browsable archive with routes for factions, lore fragments, locations, and logs.",
-    links: ["/archive", "/about"],
-  },
-  {
-    era: "Stage 05",
-    title: "Cross-linking turns the site into a network",
-    description:
-      "Character dossiers, faction maps, lore nodes, and logs begin pointing to each other. The world becomes navigable in layers.",
-    links: ["/characters", "/factions", "/locations", "/logs"],
-  },
+  { era: "Origin", title: "The handwritten myth takes shape", description: "The archive begins as a story about Manus Neco, the Red Noodle Clan, and the gravity of a world where music and bladecraft share the same breath.", links: ["/about", "/characters/manus-neco", "/lore"] },
+  { era: "Stage 01", title: "The Folded Borough appears", description: "Flower City bends into a crease in reality. The borough stops feeling like a map and starts behaving like a memory trap.", links: ["/lore", "/locations"] },
+  { era: "Stage 02", title: "People of Pisces becomes a meeting ground", description: "A seven-story ale joint becomes a nexus for music, tension, and the first strong proof that the archive is larger than one hero.", links: ["/locations", "/logs", "/characters/manus-neco"] },
+  { era: "Stage 03", title: "Faction pressure rises", description: "The Lily Pad Clan, the Neverminds, Dockside Syndicate, and the rest shape the city into a map of alliances and threats.", links: ["/factions", "/characters"] },
+  { era: "Stage 04", title: "The archive gains a public face", description: "The site evolves from a single hero page into a browsable archive with routes for factions, lore fragments, locations, logs, and ships.", links: ["/archive", "/about", "/ships"] },
+  { era: "Stage 05", title: "Cross-linking turns the site into a network", description: "Character dossiers, faction maps, lore nodes, ships, and logs begin pointing to each other. The world becomes navigable in layers.", links: ["/characters", "/factions", "/locations", "/logs", "/relationships"] },
 ];
 
 export default function TimelinePage() {

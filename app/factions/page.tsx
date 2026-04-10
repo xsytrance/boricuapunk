@@ -87,6 +87,12 @@ export default function FactionsPage() {
           the rest form the city’s shifting balance—sometimes ally, sometimes obstruction, always
           useful context.
         </p>
+        <Link
+          href="/relationships"
+          className="mt-4 inline-flex rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
+        >
+          Open relationship graph
+        </Link>
       </section>
     </ArchivePageShell>
   );

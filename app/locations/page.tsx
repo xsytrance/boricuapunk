@@ -58,6 +58,13 @@ const locations = [
     note: "Debts travel fast here. Tides do the accounting.",
     links: ["/factions", "/characters"],
   },
+  {
+    name: "Jibaro Dock & Launch Arc",
+    role: "Skycraft origin site",
+    faction: "Red Noodle Clan",
+    note: "The natural place to think about the Jibaro, its repairs, and the ship’s place in the archive’s motion.",
+    links: ["/ships", "/timeline", "/relationships"],
+  },
 ];
 
 export default function LocationsPage() {
