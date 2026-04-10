@@ -22,6 +22,7 @@ Append-only record of work on Boricuapunk.
 - Added /ships for the Jibaro-focused vessel archive and cross-linked it from locations, timeline, relationships, archive hub, header, and home.
 - Added /weapons for the novel’s named blades, Planet Weapons, and tech-curses.
 - Added dedicated detail pages for Jibaro and Spada Virina.
+- Updated README.md to describe the live archive structure and dev notes.
 - Updated header/home links to surface the new archive structure.
 - Verified builds after each major expansion and pushed commits to forge-dev.
 
