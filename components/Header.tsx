@@ -10,8 +10,11 @@ export default function Header() {
         >
           Boricuapunk Archive
         </Link>
-        <nav className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.18em] md:gap-6 md:text-xs md:tracking-[0.25em]">
-          <Link href="/" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
+        <nav className="flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.2em] md:gap-8 md:text-xs md:tracking-[0.25em]">
+          <Link
+            href="/"
+            className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]"
+          >
             Home
           </Link>
           <Link href="/archive" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
@@ -29,11 +32,11 @@ export default function Header() {
           <Link href="/relationships" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] lg:inline-flex">
             Graph
           </Link>
-          <Link href="/ships" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] xl:inline-flex">
-            Ships
-          </Link>
-          <Link href="/weapons" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] xl:inline-flex">
-            Weapons
+          <Link
+            href="/characters/hackermouth"
+            className="text-[#5eead4] transition hover:text-[#99f6e4] hover:drop-shadow-[0_0_10px_rgba(45,212,191,0.85)]"
+          >
+            Hackermouth
           </Link>
         </nav>
       </div>

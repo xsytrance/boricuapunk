@@ -113,10 +113,18 @@ export default async function CharacterDetailPage({ params }: Props) {
       ) : null}
 
       {character.images.length > 0 ? (
-        <section className="border-t-[3px] border-[#7f1d1d]/40 pt-8 md:pt-10">
-          <h2 className="mb-6 font-[family-name:var(--font-display)] text-2xl uppercase tracking-[0.12em] text-[#fecaca] md:text-3xl [text-shadow:0_0_20px_rgba(248,113,113,0.2)]">
-            Visual Intel
-          </h2>
+        <section className="border-t-[3px] border-[#7f1d1d]/40 pt-12">
+          <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2 className="font-[family-name:var(--font-display)] text-2xl uppercase tracking-[0.12em] text-[#fecaca] md:text-3xl [text-shadow:0_0_20px_rgba(248,113,113,0.2)]">
+                Visual Intel
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-500">
+                These visuals should stay aligned to the manuscript. Hackermouth remains a major archive force, so any new
+                detail pages or imagery should preserve that signal-first tone.
+              </p>
+            </div>
+          </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
             {character.images.map((src, i) => (
               <div key={`${src}-${i}`} className="relative aspect-video overflow-hidden rounded-md border-[3px] border-[#9a3412]/70 bg-[#111] shadow-[inset_0_0_24px_rgba(0,0,0,0.6),0_4px_16px_rgba(0,0,0,0.5)]">

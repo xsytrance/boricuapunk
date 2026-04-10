@@ -224,6 +224,26 @@ export default function HomeLanding() {
     <main className="flex min-h-0 w-full min-w-0 flex-1 flex-col">
       {isMobile ? <MobileHero /> : <DesktopHero />}
       <FeaturedCharactersSection mobile={isMobile} />
+      <section className="mx-auto w-full max-w-6xl px-4 pb-10 md:px-8 md:pb-14">
+        <div className="rounded-md border-[3px] border-[#064e3b]/70 bg-gradient-to-b from-[#06130d] via-[#050505] to-[#020202] p-5 shadow-[0_0_38px_rgba(20,184,166,0.16),inset_0_0_24px_rgba(0,0,0,0.75)] md:p-7">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.38em] text-[#5eead4]">Hackermouth always watching</p>
+              <h2 className="mt-2 font-[family-name:var(--font-display)] text-3xl uppercase tracking-[0.06em] text-[#ccfbf1] md:text-4xl">Hackermouth Is the Archive</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#99f6e4]/80 md:text-base">
+                The manuscript repeatedly frames Hackermouth as an all-seeing, digital intelligence. The UI should
+                keep that presence central, not background decoration.
+              </p>
+            </div>
+            <a
+              href="/characters/hackermouth"
+              className="inline-flex items-center justify-center rounded border border-[#14b8a6]/80 bg-[#042f2e]/90 px-4 py-2 font-mono text-xs font-bold uppercase tracking-[0.22em] text-[#99f6e4] transition hover:border-[#5eead4] hover:text-[#ecfeff]"
+            >
+              Open Hackermouth dossier
+            </a>
+          </div>
+        </div>
+      </section>
       <QuoteSectionWrapper mobile={isMobile} />
     </main>
   );
