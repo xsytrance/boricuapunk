@@ -7,27 +7,55 @@ import { getCharacterById } from "@/data/characters";
 import { getRandomQuote, type Quote } from "@/data/quotes";
 import { getSagaCharacterById } from "@/types/characters";
 
+type EvolvingQuote = Quote & { speakerName?: string };
+
 export default function HomeArchiveQuoteSection() {
   const pathname = usePathname();
-  const [quote, setQuote] = useState<Quote | null>(null);
+  const [quote, setQuote] = useState<EvolvingQuote | null>(null);
 
   useEffect(() => {
-    const q = getRandomQuote();
-    setQuote(q);
-
     let takeoverTimer: number | undefined;
+    let active = true;
 
-    if (q?.characterId === "hackermouth") {
-      document.body.classList.add("hm-quote-takeover");
+    async function loadQuote() {
+      try {
+        const response = await fetch("/api/archive/quote-of-day", { cache: "no-store" });
+        if (!response.ok) throw new Error("quote fetch failed");
 
-      takeoverTimer = window.setTimeout(() => {
-        document.body.classList.remove("hm-quote-takeover");
-      }, 2000);
+        const payload = (await response.json()) as {
+          quote?: { id: string; characterId: string; text: string; style: Quote["style"]; speakerName?: string };
+        };
 
-      window.dispatchEvent(new CustomEvent("hackermouth:quote-appear"));
+        if (!active || !payload.quote) return;
+        setQuote(payload.quote);
+
+        if (payload.quote.characterId === "hackermouth") {
+          document.body.classList.add("hm-quote-takeover");
+          takeoverTimer = window.setTimeout(() => {
+            document.body.classList.remove("hm-quote-takeover");
+          }, 2000);
+          window.dispatchEvent(new CustomEvent("hackermouth:quote-appear"));
+        }
+        return;
+      } catch {
+        const fallback = getRandomQuote();
+        if (!active) return;
+        setQuote(fallback);
+
+        if (fallback.characterId === "hackermouth") {
+          document.body.classList.add("hm-quote-takeover");
+          takeoverTimer = window.setTimeout(() => {
+            document.body.classList.remove("hm-quote-takeover");
+          }, 2000);
+          window.dispatchEvent(new CustomEvent("hackermouth:quote-appear"));
+        }
+      }
     }
 
+    void loadQuote();
+
     return () => {
+      active = false;
       if (takeoverTimer !== undefined) window.clearTimeout(takeoverTimer);
       document.body.classList.remove("hm-quote-takeover");
     };

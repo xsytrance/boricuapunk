@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ArchiveAccessPanel from "@/components/ArchiveAccessPanel";
 import CharacterCard from "@/components/CharacterCard";
 import HomeArchiveQuoteSection from "@/components/HomeArchiveQuoteSection";
+import EvolvingSightingsSection from "@/components/EvolvingSightingsSection";
 import ManusHeroPortrait from "@/components/ManusHeroPortrait";
 import { characters } from "@/data/characters";
 import { getSagaCharacterById } from "@/types/characters";
@@ -224,6 +225,7 @@ export default function HomeLanding() {
     <main className="flex min-h-0 w-full min-w-0 flex-1 flex-col">
       {isMobile ? <MobileHero /> : <DesktopHero />}
       <FeaturedCharactersSection mobile={isMobile} />
+      <EvolvingSightingsSection mobile={isMobile} />
       <section className="mx-auto w-full max-w-6xl px-4 pb-10 md:px-8 md:pb-14">
         <div className="mb-4 rounded-md border border-[#064e3b]/40 bg-black/30 px-4 py-3 text-[11px] font-mono uppercase tracking-[0.24em] text-[#5eead4]/90">
           Manuscript-checked against local reference copy

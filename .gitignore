@@ -45,3 +45,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# runtime archive ingestion artifacts
+/data/runtime/*.json
+/public/uploads/characters/*
+!/data/runtime/.gitkeep
+!/public/uploads/characters/.gitkeep
