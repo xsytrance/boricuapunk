@@ -125,9 +125,9 @@ function MobileHero() {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/ui/backgrounds/boricuapunk-city-bg.png')" }}
       />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.9)_0%,rgba(0,0,0,0.55)_34%,rgba(0,0,0,0.2)_58%,rgba(0,0,0,0.82)_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#2d0a12]/75 via-transparent to-[#020202]/85" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_50%_at_50%_18%,rgba(234,88,12,0.2),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.58)_34%,rgba(0,0,0,0.24)_58%,rgba(0,0,0,0.88)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#2d0a12]/80 via-transparent to-[#020202]/88" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_86%_46%_at_50%_16%,rgba(234,88,12,0.24),transparent_58%)]" />
       <div className="pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-soft-light">
         <div
           className="h-full w-full"
@@ -137,35 +137,35 @@ function MobileHero() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-6xl flex-col items-center justify-start gap-5 px-4 pb-8 pt-6 sm:px-5">
-        <div className="flex w-full items-center justify-between font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-[#86efac]/90">
+      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-6xl flex-col items-center justify-start gap-4 px-4 pb-7 pt-5 sm:px-5">
+        <div className="flex w-full items-center justify-between font-mono text-[9px] font-semibold uppercase tracking-[0.34em] text-[#86efac]/90">
           <span className="border-l-2 border-[#22c55e]/70 pl-2">System online</span>
           <span className="text-[#fdba74]/90">Mobile archive</span>
         </div>
 
-        <div className="w-full max-w-[22rem]">
+        <div className="relative w-full max-w-[20rem]">
           <div className="pointer-events-none absolute -inset-4 rounded-md border border-[#ea580c]/20 bg-[#ea580c]/10 blur-md" />
           <ManusHeroPortrait src={manus.image} alt={manus.name} />
         </div>
 
         <ArchiveAccessPanel dossierHref="/characters/manus-neco">
-          <div className="relative overflow-hidden border-[3px] border-[#f97316]/90 bg-gradient-to-b from-[#231010] via-[#0a0a0a] to-[#020202] px-4 py-5 shadow-[0_0_42px_rgba(234,88,12,0.28),inset_0_0_48px_rgba(0,0,0,0.85)]">
-            <div className="mb-3 flex items-center justify-between">
-              <span className="font-mono text-[9px] font-bold uppercase tracking-[0.32em] text-[#fb923c]">System // Archive</span>
+          <div className="relative overflow-hidden border-[3px] border-[#f97316]/90 bg-gradient-to-b from-[#231010] via-[#0a0a0a] to-[#020202] px-4 py-4 shadow-[0_0_36px_rgba(234,88,12,0.24),inset_0_0_44px_rgba(0,0,0,0.88)]">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="font-mono text-[8px] font-bold uppercase tracking-[0.34em] text-[#fb923c]">System // Archive</span>
               <span className="h-2 w-2 rounded-full bg-[#22c55e] shadow-[0_0_12px_#22c55e]" />
             </div>
-            <h1 className="font-[family-name:var(--font-display)] text-4xl uppercase leading-[0.84] tracking-[0.01em] text-transparent [background:linear-gradient(180deg,#fffbeb_0%,#fed7aa_55%,#fb923c_100%)] bg-clip-text [filter:drop-shadow(0_0_18px_rgba(251,146,60,0.38))_drop-shadow(2px_3px_0_rgba(127,29,29,0.9))]">
+            <h1 className="font-[family-name:var(--font-display)] text-[2.35rem] uppercase leading-[0.82] tracking-[0.01em] text-transparent [background:linear-gradient(180deg,#fffbeb_0%,#fed7aa_55%,#fb923c_100%)] bg-clip-text [filter:drop-shadow(0_0_16px_rgba(251,146,60,0.36))_drop-shadow(2px_2px_0_rgba(127,29,29,0.9))]">
               The Boricuapunk Archive
             </h1>
-            <p className="mt-3 font-mono text-[10px] font-semibold uppercase leading-tight tracking-[0.18em] text-[#fde68a]">
-              Enter the world of the Red Noodle Clan
+            <p className="mt-2 max-w-[18ch] font-mono text-[9px] font-semibold uppercase leading-tight tracking-[0.2em] text-[#fde68a]">
+              Red Noodle Clan, mobile cut
             </p>
-            <div className="mt-5 border-l-4 border-[#ea580c] bg-black/35 py-3 pl-3 pr-2">
-              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.36em] text-zinc-500">Active Subject</p>
-              <p className="mt-1 font-[family-name:var(--font-display)] text-2xl uppercase leading-none tracking-[0.04em] text-[#fecaca]">{manus.name}</p>
-              <p className="mt-2 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[#fb923c]">{manus.title}</p>
+            <div className="mt-4 border-l-4 border-[#ea580c] bg-black/35 py-2.5 pl-3 pr-2">
+              <p className="font-mono text-[8px] font-bold uppercase tracking-[0.38em] text-zinc-500">Active Subject</p>
+              <p className="mt-1 font-[family-name:var(--font-display)] text-xl uppercase leading-none tracking-[0.04em] text-[#fecaca]">{manus.name}</p>
+              <p className="mt-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-[#fb923c]">{manus.title}</p>
             </div>
-            <div className="mt-5 rounded border border-[#7f1d1d]/70 bg-black/60 px-3 py-3 text-[10px] leading-relaxed text-zinc-300">
+            <div className="mt-4 rounded border border-[#7f1d1d]/70 bg-black/60 px-3 py-2.5 text-[9px] leading-relaxed text-zinc-300">
               Mobile view trims the cinematic chrome for faster scanning and easier tapping.
             </div>
           </div>
@@ -177,12 +177,12 @@ function MobileHero() {
 
 function FeaturedCharactersSection({ mobile }: { mobile: boolean }) {
   return (
-    <section className={`mx-auto w-full max-w-6xl ${mobile ? "px-4 py-12" : "px-4 py-16 md:px-8"}`}>
-      <div className={`mb-10 border-l-[4px] border-[#ea580c] pl-5 shadow-[inset_8px_0_24px_rgba(234,88,12,0.08)] ${mobile ? "mb-8 pl-4" : ""}`}>
+    <section className={`mx-auto w-full max-w-6xl ${mobile ? "px-4 py-10" : "px-4 py-16 md:px-8"}`}>
+      <div className={`mb-10 border-l-[4px] border-[#ea580c] pl-5 shadow-[inset_8px_0_24px_rgba(234,88,12,0.08)] ${mobile ? "mb-7 pl-4" : ""}`}>
         <h2 className={`font-[family-name:var(--font-display)] uppercase tracking-[0.04em] text-[#fecaca] [text-shadow:0_0_24px_rgba(248,113,113,0.2)] ${mobile ? "text-3xl" : "text-4xl md:text-5xl"}`}>
           Featured Characters
         </h2>
-        <p className="mt-2 max-w-xl text-sm leading-relaxed text-zinc-500">
+        <p className={`mt-2 max-w-xl leading-relaxed text-zinc-500 ${mobile ? "text-xs" : "text-sm"}`}>
           Select a dossier. Every silhouette hides a saga beat.
         </p>
       </div>
@@ -208,6 +208,14 @@ function FeaturedCharactersSection({ mobile }: { mobile: boolean }) {
   );
 }
 
+function QuoteSectionWrapper({ mobile }: { mobile: boolean }) {
+  return (
+    <div className={mobile ? "[&>section]:px-4 [&>section]:py-10 [&_h2]:text-2xl [&_p]:text-[9px]" : ""}>
+      <HomeArchiveQuoteSection />
+    </div>
+  );
+}
+
 export default function HomeLanding() {
   const mode = useViewportMode();
   const isMobile = mode === "mobile";
@@ -216,7 +224,7 @@ export default function HomeLanding() {
     <main className="flex min-h-0 w-full min-w-0 flex-1 flex-col">
       {isMobile ? <MobileHero /> : <DesktopHero />}
       <FeaturedCharactersSection mobile={isMobile} />
-      <HomeArchiveQuoteSection />
+      <QuoteSectionWrapper mobile={isMobile} />
     </main>
   );
 }
