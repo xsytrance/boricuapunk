@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ArchivePageShell from "@/components/ArchivePageShell";
 
 const loreNodes = [
@@ -5,41 +6,49 @@ const loreNodes = [
     title: "The Folded Borough",
     excerpt:
       "Flower City folds inward like a letter never sent. The archive treats the borough as a crease in reality, not a map coordinate.",
+    links: ["/locations"],
   },
   {
     title: "Raziel Underwire",
     excerpt:
       "Not a person, but the cough in the grid throat—where prayer and copper splice together and leave a blue spark behind.",
+    links: ["/logs", "/characters/vera-cordoba"],
   },
   {
     title: "Glass Lung Choir",
     excerpt:
       "A hidden acoustic verdict under the Piano Factory. Tourists hear jazz; initiates hear a sentence delivered in harmony.",
+    links: ["/locations", "/logs"],
   },
   {
     title: "Socket Ghost",
     excerpt:
       "The pause between hello and betrayal. The handshake artifact that keeps returning like a glitch with intent.",
+    links: ["/logs", "/characters/manus-neco"],
   },
   {
     title: "Salt Ring Enclave",
     excerpt:
       "A dockside treaty carved in rust. Brine, blackout windows, and saints who know how to keep quiet.",
+    links: ["/locations", "/factions"],
   },
   {
     title: "Obsidian Parade",
     excerpt:
       "A column that aligns instead of marching. No hymn, no hats—just a procession that arrives when the world is dreaming.",
+    links: ["/locations", "/factions"],
   },
   {
     title: "Kumoyun Static Saint",
     excerpt:
       "Hope in porcelain with a contrail of almost-music. Everyone hears it differently; the archive refuses to simplify it.",
+    links: ["/logs", "/characters/bloodless-visitor"],
   },
   {
     title: "Threadclose",
     excerpt:
       "The ending that isn’t an ending: gratitude as weapon, static as scripture, and a dare to keep the story alive.",
+    links: ["/archive", "/about"],
   },
 ];
 
@@ -68,6 +77,17 @@ export default function LorePage() {
               {node.title}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-zinc-400">{node.excerpt}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {node.links.map((href) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="rounded border border-[#9a3412]/70 bg-black/65 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
+                >
+                  {href.replace(/^\//, "")}
+                </Link>
+              ))}
+            </div>
           </article>
         ))}
       </div>

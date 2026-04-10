@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ArchivePageShell from "@/components/ArchivePageShell";
 import { characters } from "@/types/characters";
-import { factions, getFactionById } from "@/types/factions";
+import { factions } from "@/types/factions";
 
 const alignmentStyles: Record<string, string> = {
   ally: "text-[#86efac] border-[#22c55e]/70 bg-[#052e16]/80",

@@ -10,24 +10,18 @@ export default function Header() {
         >
           Boricuapunk Archive
         </Link>
-        <nav className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.18em] md:gap-8 md:text-xs md:tracking-[0.25em]">
-          <Link
-            href="/"
-            className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]"
-          >
+        <nav className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.18em] md:gap-6 md:text-xs md:tracking-[0.25em]">
+          <Link href="/" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
             Home
           </Link>
-          <Link
-            href="/archive"
-            className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]"
-          >
+          <Link href="/archive" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
             Archive
           </Link>
-          <Link
-            href="/characters"
-            className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]"
-          >
+          <Link href="/characters" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
             Characters
+          </Link>
+          <Link href="/factions" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] md:inline-flex">
+            Factions
           </Link>
         </nav>
       </div>

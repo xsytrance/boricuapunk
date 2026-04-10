@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ArchivePageShell from "@/components/ArchivePageShell";
 import { quotes } from "@/data/quotes";
 import { characters } from "@/types/characters";
@@ -37,6 +38,14 @@ export default function LogsPage() {
                 </span>
               </div>
               <p className="mt-4 text-sm leading-relaxed text-zinc-300">“{quote.text}”</p>
+              {character ? (
+                <Link
+                  href={`/characters/${character.id}`}
+                  className="mt-4 inline-flex rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
+                >
+                  Open dossier
+                </Link>
+              ) : null}
             </article>
           );
         })}
