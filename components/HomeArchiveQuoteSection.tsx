@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import QuoteDisplay from "@/components/QuoteDisplay";
 import { getCharacterById } from "@/data/characters";
 import { getRandomQuote, type Quote } from "@/data/quotes";
+import { getSagaCharacterById } from "@/types/characters";
 
 export default function HomeArchiveQuoteSection() {
   const pathname = usePathname();
@@ -34,7 +35,10 @@ export default function HomeArchiveQuoteSection() {
 
   if (!quote) return null;
 
-  const speaker = getCharacterById(quote.characterId);
+  const dossier = getCharacterById(quote.characterId);
+  const saga = getSagaCharacterById(quote.characterId);
+  const speakerName =
+    quote.speakerName ?? dossier?.name ?? saga?.name;
 
   return (
     <section
@@ -50,11 +54,11 @@ export default function HomeArchiveQuoteSection() {
             Session pick — new shuffle when you return
           </p>
         </div>
-        {speaker ? (
+        {speakerName ? (
           <div className="relative z-10">
             <QuoteDisplay
               text={quote.text}
-              characterName={speaker.name}
+              characterName={speakerName}
               characterId={quote.characterId}
               style={quote.style}
             />

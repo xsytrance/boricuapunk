@@ -8,6 +8,11 @@ import {
   useState,
 } from "react";
 import { usePathname } from "next/navigation";
+import {
+  pickArchiveNodeFlash,
+  type ArchiveHoverPayload,
+} from "@/lib/hackermouthArchive";
+import { nextSessionUnit } from "@/lib/sessionRandom";
 import { hackermouthSay } from "@/lib/hackermouthSay";
 
 const BASE_Y = 80;
@@ -49,6 +54,9 @@ export default function HackermouthNode() {
   const idleLoopRef = useRef<number | null>(null);
   const hoverLastRef = useRef(0);
   const clickLastRef = useRef(0);
+  const archiveFlashLastRef = useRef(0);
+  const messageFlashClearRef = useRef<number | null>(null);
+  const idlePulseClearRef = useRef<number | null>(null);
 
   const [side, setSide] = useState<"left" | "right">("left");
   const [leftPx, setLeftPx] = useState(24);
@@ -71,12 +79,26 @@ export default function HackermouthNode() {
     if (flashClearRef.current !== null) {
       window.clearTimeout(flashClearRef.current);
     }
+    if (messageFlashClearRef.current !== null) {
+      window.clearTimeout(messageFlashClearRef.current);
+      messageFlashClearRef.current = null;
+    }
+    if (idlePulseClearRef.current !== null) {
+      window.clearTimeout(idlePulseClearRef.current);
+      idlePulseClearRef.current = null;
+    }
     setFlashText(msg);
     setMessageFlash(true);
-    window.setTimeout(() => setMessageFlash(false), 420);
+    messageFlashClearRef.current = window.setTimeout(() => {
+      setMessageFlash(false);
+      messageFlashClearRef.current = null;
+    }, 420) as unknown as number;
     if (withIdlePulse) {
       setIdlePulse(true);
-      window.setTimeout(() => setIdlePulse(false), 700);
+      idlePulseClearRef.current = window.setTimeout(() => {
+        setIdlePulse(false);
+        idlePulseClearRef.current = null;
+      }, 700) as unknown as number;
     }
     const dur = 3000 + Math.random() * 1000;
     flashClearRef.current = window.setTimeout(() => {
@@ -91,6 +113,26 @@ export default function HackermouthNode() {
     },
     [flashMessage],
   );
+
+  const triggerHackermouthMessageRef = useRef(triggerHackermouthMessage);
+  const flashMessageRef = useRef(flashMessage);
+  const followMouseRef = useRef(followMouse);
+  triggerHackermouthMessageRef.current = triggerHackermouthMessage;
+  flashMessageRef.current = flashMessage;
+  followMouseRef.current = followMouse;
+
+  useEffect(() => {
+    return () => {
+      if (messageFlashClearRef.current !== null) {
+        window.clearTimeout(messageFlashClearRef.current);
+        messageFlashClearRef.current = null;
+      }
+      if (idlePulseClearRef.current !== null) {
+        window.clearTimeout(idlePulseClearRef.current);
+        idlePulseClearRef.current = null;
+      }
+    };
+  }, []);
 
   const updateLeftPx = useCallback(() => {
     const el = rootRef.current;
@@ -132,8 +174,8 @@ export default function HackermouthNode() {
   }, []);
 
   useEffect(() => {
-    triggerHackermouthMessage("NAV");
-  }, [pathname, triggerHackermouthMessage]);
+    triggerHackermouthMessageRef.current("NAV");
+  }, [pathname]);
 
   useEffect(() => {
     const onPointerOver = (e: PointerEvent) => {
@@ -148,28 +190,28 @@ export default function HackermouthNode() {
       const now = Date.now();
       if (now - hoverLastRef.current < HOVER_THROTTLE_MS) return;
       hoverLastRef.current = now;
-      triggerHackermouthMessage("HOVER");
+      triggerHackermouthMessageRef.current("HOVER");
     };
     document.addEventListener("pointerover", onPointerOver, true);
     return () =>
       document.removeEventListener("pointerover", onPointerOver, true);
-  }, [triggerHackermouthMessage]);
+  }, []);
 
   useEffect(() => {
     const onClick = () => {
       const now = Date.now();
       if (now - clickLastRef.current < CLICK_THROTTLE_MS) return;
       clickLastRef.current = now;
-      triggerHackermouthMessage("CLICK");
+      triggerHackermouthMessageRef.current("CLICK");
     };
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
-  }, [triggerHackermouthMessage]);
+  }, []);
 
   useEffect(() => {
     const scheduleIdle = () => {
       idleLoopRef.current = window.setTimeout(() => {
-        triggerHackermouthMessage("IDLE");
+        triggerHackermouthMessageRef.current("IDLE");
         scheduleIdle();
       }, 4000 + Math.random() * 4000) as unknown as number;
     };
@@ -177,17 +219,40 @@ export default function HackermouthNode() {
     return () => {
       if (idleLoopRef.current !== null) {
         window.clearTimeout(idleLoopRef.current);
+        idleLoopRef.current = null;
       }
     };
-  }, [triggerHackermouthMessage]);
+  }, []);
 
   useEffect(() => {
     const handler = () => {
-      flashMessage("ACCESSING", false);
+      flashMessageRef.current("ACCESSING", false);
     };
     window.addEventListener("hackermouth:quote-appear", handler);
     return () => window.removeEventListener("hackermouth:quote-appear", handler);
-  }, [flashMessage]);
+  }, []);
+
+  useEffect(() => {
+    const onArchiveHover = (ev: Event) => {
+      const e = ev as CustomEvent<ArchiveHoverPayload>;
+      const d = e.detail;
+      if (!d?.tags) return;
+      const now = Date.now();
+      if (now - archiveFlashLastRef.current < 720) return;
+      archiveFlashLastRef.current = now;
+      const line = pickArchiveNodeFlash(d, nextSessionUnit);
+      flashMessageRef.current(line, d.tags.includes("enemy"));
+    };
+    window.addEventListener(
+      "hackermouth:archive-hover",
+      onArchiveHover as EventListener,
+    );
+    return () =>
+      window.removeEventListener(
+        "hackermouth:archive-hover",
+        onArchiveHover as EventListener,
+      );
+  }, []);
 
   useEffect(() => {
     const listener = () => {
@@ -213,9 +278,9 @@ export default function HackermouthNode() {
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
     onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true, capture: true });
-    return () =>
-      window.removeEventListener("scroll", onScroll, { capture: true });
+    const opts: AddEventListenerOptions = { passive: true, capture: true };
+    window.addEventListener("scroll", onScroll, opts);
+    return () => window.removeEventListener("scroll", onScroll, opts);
   }, []);
 
   useEffect(() => {
@@ -230,8 +295,9 @@ export default function HackermouthNode() {
       const dist = Math.hypot(dx, dy);
       setNear(dist < NEAR_RADIUS_PX);
       const len = Math.hypot(dx, dy) || 1;
-      const cap = followMouse ? CURSOR_PULL_MAX_FOLLOW : CURSOR_PULL_MAX;
-      const gain = followMouse ? 0.22 : 0.12;
+      const following = followMouseRef.current;
+      const cap = following ? CURSOR_PULL_MAX_FOLLOW : CURSOR_PULL_MAX;
+      const gain = following ? 0.22 : 0.12;
       const pull = Math.min(cap, dist * gain);
       setCursorPull({
         x: (dx / len) * pull,
@@ -240,15 +306,18 @@ export default function HackermouthNode() {
     };
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
-  }, [followMouse]);
+  }, []);
 
   useEffect(() => {
-    let timeoutId = 0;
+    const cancelled = { current: false };
+    let timeoutId: number | null = null;
     const scheduleJitter = () => {
       const delay =
         JITTER_INTERVAL_MIN_MS +
         Math.random() * (JITTER_INTERVAL_MAX_MS - JITTER_INTERVAL_MIN_MS);
       timeoutId = window.setTimeout(() => {
+        timeoutId = null;
+        if (cancelled.current) return;
         setJitter({
           x: (Math.random() - 0.5) * 14,
           y: (Math.random() - 0.5) * 10,
@@ -257,60 +326,77 @@ export default function HackermouthNode() {
       }, delay) as unknown as number;
     };
     scheduleJitter();
-    return () => window.clearTimeout(timeoutId);
+    return () => {
+      cancelled.current = true;
+      if (timeoutId !== null) window.clearTimeout(timeoutId);
+    };
   }, []);
 
   useEffect(() => {
-    let cooldownTimer = 0;
+    const cancelled = { current: false };
+    let cooldownTimer: number | null = null;
+    let followEndTimer: number | null = null;
     const armFollow = () => {
       const wait =
         FOLLOW_MOUSE_COOLDOWN_MIN_MS +
         Math.random() *
           (FOLLOW_MOUSE_COOLDOWN_MAX_MS - FOLLOW_MOUSE_COOLDOWN_MIN_MS);
       cooldownTimer = window.setTimeout(() => {
+        cooldownTimer = null;
+        if (cancelled.current) return;
         if (Math.random() < 0.42) {
           setFollowMouse(true);
-          window.setTimeout(
-            () => setFollowMouse(false),
-            FOLLOW_MOUSE_MIN_MS +
-              Math.random() * (FOLLOW_MOUSE_MAX_MS - FOLLOW_MOUSE_MIN_MS),
-          );
+          if (followEndTimer !== null) window.clearTimeout(followEndTimer);
+          followEndTimer = window.setTimeout(() => {
+            followEndTimer = null;
+            if (!cancelled.current) setFollowMouse(false);
+          }, FOLLOW_MOUSE_MIN_MS +
+            Math.random() * (FOLLOW_MOUSE_MAX_MS - FOLLOW_MOUSE_MIN_MS)) as unknown as number;
         }
         armFollow();
       }, wait) as unknown as number;
     };
     armFollow();
-    return () => window.clearTimeout(cooldownTimer);
+    return () => {
+      cancelled.current = true;
+      if (cooldownTimer !== null) window.clearTimeout(cooldownTimer);
+      if (followEndTimer !== null) window.clearTimeout(followEndTimer);
+    };
   }, []);
 
   useEffect(() => {
-    let glitchTimer = 0;
+    const cancelled = { current: false };
+    let armTimer: number | null = null;
     const armGlitch = () => {
       const wait = 1400 + Math.random() * 5200;
-      glitchTimer = window.setTimeout(() => {
+      armTimer = window.setTimeout(() => {
+        armTimer = null;
+        if (cancelled.current) return;
         if (Math.random() < 0.55) {
           setGlitching(true);
-          window.setTimeout(
-            () => setGlitching(false),
-            GLITCH_BURST_MIN_MS +
-              Math.random() * (GLITCH_BURST_MAX_MS - GLITCH_BURST_MIN_MS),
-          );
+          window.setTimeout(() => {
+            if (!cancelled.current) setGlitching(false);
+          }, GLITCH_BURST_MIN_MS +
+            Math.random() * (GLITCH_BURST_MAX_MS - GLITCH_BURST_MIN_MS)) as unknown as number;
         }
         if (Math.random() < 0.28) {
           window.setTimeout(() => {
+            if (cancelled.current) return;
             setGlitching(true);
-            window.setTimeout(
-              () => setGlitching(false),
-              GLITCH_BURST_MIN_MS +
-                Math.random() * (GLITCH_BURST_MAX_MS - GLITCH_BURST_MIN_MS),
-            );
-          }, 40 + Math.random() * 120);
+            window.setTimeout(() => {
+              if (!cancelled.current) setGlitching(false);
+            }, GLITCH_BURST_MIN_MS +
+              Math.random() * (GLITCH_BURST_MAX_MS - GLITCH_BURST_MIN_MS)) as unknown as number;
+          }, 40 + Math.random() * 120) as unknown as number;
         }
         armGlitch();
       }, wait) as unknown as number;
     };
     armGlitch();
-    return () => window.clearTimeout(glitchTimer);
+    return () => {
+      cancelled.current = true;
+      if (armTimer !== null) window.clearTimeout(armTimer);
+    };
   }, []);
 
   useEffect(() => {

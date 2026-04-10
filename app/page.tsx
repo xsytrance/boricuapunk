@@ -3,6 +3,7 @@ import ManusHeroPortrait from "@/components/ManusHeroPortrait";
 import CharacterCard from "@/components/CharacterCard";
 import HomeArchiveQuoteSection from "@/components/HomeArchiveQuoteSection";
 import { characters } from "@/data/characters";
+import { getSagaCharacterById } from "@/types/characters";
 
 const manus = characters.find((c) => c.id === "manus-neco")!;
 
@@ -141,15 +142,22 @@ export default function Home() {
           </p>
         </div>
         <div className="character-grid grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
-          {characters.map((c) => (
-            <CharacterCard
-              key={c.id}
-              id={c.id}
-              name={c.name}
-              title={c.title}
-              image={c.image}
-            />
-          ))}
+          {characters.map((c) => {
+            const saga = getSagaCharacterById(c.id);
+            return (
+              <CharacterCard
+                key={c.id}
+                id={c.id}
+                name={c.name}
+                title={c.title}
+                image={c.image}
+                href={`/characters/${c.id}`}
+                tags={saga?.tags}
+                factionId={saga?.faction}
+                threatLevel={saga?.threatLevel}
+              />
+            );
+          })}
         </div>
       </section>
 

@@ -9,6 +9,13 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import {
+  archiveHoverIntensity,
+  archiveSignalHover,
+  pickArchiveToast,
+  type ArchiveHoverPayload,
+} from "@/lib/hackermouthArchive";
+import { nextSessionUnit } from "@/lib/sessionRandom";
 import { hackermouthSay } from "@/lib/hackermouthSay";
 import HackermouthToast from "./HackermouthToast";
 import TapeOverlay from "./TapeOverlay";
@@ -63,6 +70,8 @@ export default function HackermouthProvider({
   const cursorCorruptLocked = useRef(false);
   const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tickRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const archiveIntensityRef = useRef(0);
+  const archiveCorruptRef = useRef(false);
 
   const showToast = useCallback((message: string) => {
     if (toastTimeoutRef.current) {
@@ -100,7 +109,11 @@ export default function HackermouthProvider({
   }, []);
 
   const runRandomEvent = useCallback(() => {
-    if (Math.random() > EVENT_CHANCE) return;
+    const boosted =
+      EVENT_CHANCE +
+      archiveIntensityRef.current * 0.22 +
+      (archiveCorruptRef.current ? 0.12 : 0);
+    if (Math.random() > Math.min(0.55, boosted)) return;
 
     const roll = Math.random();
     if (roll < 0.35) {
@@ -216,6 +229,37 @@ export default function HackermouthProvider({
     return () =>
       window.removeEventListener("hackermouth:quote-appear", onQuoteAppear);
   }, [showToast]);
+
+  useEffect(() => {
+    const onArchiveHover = (ev: Event) => {
+      const e = ev as CustomEvent<ArchiveHoverPayload>;
+      const d = e.detail;
+      if (!d?.tags) return;
+      archiveIntensityRef.current = archiveHoverIntensity(d);
+      archiveCorruptRef.current = archiveSignalHover(d.tags);
+      const toast = pickArchiveToast(d, nextSessionUnit);
+      if (toast) showToast(toast);
+      if (archiveIntensityRef.current > 0.5 && nextSessionUnit() < 0.42) {
+        triggerGlitch();
+      }
+    };
+    const onArchiveLeave = () => {
+      archiveIntensityRef.current = 0;
+      archiveCorruptRef.current = false;
+    };
+    window.addEventListener(
+      "hackermouth:archive-hover",
+      onArchiveHover as EventListener,
+    );
+    window.addEventListener("hackermouth:archive-leave", onArchiveLeave);
+    return () => {
+      window.removeEventListener(
+        "hackermouth:archive-hover",
+        onArchiveHover as EventListener,
+      );
+      window.removeEventListener("hackermouth:archive-leave", onArchiveLeave);
+    };
+  }, [showToast, triggerGlitch]);
 
   return (
     <HackermouthContext.Provider value={{} as HackermouthContextValue}>

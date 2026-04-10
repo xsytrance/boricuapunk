@@ -1,5 +1,8 @@
 import CharacterCard from "@/components/CharacterCard";
-import { characters } from "@/data/characters";
+import { characters as legacyDossierIds } from "@/data/characters";
+import { characters as sagaCharacters } from "@/types/characters";
+
+const DOSSIER_IDS = new Set(legacyDossierIds.map((c) => c.id));
 
 export default function CharactersPage() {
   return (
@@ -9,19 +12,26 @@ export default function CharactersPage() {
           Character Archive
         </h1>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-500 md:text-base">
-          Full roster of known figures in the Poetic Saga of the Red Noodle Clan.
-          Hover dossiers for lock-on; select to open intelligence file.
+          Full roster of known figures in the Poetic Saga of the Red Noodle Clan—manuscript,
+          expanded threads, and archive continuities. Dossier links unlock where intel files
+          exist; others glow for signal only.
         </p>
       </header>
 
       <div className="character-grid grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
-        {characters.map((c) => (
+        {sagaCharacters.map((c) => (
           <CharacterCard
             key={c.id}
             id={c.id}
             name={c.name}
-            title={c.title}
+            title={c.role}
             image={c.image}
+            href={
+              DOSSIER_IDS.has(c.id) ? `/characters/${c.id}` : undefined
+            }
+            tags={c.tags}
+            factionId={c.faction}
+            threatLevel={c.threatLevel}
           />
         ))}
       </div>

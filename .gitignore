@@ -17,11 +17,17 @@
 /.next/
 /out/
 
+# turbopack / tooling
+.turbo
+
 # production
 /build
 
 # misc
 .DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 *.pem
 
 # debug

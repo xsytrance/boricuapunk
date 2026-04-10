@@ -1,0 +1,4 @@
+ingress:
+  - hostname: rnc.agenorr.com
+    service: http://localhost:9999
+  - service: http_status:404

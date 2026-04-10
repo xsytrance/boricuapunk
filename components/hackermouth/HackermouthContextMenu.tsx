@@ -2,11 +2,15 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+/** Aligns with HackermouthNode click throttle — stable across renders via ref. */
+const CONTEXT_DISPATCH_THROTTLE_MS = 800;
+
 export default function HackermouthContextMenu() {
   const [open, setOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const menuRef = useRef<HTMLDivElement>(null);
+  const lastContextDispatchRef = useRef(0);
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -25,7 +29,11 @@ export default function HackermouthContextMenu() {
       setX(nx);
       setY(ny);
       setOpen(true);
-      window.dispatchEvent(new CustomEvent("hackermouth:context"));
+      const now = Date.now();
+      if (now - lastContextDispatchRef.current >= CONTEXT_DISPATCH_THROTTLE_MS) {
+        lastContextDispatchRef.current = now;
+        window.dispatchEvent(new CustomEvent("hackermouth:context"));
+      }
     };
     window.addEventListener("contextmenu", onContextMenu);
     return () => window.removeEventListener("contextmenu", onContextMenu);

@@ -67,36 +67,40 @@ body > * {
 }
 
 /* Character grid: subtle fixed rotation per slot (no JS) */
-.character-grid > a:nth-child(6n + 1) article {
+.character-grid > :nth-child(6n + 1) article {
   transform: rotate(-1.25deg);
 }
-.character-grid > a:nth-child(6n + 2) article {
+.character-grid > :nth-child(6n + 2) article {
   transform: rotate(1.5deg);
 }
-.character-grid > a:nth-child(6n + 3) article {
+.character-grid > :nth-child(6n + 3) article {
   transform: rotate(-0.75deg);
 }
-.character-grid > a:nth-child(6n + 4) article {
+.character-grid > :nth-child(6n + 4) article {
   transform: rotate(1.25deg);
 }
-.character-grid > a:nth-child(6n + 5) article {
+.character-grid > :nth-child(6n + 5) article {
   transform: rotate(-1.5deg);
 }
-.character-grid > a:nth-child(6n) article {
+.character-grid > :nth-child(6n) article {
   transform: rotate(0.85deg);
 }
 
-.character-grid > a {
+.character-grid > a,
+.character-grid > div {
   overflow: hidden;
   border-radius: 0.25rem;
 }
 
-.character-grid > a article {
+.character-grid > a article,
+.character-grid > div article {
   will-change: transform;
 }
 
 .character-grid > a:hover article,
-.character-grid > a:focus-visible article {
+.character-grid > a:focus-visible article,
+.character-grid > div:hover article,
+.character-grid > div:focus-within article {
   transform: rotate(0deg) scale(1.06);
 }
 
@@ -703,4 +707,35 @@ body.hm-glitch {
 
 .hm-quote-hackermouth-flicker {
   animation: hm-quote-flicker 1.15s ease-in-out infinite;
+}
+
+/* Archive: corrupt / entity / unknown card hover — light signal breakup */
+@keyframes hm-archive-signal-flicker {
+  0%,
+  100% {
+    filter: contrast(1) brightness(1) saturate(1);
+  }
+  50% {
+    filter: contrast(1.025) brightness(0.985) saturate(1.06);
+  }
+}
+
+body.hm-archive-signal {
+  animation: hm-archive-signal-flicker 0.22s ease-in-out infinite;
+}
+
+@keyframes archive-card-pulse-kf {
+  0%,
+  100% {
+    opacity: 0.04;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.12;
+    transform: scale(1.015);
+  }
+}
+
+.archive-card-pulse {
+  animation: archive-card-pulse-kf 2.8s ease-in-out infinite;
 }

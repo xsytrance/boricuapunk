@@ -2,9 +2,12 @@ export type QuoteStyle = "streetfighter" | "graffiti";
 
 export type Quote = {
   id: string;
+  /** Dossier id, saga id, or sentinel like "unknown" when using speakerName */
   characterId: string;
   text: string;
   style: QuoteStyle;
+  /** When set, shown instead of resolving name from dossier/saga */
+  speakerName?: string;
 };
 
 /** Primary quote per character is the first quote for that characterId in this array. */
@@ -73,6 +76,152 @@ export const quotes: Quote[] = [
     id: "hm-4",
     characterId: "hackermouth",
     text: "No one questions the answers.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-sifu-1",
+    characterId: "sifu-kinoko",
+    text: "Combine nine—ascend divine. The theater already bought your ticket.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-yulania-1",
+    characterId: "yulania-friz",
+    text: "Hunt the black until the black thanks you for the company.",
+    style: "graffiti",
+  },
+  {
+    id: "q-grats-1",
+    characterId: "gratitude-frogs-grats",
+    text: "Gratitude is ordnance. We don’t waste shells on shame.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-doncellas-1",
+    characterId: "shield-doncellas",
+    text: "Red smoke remembers who stood still longest.",
+    style: "graffiti",
+  },
+  {
+    id: "q-exhumerator-1",
+    characterId: "the-exhumerator",
+    text: "Three claps. The room forgets what it saw.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-tonyo-1",
+    characterId: "tonyo-byo",
+    text: "Citadels fall like manners—loud, then embarrassing.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-saint-1",
+    characterId: "saint-flamingo",
+    text: "Tyranny wears frippery so you’ll applaud the collar.",
+    style: "graffiti",
+  },
+  {
+    id: "q-bloodless-1",
+    characterId: "bloodless-visitor",
+    text: "Hope arrives in porcelain—handle like a grenade.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-azula-1",
+    characterId: "azula-sabra",
+    text: "My bill is steel. Your tab is breathing.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-koden-1",
+    characterId: "koden-bushi-bloodflower",
+    text: "A gift of revenge still hums if you tune it honest.",
+    style: "graffiti",
+  },
+  {
+    id: "q-spada-1",
+    characterId: "spada-virina",
+    text: "Purple-black doesn’t ask permission—it collects signatures.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-yindao-1",
+    characterId: "sword-of-yindao",
+    text: "Nine edges in the myth; one in your hand. Guess which lies.",
+    style: "graffiti",
+  },
+  {
+    id: "q-pisces-1",
+    characterId: "people-of-pisces",
+    text: "Incongruity is armor when every note refuses the same key.",
+    style: "graffiti",
+  },
+  {
+    id: "q-lily-1",
+    characterId: "lily-pad-clan",
+    text: "We built nine thrones of echo. You heard applause. We heard debt.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-rnc-1",
+    characterId: "red-noodle-clan",
+    text: "Long live the thread—neon in the veins, rice-hat brim like a halo.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-raziel-1",
+    characterId: "raziel-underwire",
+    text: "The grid has a throat. I am the cough you mistook for jazz.",
+    style: "graffiti",
+  },
+  {
+    id: "q-choir-1",
+    characterId: "glass-lung-choir",
+    text: "Tourists hear music. Initiates hear verdicts in ventilation.",
+    style: "graffiti",
+  },
+  {
+    id: "q-socket-1",
+    characterId: "socket-ghost",
+    text: "Between hello and betrayal is a protocol you never authored.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-salt-1",
+    characterId: "salt-ring-enclave",
+    text: "Brine signs treaties rust can’t break.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-parade-1",
+    characterId: "obsidian-parade",
+    text: "We don’t march. We align until the strings confess.",
+    style: "graffiti",
+  },
+  {
+    id: "q-unknown-1",
+    characterId: "unknown",
+    speakerName: "Unknown signal",
+    text: "The archive breathes. You mistook static for silence.",
+    style: "graffiti",
+  },
+  {
+    id: "q-unknown-2",
+    characterId: "unknown",
+    speakerName: "Scrubbed source",
+    text: "Every file has a pulse. Stop pretending yours is innocent.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-faction-neon-1",
+    characterId: "neon-independents",
+    text: "Independence is voltage with a lawyer’s grin.",
+    style: "graffiti",
+  },
+  {
+    id: "q-faction-dock-1",
+    characterId: "dockside-syndicate",
+    text: "The harbor keeps teeth wet. Debts keep them sharp.",
     style: "streetfighter",
   },
 ];

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import QuoteDisplay from "@/components/QuoteDisplay";
 import { getCharacterById } from "@/data/characters";
 import { getRandomQuote, type Quote } from "@/data/quotes";
+import { getSagaCharacterById } from "@/types/characters";
 
 type Props = {
   /** Page subject; reserved for future “prefer this character’s pool” logic */
@@ -39,8 +40,11 @@ export default function CharacterQuoteSection({ characterId }: Props) {
 
   if (!quote) return null;
 
-  const speaker = getCharacterById(quote.characterId);
-  if (!speaker) return null;
+  const dossier = getCharacterById(quote.characterId);
+  const saga = getSagaCharacterById(quote.characterId);
+  const speakerName =
+    quote.speakerName ?? dossier?.name ?? saga?.name;
+  if (!speakerName) return null;
 
   return (
     <div
@@ -49,7 +53,7 @@ export default function CharacterQuoteSection({ characterId }: Props) {
     >
       <QuoteDisplay
         text={quote.text}
-        characterName={speaker.name}
+        characterName={speakerName}
         characterId={quote.characterId}
         style={quote.style}
         className={
