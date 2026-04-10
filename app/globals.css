@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bp-black: #030303;
+  --bp-panel: #080808;
+  --bp-red: #7f1d1d;
+  --bp-red-deep: #450a0a;
+  --bp-orange: #ea580c;
+  --bp-amber: #fbbf24;
+  --bp-glow: rgba(234, 88, 12, 0.55);
+  --bp-glow-red: rgba(185, 28, 28, 0.45);
+  --background: var(--bp-black);
+  --foreground: #e7e5e4;
 }
 
 @theme inline {
@@ -10,17 +18,565 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scrollbar-gutter: stable;
+}
+
+html,
+body {
+  overflow-x: hidden;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+/* Layered depth: base wash → warm lift → noise → vignette */
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.11;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 85% 70% at 50% 45%,
+    transparent 30%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  box-shadow: inset 0 0 100px 30px rgba(0, 0, 0, 0.85);
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Character grid: subtle fixed rotation per slot (no JS) */
+.character-grid > a:nth-child(6n + 1) article {
+  transform: rotate(-1.25deg);
+}
+.character-grid > a:nth-child(6n + 2) article {
+  transform: rotate(1.5deg);
+}
+.character-grid > a:nth-child(6n + 3) article {
+  transform: rotate(-0.75deg);
+}
+.character-grid > a:nth-child(6n + 4) article {
+  transform: rotate(1.25deg);
+}
+.character-grid > a:nth-child(6n + 5) article {
+  transform: rotate(-1.5deg);
+}
+.character-grid > a:nth-child(6n) article {
+  transform: rotate(0.85deg);
+}
+
+.character-grid > a {
+  overflow: hidden;
+  border-radius: 0.25rem;
+}
+
+.character-grid > a article {
+  will-change: transform;
+}
+
+.character-grid > a:hover article,
+.character-grid > a:focus-visible article {
+  transform: rotate(0deg) scale(1.06);
+}
+
+/* Hackermouth archive panel — access sequence */
+@keyframes hm-panel-access {
+  0% {
+    filter: brightness(1);
+  }
+  18% {
+    filter: brightness(1.45)
+      drop-shadow(0 0 24px rgba(234, 88, 12, 0.65));
+  }
+  100% {
+    filter: brightness(1.12)
+      drop-shadow(0 0 14px rgba(234, 88, 12, 0.35));
+  }
+}
+
+@keyframes hm-fs-sweep-move {
+  0% {
+    top: -6%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    top: 106%;
+    opacity: 0.45;
+  }
+}
+
+@keyframes hm-fs-scanlines-drift {
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.16;
+    transform: translateY(3px);
+  }
+}
+
+@keyframes hm-fs-flicker-key {
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  33% {
+    opacity: 0.9;
+    filter: brightness(1.18);
+  }
+  66% {
+    opacity: 0.95;
+    filter: brightness(1.05);
+  }
+}
+
+.animate-hm-panel-access {
+  animation: hm-panel-access 0.52s ease-out forwards;
+}
+
+/* Full-screen Hackermouth — root stays fully opaque (no opacity:0 + animation) */
+.hm-fs-interrupt-root {
+  pointer-events: auto;
+}
+
+.hm-fs-sweep {
+  animation: hm-fs-sweep-move 1s linear infinite;
+}
+
+.hm-fs-scanlines {
+  animation: hm-fs-scanlines-drift 2.2s ease-in-out infinite;
+}
+
+.hm-fs-flicker {
+  animation: hm-fs-flicker-key 1.15s ease-in-out infinite;
+}
+
+/* Hackermouth global system layer */
+body.hm-cursor-corrupt {
+  cursor: none;
+}
+
+body.hm-active {
+  filter: hue-rotate(90deg) contrast(1.1);
+  transition: filter 0.2s ease;
+}
+
+.hm-cursor-stack {
+  position: fixed;
+  left: var(--hm-cx, 50vw);
+  top: var(--hm-cy, 50vh);
+  z-index: 9998;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.hm-cursor-trail {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #00ff9c 0%, transparent 68%);
+  opacity: 0.32;
+  mix-blend-mode: screen;
+  filter: blur(1px);
+  animation: hm-cursor-glitch 0.24s infinite alternate;
+  animation-delay: 0.06s;
+}
+
+.hm-cursor-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #00ff9c 0%, transparent 70%);
+  mix-blend-mode: screen;
+  animation: hm-cursor-glitch 0.2s infinite alternate,
+    hm-cursor-flicker 3.2s steps(1, end) infinite;
+}
+
+.hm-cursor-scanline {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border-radius: 50%;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(0, 0, 0, 0.35) 1px,
+    rgba(0, 0, 0, 0.35) 2px
+  );
+  pointer-events: none;
+}
+
+@keyframes hm-cursor-glitch {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(-2px, 2px);
+  }
+}
+
+@keyframes hm-cursor-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  7% {
+    opacity: 0.35;
+  }
+  8% {
+    opacity: 1;
+  }
+  41% {
+    opacity: 0.5;
+  }
+  42% {
+    opacity: 0.15;
+  }
+  43% {
+    opacity: 1;
+  }
+  78% {
+    opacity: 0.55;
+  }
+  79% {
+    opacity: 1;
+  }
+}
+
+body.hm-quote-corruption [data-hm-quote-zone] {
+  animation: hm-quote-corruption-burst 0.12s steps(2, end) 18;
+  filter: hue-rotate(70deg) saturate(1.25) contrast(1.05);
+  box-shadow: 0 0 48px rgba(34, 197, 94, 0.22);
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+@keyframes hm-quote-corruption-burst {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.72;
+  }
+}
+
+body.hm-quote-takeover {
+  filter: hue-rotate(120deg) contrast(1.2);
+}
+
+.hm-node {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  font-family: monospace;
+  font-size: 11px;
+  color: #00ff9c;
+  opacity: 0.6;
+}
+
+.hm-node-scroll {
+  position: relative;
+  will-change: transform;
+  animation: hm-node-idle-sine-float 5.2s ease-in-out infinite;
+}
+
+@keyframes hm-node-idle-sine-float {
+  0%,
+  100% {
+    transform: translateY(-6px);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.hm-node-msg-bundle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform-origin: center center;
+}
+
+.hm-node-msg-bundle--flash {
+  animation: hm-node-msg-bundle-flash 0.48s ease-out;
+}
+
+@keyframes hm-node-msg-bundle-flash {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  35% {
+    transform: scale(1.12);
+    filter: brightness(1.55);
+  }
+  70% {
+    transform: scale(1.08);
+    filter: brightness(1.4);
+  }
+}
+
+.hm-node--idle-pulse .hm-node-msg-bundle {
+  animation: hm-node-idle-pulse 0.68s ease-out;
+}
+
+@keyframes hm-node-idle-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.05);
+  }
+}
+
+.hm-node--near {
+  opacity: 0.95;
+}
+
+.hm-node-tape-layer {
+  position: absolute;
+  inset: -20px;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(0, 255, 156, 0.08),
+    transparent 70%
+  );
+  animation: hm-node-tape-layer-drift 6s infinite ease-in-out;
+}
+
+@keyframes hm-node-tape-layer-drift {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(6deg) scale(1.05);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.hm-node-tape-strand {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 156, 0.35),
+    transparent
+  );
+  opacity: 0.45;
+  animation: hm-node-strand-flicker 2.8s ease-in-out infinite;
+}
+
+.hm-node-tape-strand--a {
+  width: 52px;
+  top: 2px;
+  left: -12px;
+  transform: rotate(-22deg);
+  animation-delay: 0s;
+}
+
+.hm-node-tape-strand--b {
+  width: 44px;
+  bottom: 8px;
+  right: -6px;
+  transform: rotate(14deg);
+  animation-delay: 0.4s;
+}
+
+.hm-node-tape-strand--c {
+  width: 38px;
+  top: 50%;
+  left: -18px;
+  transform: translateY(-50%) rotate(-8deg);
+  animation-delay: 0.8s;
+}
+
+@keyframes hm-node-strand-flicker {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+
+.hm-node-drift {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+.hm-node-chassis {
+  transform-origin: center center;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+.hm-node-eye {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  background: #00ff9c;
+  border-radius: 999px;
+  box-shadow:
+    0 0 10px #00ff9c,
+    0 0 20px rgba(0, 255, 156, 0.6);
+  animation: hm-node-eye-pulse 1.5s ease-in-out infinite;
+}
+
+.hm-node--near .hm-node-eye {
+  box-shadow:
+    0 0 14px #00ff9c,
+    0 0 28px rgba(0, 255, 156, 0.85),
+    0 0 42px rgba(0, 255, 156, 0.45);
+}
+
+.hm-node-text {
+  letter-spacing: 1px;
+  text-shadow: 0 0 4px rgba(0, 255, 150, 0.6);
+  transition: text-shadow 0.35s ease;
+}
+
+.hm-node--near .hm-node-text {
+  text-shadow:
+    0 0 8px rgba(0, 255, 150, 0.85),
+    0 0 16px rgba(0, 255, 156, 0.45);
+}
+
+@keyframes hm-node-eye-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.15);
+  }
+}
+
+body.hm-quote-takeover [data-hm-quote-zone] {
+  transform: scale(1.02);
+  box-shadow: 0 0 25px rgba(0, 255, 150, 0.4);
+  transition: all 0.2s ease;
+}
+
+@keyframes hm-quote-screen-flicker {
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.96;
+    filter: brightness(1.22) contrast(1.06);
+  }
+}
+
+#hm-app-shell.hm-quote-screen-flicker {
+  animation: hm-quote-screen-flicker 0.15s ease-out forwards;
+}
+
+@keyframes hm-manus-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.03);
+  }
+}
+
+body.hm-glitch {
+  filter: hue-rotate(90deg) contrast(1.2);
+  transition: filter 0.05s ease-out;
+}
+
+.hm-tape {
+  animation: hm-tape-drift 12s ease-in-out infinite;
+}
+
+@keyframes hm-tape-drift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(10px, -10px) rotate(3deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes hm-quote-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.78;
+  }
+}
+
+.hm-quote-hackermouth-flicker {
+  animation: hm-quote-flicker 1.15s ease-in-out infinite;
 }
