@@ -14,9 +14,9 @@ export default function Home() {
             The archive is now expandable.
           </h2>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-zinc-400">
-            I added a proper archive hub and the first expansion set so the site can grow into a
-            multi-page world instead of staying homepage-only. Start with the Archive link in the
-            header if you want the new route map.
+            The site now has a route set for browsing the world in different ways: people,
+            factions, lore, locations, logs, timeline, and relationships. Start with the Archive
+            link in the header if you want the new route map.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
@@ -26,10 +26,16 @@ export default function Home() {
               Archive Hub
             </Link>
             <Link
-              href="/characters"
+              href="/timeline"
               className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
             >
-              Characters
+              Timeline
+            </Link>
+            <Link
+              href="/relationships"
+              className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
+            >
+              Relationship Graph
             </Link>
           </div>
         </div>

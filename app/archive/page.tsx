@@ -5,36 +5,14 @@ import { factions } from "@/types/factions";
 import { quotes } from "@/data/quotes";
 
 const pageLinks = [
-  {
-    href: "/characters",
-    title: "Character Archive",
-    copy: "Browse the full roster, jump into dossiers, and find the faces behind the saga.",
-  },
-  {
-    href: "/factions",
-    title: "Faction Index",
-    copy: "See who allies with whom, and where every power bloc stands.",
-  },
-  {
-    href: "/lore",
-    title: "Lore & Fragments",
-    copy: "Read the stitched-together myth fragments that frame the universe.",
-  },
-  {
-    href: "/locations",
-    title: "Locations",
-    copy: "Jump between city zones, hidden venues, and iconic story landmarks.",
-  },
-  {
-    href: "/logs",
-    title: "Signal Logs",
-    copy: "Archive quotes, transmissions, and the system’s latest signal bursts.",
-  },
-  {
-    href: "/about",
-    title: "About the Archive",
-    copy: "A short mission brief for new visitors and future collaborators.",
-  },
+  { href: "/characters", title: "Character Archive", copy: "Browse the full roster, jump into dossiers, and find the faces behind the saga." },
+  { href: "/factions", title: "Faction Index", copy: "See who allies with whom, and where every power bloc stands." },
+  { href: "/lore", title: "Lore & Fragments", copy: "Read the stitched-together myth fragments that frame the universe." },
+  { href: "/locations", title: "Locations", copy: "Jump between city zones, hidden venues, and iconic story landmarks." },
+  { href: "/logs", title: "Signal Logs", copy: "Archive quotes, transmissions, and the system’s latest signal bursts." },
+  { href: "/timeline", title: "Timeline", copy: "Trace the archive’s major narrative milestones in order." },
+  { href: "/relationships", title: "Relationship Graph", copy: "Follow the important bonds and conflicts between people, groups, and icons." },
+  { href: "/about", title: "About the Archive", copy: "A short mission brief for new visitors and future collaborators." },
 ];
 
 export default function ArchiveHubPage() {
@@ -42,12 +20,8 @@ export default function ArchiveHubPage() {
     <ArchivePageShell
       eyebrow="Archive Hub"
       title="Mission Control"
-      description="A central jump-off for the Boricuapunk archive. Use this hub to move through the site like a living dossier system: characters, factions, lore, locations, and signal logs all branch from here."
-      meta={[
-        `${characters.length} known figures`,
-        `${factions.length} factions`,
-        `${quotes.length} recorded quotes`,
-      ]}
+      description="A central jump-off for the Boricuapunk archive. Use this hub to move through the site like a living dossier system: characters, factions, lore, locations, logs, timeline, and relationship graphs all branch from here."
+      meta={[`${characters.length} known figures`, `${factions.length} factions`, `${quotes.length} recorded quotes`]}
     >
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {pageLinks.map((page) => (
@@ -76,9 +50,9 @@ export default function ArchiveHubPage() {
             Start with the people, then the places.
           </h3>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-400">
-            If you’re new to the site, the strongest first pass is the character archive,
-            followed by factions and locations. That gives the universe a face, a map, and a
-            set of tensions before you dive into the deeper fragments.
+            If you’re new to the site, the strongest first pass is the character archive, followed
+            by factions and locations. Then move into timeline and relationship views to see how
+            the archive’s tension lines connect.
           </p>
         </div>
 
@@ -88,7 +62,7 @@ export default function ArchiveHubPage() {
           </p>
           <ul className="mt-4 space-y-3 text-sm leading-relaxed text-zinc-400">
             <li>• Fresh route structure for easier story expansion</li>
-            <li>• Cross-links between characters, factions, and lore</li>
+            <li>• Cross-links between characters, factions, lore, and timeline</li>
             <li>• Pages built to scale as new manuscript entries appear</li>
             <li>• Works as both a site map and in-world index</li>
           </ul>

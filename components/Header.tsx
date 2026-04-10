@@ -23,6 +23,12 @@ export default function Header() {
           <Link href="/factions" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] md:inline-flex">
             Factions
           </Link>
+          <Link href="/timeline" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] lg:inline-flex">
+            Timeline
+          </Link>
+          <Link href="/relationships" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] lg:inline-flex">
+            Graph
+          </Link>
         </nav>
       </div>
     </header>
