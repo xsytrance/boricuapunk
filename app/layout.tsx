@@ -45,8 +45,8 @@ export default function RootLayout({
           >
             <Header />
             <div className="flex min-h-0 min-w-0 flex-1 flex-col">{children}</div>
-            <HackermouthNode />
           </div>
+          <HackermouthNode />
         </HackermouthProvider>
       </body>
     </html>

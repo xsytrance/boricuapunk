@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <!-- Hackermouth terminal green (#00ff9c family) -->
+  <path
+    d="M3 2 L3 25 L10.5 17.5 L14.5 27.5 L17.5 25.5 L13.5 16 L25 16 L3 2Z"
+    fill="#050806"
+    stroke="#00c978"
+    stroke-width="1.15"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M5 6 L5 20 L11.5 14 L15 22.5 L16 22 L12.5 14.5 L22 14.5 L5 6Z"
+    fill="#0a120e"
+    stroke="#00ff9c"
+    stroke-width="0.65"
+    stroke-linejoin="round"
+    opacity="0.98"
+  />
+  <path
+    d="M5 6 L14 13.5"
+    stroke="#86ffd9"
+    stroke-width="1.1"
+    stroke-linecap="round"
+    opacity="0.95"
+  />
+</svg>

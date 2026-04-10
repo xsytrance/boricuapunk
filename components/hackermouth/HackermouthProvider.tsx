@@ -9,17 +9,18 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { hackermouthSay } from "@/lib/hackermouthSay";
 import HackermouthToast from "./HackermouthToast";
 import TapeOverlay from "./TapeOverlay";
 
 const TOAST_MESSAGES = [
-  "HACKERMOUTH:// OBSERVING",
-  "HACKERMOUTH:// ACCESS LOGGED",
-  "HACKERMOUTH:// I SEE YOU",
-  "HACKERMOUTH:// SIGNAL INTEGRITY COMPROMISED",
-  "HACKERMOUTH:// ACCESS NODE DETECTED",
-  "HACKERMOUTH:// YOU ARE BEING WATCHED",
-  "HACKERMOUTH:// ARCHIVE INTEGRITY UNSTABLE",
+  "OBSERVING",
+  "ACCESS LOGGED",
+  "I SEE YOU",
+  "SIGNAL INTEGRITY COMPROMISED",
+  "ACCESS NODE DETECTED",
+  "YOU ARE BEING WATCHED",
+  "ARCHIVE INTEGRITY UNSTABLE",
 ] as const;
 
 const EVENT_CHANCE = 0.125;
@@ -68,7 +69,7 @@ export default function HackermouthProvider({
       clearTimeout(toastTimeoutRef.current);
       toastTimeoutRef.current = null;
     }
-    setToastMessage(message);
+    setToastMessage(hackermouthSay(message));
     setToastVisible(true);
     const hideMs = randomBetween(TOAST_MIN_MS, TOAST_MAX_MS);
     toastTimeoutRef.current = setTimeout(() => {

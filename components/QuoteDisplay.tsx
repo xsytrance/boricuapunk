@@ -1,4 +1,5 @@
 import type { QuoteStyle } from "@/data/quotes";
+import { hackermouthSay } from "@/lib/hackermouthSay";
 
 type QuoteDisplayProps = {
   text: string;
@@ -22,11 +23,8 @@ export default function QuoteDisplay({
         className={`relative z-10 rounded border border-[#064e3b]/80 bg-[#0a0a0a]/95 px-6 py-8 ${className}`}
       >
         <div className="relative z-10 rounded-md bg-[linear-gradient(to_bottom,rgba(0,0,0,0.75),rgba(0,0,0,0.92))] p-4 font-mono text-sm leading-relaxed tracking-wide text-[#00ff9c] md:text-base">
-          <p className="hm-quote-hackermouth-flicker mb-2 text-[10px] uppercase tracking-[0.2em] text-[#00ff9c]/80">
-            HACKERMOUTH://
-          </p>
           <p className="hm-quote-hackermouth-flicker text-base font-semibold md:text-lg">
-            {text}
+            {hackermouthSay(text)}
           </p>
         </div>
         <div className="relative z-10 mt-6 border-t border-[#064e3b]/60 pt-4 text-center">

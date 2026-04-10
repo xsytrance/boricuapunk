@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { hackermouthSay } from "@/lib/hackermouthSay";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -103,16 +104,18 @@ export default function ArchiveAccessPanel({
         <div className="relative z-[100] flex max-w-[min(100%,36rem)] flex-col items-center gap-6">
           <p className="hm-fs-flicker relative font-mono text-lg font-bold uppercase leading-tight tracking-[0.12em] text-[#4ade80] sm:text-2xl md:text-3xl md:tracking-[0.14em] [text-shadow:0_0_24px_rgba(74,222,128,0.95),0_0_48px_rgba(34,211,238,0.45),2px_0_0_rgba(239,68,68,0.3)]">
             <span className="absolute left-0 top-0 -translate-x-[2px] text-[#22c55e]/40 blur-[0.5px]">
-              HACKERMOUTH:// ACCESSING DOSSIER
+              {hackermouthSay("ACCESSING DOSSIER")}
             </span>
-            <span className="relative">HACKERMOUTH:// ACCESSING DOSSIER</span>
+            <span className="relative">
+              {hackermouthSay("ACCESSING DOSSIER")}
+            </span>
           </p>
           <p
             className={`max-w-lg font-mono text-base leading-relaxed tracking-[0.12em] text-[#67e8f9] transition-opacity duration-300 ease-out sm:text-lg [text-shadow:0_0_16px_rgba(103,232,249,0.6)] ${
               showSubline ? "opacity-100" : "opacity-0"
             }`}
           >
-            ...watch closely.
+            {hackermouthSay("…watch closely.")}
           </p>
         </div>
       </div>

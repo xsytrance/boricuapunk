@@ -112,3 +112,13 @@ export function getRandomQuote(): Quote {
   const index = Math.floor(randomUnit() * pool.length);
   return pool[index]!;
 }
+
+/** Random line from Hackermouth-only quotes (e.g. hijack overlay). */
+export function getRandomHackermouthQuote(): Quote | undefined {
+  const hackermouthQuotes = quotes.filter(
+    (q) => q.characterId === "hackermouth",
+  );
+  if (!hackermouthQuotes.length) return undefined;
+  const index = Math.floor(randomUnit() * hackermouthQuotes.length);
+  return hackermouthQuotes[index];
+}

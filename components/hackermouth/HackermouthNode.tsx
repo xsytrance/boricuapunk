@@ -8,12 +8,24 @@ import {
   useState,
 } from "react";
 import { usePathname } from "next/navigation";
+import { hackermouthSay } from "@/lib/hackermouthSay";
 
 const BASE_Y = 80;
-const NEAR_RADIUS_PX = 150;
+const SCROLL_FOLLOW_FACTOR = 0.11;
+const SCROLL_FOLLOW_CAP_PX = 240;
+const NEAR_RADIUS_PX = 170;
 const CURSOR_PULL_MAX = 10;
+const CURSOR_PULL_MAX_FOLLOW = 32;
 const HOVER_THROTTLE_MS = 800;
 const CLICK_THROTTLE_MS = 800;
+const JITTER_INTERVAL_MIN_MS = 220;
+const JITTER_INTERVAL_MAX_MS = 520;
+const GLITCH_BURST_MIN_MS = 90;
+const GLITCH_BURST_MAX_MS = 260;
+const FOLLOW_MOUSE_MIN_MS = 3200;
+const FOLLOW_MOUSE_MAX_MS = 8200;
+const FOLLOW_MOUSE_COOLDOWN_MIN_MS = 7000;
+const FOLLOW_MOUSE_COOLDOWN_MAX_MS = 16000;
 
 type MessageType = "NAV" | "HOVER" | "IDLE" | "CLICK";
 
@@ -48,6 +60,10 @@ export default function HackermouthNode() {
   const [near, setNear] = useState(false);
   const [nearPhrase, setNearPhrase] = useState("I SEE YOU");
   const [cursorPull, setCursorPull] = useState({ x: 0, y: 0 });
+  const [scrollY, setScrollY] = useState(0);
+  const [jitter, setJitter] = useState({ x: 0, y: 0 });
+  const [followMouse, setFollowMouse] = useState(false);
+  const [glitching, setGlitching] = useState(false);
   const [expansion, setExpansion] = useState(false);
   const [expandScale, setExpandScale] = useState(1.75);
 
@@ -195,6 +211,14 @@ export default function HackermouthNode() {
   }, []);
 
   useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true, capture: true });
+    return () =>
+      window.removeEventListener("scroll", onScroll, { capture: true });
+  }, []);
+
+  useEffect(() => {
     const onMove = (e: MouseEvent) => {
       const el = rootRef.current;
       if (!el) return;
@@ -206,7 +230,9 @@ export default function HackermouthNode() {
       const dist = Math.hypot(dx, dy);
       setNear(dist < NEAR_RADIUS_PX);
       const len = Math.hypot(dx, dy) || 1;
-      const pull = Math.min(CURSOR_PULL_MAX, dist * 0.12);
+      const cap = followMouse ? CURSOR_PULL_MAX_FOLLOW : CURSOR_PULL_MAX;
+      const gain = followMouse ? 0.22 : 0.12;
+      const pull = Math.min(cap, dist * gain);
       setCursorPull({
         x: (dx / len) * pull,
         y: (dy / len) * pull,
@@ -214,6 +240,77 @@ export default function HackermouthNode() {
     };
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
+  }, [followMouse]);
+
+  useEffect(() => {
+    let timeoutId = 0;
+    const scheduleJitter = () => {
+      const delay =
+        JITTER_INTERVAL_MIN_MS +
+        Math.random() * (JITTER_INTERVAL_MAX_MS - JITTER_INTERVAL_MIN_MS);
+      timeoutId = window.setTimeout(() => {
+        setJitter({
+          x: (Math.random() - 0.5) * 14,
+          y: (Math.random() - 0.5) * 10,
+        });
+        scheduleJitter();
+      }, delay) as unknown as number;
+    };
+    scheduleJitter();
+    return () => window.clearTimeout(timeoutId);
+  }, []);
+
+  useEffect(() => {
+    let cooldownTimer = 0;
+    const armFollow = () => {
+      const wait =
+        FOLLOW_MOUSE_COOLDOWN_MIN_MS +
+        Math.random() *
+          (FOLLOW_MOUSE_COOLDOWN_MAX_MS - FOLLOW_MOUSE_COOLDOWN_MIN_MS);
+      cooldownTimer = window.setTimeout(() => {
+        if (Math.random() < 0.42) {
+          setFollowMouse(true);
+          window.setTimeout(
+            () => setFollowMouse(false),
+            FOLLOW_MOUSE_MIN_MS +
+              Math.random() * (FOLLOW_MOUSE_MAX_MS - FOLLOW_MOUSE_MIN_MS),
+          );
+        }
+        armFollow();
+      }, wait) as unknown as number;
+    };
+    armFollow();
+    return () => window.clearTimeout(cooldownTimer);
+  }, []);
+
+  useEffect(() => {
+    let glitchTimer = 0;
+    const armGlitch = () => {
+      const wait = 1400 + Math.random() * 5200;
+      glitchTimer = window.setTimeout(() => {
+        if (Math.random() < 0.55) {
+          setGlitching(true);
+          window.setTimeout(
+            () => setGlitching(false),
+            GLITCH_BURST_MIN_MS +
+              Math.random() * (GLITCH_BURST_MAX_MS - GLITCH_BURST_MIN_MS),
+          );
+        }
+        if (Math.random() < 0.28) {
+          window.setTimeout(() => {
+            setGlitching(true);
+            window.setTimeout(
+              () => setGlitching(false),
+              GLITCH_BURST_MIN_MS +
+                Math.random() * (GLITCH_BURST_MAX_MS - GLITCH_BURST_MIN_MS),
+            );
+          }, 40 + Math.random() * 120);
+        }
+        armGlitch();
+      }, wait) as unknown as number;
+    };
+    armGlitch();
+    return () => window.clearTimeout(glitchTimer);
   }, []);
 
   useEffect(() => {
@@ -231,23 +328,29 @@ export default function HackermouthNode() {
   }, []);
 
   const nearText = near ? nearPhrase : null;
-  const displayText = nearText ?? flashText ?? "WATCHING";
+  const displayText = hackermouthSay(nearText ?? flashText ?? "WATCHING");
+
+  const scrollNudge = Math.min(scrollY * SCROLL_FOLLOW_FACTOR, SCROLL_FOLLOW_CAP_PX);
+  const topPx = BASE_Y + scrollNudge;
+
+  const jx = jitter.x + cursorPull.x;
+  const jy = jitter.y + cursorPull.y;
 
   const chassisTransform = expansion
-    ? `translate3d(${cursorPull.x}px, ${cursorPull.y}px, 0) scale(${expandScale})`
-    : `translate3d(${cursorPull.x}px, ${cursorPull.y}px, 0) scale(1)`;
+    ? `translate3d(${jx}px, ${jy}px, 0) scale(${expandScale})`
+    : `translate3d(${jx}px, ${jy}px, 0) scale(1)`;
 
   return (
     <div
       ref={rootRef}
-      className={`hm-node ${near ? "hm-node--near" : ""} ${expansion ? "hm-node--expand" : ""} ${idlePulse ? "hm-node--idle-pulse" : ""}`}
+      className={`hm-node ${near ? "hm-node--near" : ""} ${expansion ? "hm-node--expand" : ""} ${idlePulse ? "hm-node--idle-pulse" : ""} ${followMouse ? "hm-node--follow" : ""} ${glitching ? "hm-node--glitch" : ""}`}
       style={{
         position: "fixed",
-        top: `${BASE_Y}px`,
+        top: `${topPx}px`,
         left: `${leftPx}px`,
         right: "auto",
         bottom: "auto",
-        transition: "left 0.4s ease, opacity 0.35s ease",
+        transition: "left 0.4s ease, opacity 0.35s ease, top 0.12s ease-out",
       }}
       aria-hidden
     >
