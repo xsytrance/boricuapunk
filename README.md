@@ -17,8 +17,8 @@ Current structure:
 - /relationships — connection map
 - /about — archive overview
 
-## Current implementation status (checkpoint)
-As of 2026-04-10T16:05:00-04:00, production build is passing and these routes exist in app output:
+## Current implementation status
+Production build includes:
 - /
 - /_not-found
 - /api/archive/ingest
