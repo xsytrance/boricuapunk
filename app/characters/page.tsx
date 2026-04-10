@@ -7,6 +7,23 @@ import { characters as sagaCharacters } from "@/types/characters";
 
 const DOSSIER_IDS = new Set(legacyDossierIds.map((c) => c.id));
 const ALL_FACTION = "all";
+const MANUSCRIPT_PRIORITY = [
+  "hackermouth",
+  "manus-neco",
+  "the-jibaro",
+  "spada-virina",
+  "gratitude-frogs-grats",
+  "yulania-friz",
+  "saint-flamingo",
+  "bloodless-visitor",
+  "sifu-bamboo",
+  "perfect-abuelo",
+  "the-exhumerator",
+] as const;
+
+const PRIORITY_INDEX = new Map<string, number>(
+  MANUSCRIPT_PRIORITY.map((id, index) => [id, index]),
+);
 
 function formatFactionLabel(faction: string) {
   if (faction === ALL_FACTION) return "All";
@@ -37,7 +54,8 @@ export default function CharactersPage() {
   const filteredCharacters = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
-    return sagaCharacters.filter((character) => {
+    return sagaCharacters
+      .filter((character) => {
       const matchesFaction = faction === ALL_FACTION || character.faction === faction;
       const haystack = [
         character.name,
@@ -50,7 +68,13 @@ export default function CharactersPage() {
         .toLowerCase();
 
       return matchesFaction && (normalizedQuery.length === 0 || haystack.includes(normalizedQuery));
-    });
+    })
+      .sort((a, b) => {
+        const aScore = PRIORITY_INDEX.get(a.id) ?? Number.MAX_SAFE_INTEGER;
+        const bScore = PRIORITY_INDEX.get(b.id) ?? Number.MAX_SAFE_INTEGER;
+        if (aScore !== bScore) return aScore - bScore;
+        return a.name.localeCompare(b.name);
+      });
   }, [faction, query]);
 
   return (

@@ -22,6 +22,9 @@ export default function QuoteDisplay({
       <aside
         className={`relative z-10 rounded border-[3px] border-[#14b8a6]/80 bg-[linear-gradient(180deg,rgba(0,20,16,0.96),rgba(0,0,0,0.98))] px-6 py-8 shadow-[0_0_50px_rgba(20,184,166,0.22),inset_0_0_40px_rgba(0,0,0,0.72)] ${className}`}
       >
+        <div className="mb-4 rounded border border-[#14b8a6]/40 bg-black/40 px-3 py-2 text-center font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-[#5eead4]">
+          Hackermouth archive feed
+        </div>
         <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,transparent,rgba(94,234,212,0.9),transparent)]" />
         <div className="relative z-10 rounded-md bg-[linear-gradient(to_bottom,rgba(0,0,0,0.7),rgba(0,0,0,0.95))] p-5 font-mono text-sm leading-relaxed tracking-wide text-[#00ff9c] md:text-base">
           <p className="hm-quote-hackermouth-flicker text-base font-semibold md:text-lg">

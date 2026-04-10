@@ -225,6 +225,9 @@ export default function HomeLanding() {
       {isMobile ? <MobileHero /> : <DesktopHero />}
       <FeaturedCharactersSection mobile={isMobile} />
       <section className="mx-auto w-full max-w-6xl px-4 pb-10 md:px-8 md:pb-14">
+        <div className="mb-4 rounded-md border border-[#064e3b]/40 bg-black/30 px-4 py-3 text-[11px] font-mono uppercase tracking-[0.24em] text-[#5eead4]/90">
+          Manuscript-checked against local reference copy
+        </div>
         <div className="rounded-md border-[3px] border-[#064e3b]/70 bg-gradient-to-b from-[#06130d] via-[#050505] to-[#020202] p-5 shadow-[0_0_38px_rgba(20,184,166,0.16),inset_0_0_24px_rgba(0,0,0,0.75)] md:p-7">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
