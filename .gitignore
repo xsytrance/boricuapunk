@@ -36,8 +36,15 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# python artifacts
+__pycache__/
+*.pyc
+
 # env files (can opt-in for committing if needed)
 .env*
+
+# local secret/token notes
+/telegram/*.md
 
 # vercel
 .vercel
@@ -51,3 +58,13 @@ next-env.d.ts
 /public/uploads/characters/*
 !/data/runtime/.gitkeep
 !/public/uploads/characters/.gitkeep
+
+# local dropbox ingest workflow
+/data/dropbox/incoming/*
+/data/dropbox/processed/*
+/data/dropbox/duplicates/*
+/data/dropbox/failed/*
+!/data/dropbox/incoming/.gitkeep
+!/data/dropbox/processed/.gitkeep
+!/data/dropbox/duplicates/.gitkeep
+!/data/dropbox/failed/.gitkeep

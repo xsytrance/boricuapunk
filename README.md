@@ -74,6 +74,19 @@ Activation:
 - Optional model override: BORICUAPUNK_VISION_MODEL (default gpt-4.1-mini).
 - Without API key, pipeline falls back to caption/manuscript keyword matching.
 
+## Local folder dropbox ingest fallback (no Telegram)
+- Drop images into: `data/dropbox/incoming/`
+- Start watcher: `python3 scripts/dropbox_ingest_watcher.py`
+- One-shot pass (no loop): `python3 scripts/dropbox_ingest_watcher.py --once`
+- The watcher calls `/api/archive/ingest` and then moves files:
+  - success -> `data/dropbox/processed/`
+  - exact duplicate (SHA256) -> `data/dropbox/duplicates/`
+  - ingest failure -> `data/dropbox/failed/`
+- Duplicate index file: `data/runtime/dropbox-ingest-index.json`
+- Optional env overrides:
+  - `BORICUAPUNK_INGEST_URL` (default `http://127.0.0.1:9999/api/archive/ingest`)
+  - `BORICUAPUNK_DROPBOX_POLL_SECONDS` (default `5`)
+
 ## Notes
 - Manuscript reference files are in data/manuscript/.
 - Keep buildlog.md and handoff.md append-only and current.
