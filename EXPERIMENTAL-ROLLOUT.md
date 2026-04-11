@@ -21,7 +21,7 @@ Implementation of auth/access is intentionally deferred; this runbook is infra +
 ## 1) Preflight checklist (VPS)
 1. Repo path exists: `/home/xsypluto/projects/boricuapunk`
 2. Build passes: `npm run build`
-3. App starts locally: `npm run start` (port 9999)
+3. App starts locally: `PORT=9998 npm run start` (experimental port 9998)
 4. Env configured in `.env` (or systemd env file)
 5. Firewall allows only required inbound (80/443)
 
@@ -38,7 +38,7 @@ Type=simple
 User=xsypluto
 WorkingDirectory=/home/xsypluto/projects/boricuapunk
 Environment=NODE_ENV=production
-Environment=PORT=9999
+Environment=PORT=9998
 ExecStart=/usr/bin/npm run start
 Restart=always
 RestartSec=5
@@ -68,7 +68,7 @@ journalctl -u boricuapunk-experimental -f
    - Content: VPS public IP (or tunnel endpoint)
    - Proxy status: Proxied (orange cloud)
 2. TLS mode: Full (strict) if certs are valid.
-3. Reverse proxy on VPS routes 443 -> `127.0.0.1:9999` (Nginx/Caddy).
+3. Reverse proxy on VPS routes 443 -> `127.0.0.1:9998` (Nginx/Caddy).
 
 ### Option B: Cloudflare Tunnel (no direct public VPS IP exposure)
 1. Install `cloudflared` on VPS.

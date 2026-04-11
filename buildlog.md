@@ -33,3 +33,7 @@ Append-only record of work on Boricuapunk.
 - Created pre-experimental backup artifacts under /home/xsypluto/backups (tarball + patch).
 - Added git checkpoint commit/tag for rollback: c868ee8 / checkpoint-pre-experimental-20260411.
 - Added EXPERIMENTAL-ROLLOUT.md runbook covering VPS autostart and Cloudflare routing options.
+
+## 2026-04-11T11:54:37-04:00
+- Updated experimental rollout docs to use VPS app port 9998 (not 9999).
+- Prepared session-reset handoff package for next chat with exact Cloudflare ingress block and remaining activation steps.

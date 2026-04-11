@@ -49,3 +49,13 @@
   - /home/xsypluto/backups/boricuapunk-pre-experimental-20260411T084854-0400.patch
   - git tag checkpoint-pre-experimental-20260411
 - Runbook added: EXPERIMENTAL-ROLLOUT.md (autostart + Cloudflare options + rollback steps).
+
+## 2026-04-11T11:54:37-04:00 session-reset checkpoint
+- Experimental VPS port is now 9998 by decision.
+- Cloudflare tunnel config snippet prepared for Windows host:
+  - hostname boricuapunk.agenorr.com -> service http://100.113.155.3:9998
+- Remaining activation sequence for next session:
+  1) Save/reload Windows cloudflared config with new ingress rule
+  2) Restart cloudflared on Windows
+  3) Ensure VPS app is running/autostarting on 9998
+  4) Validate https://boricuapunk.agenorr.com and API routes
