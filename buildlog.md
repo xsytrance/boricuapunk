@@ -28,3 +28,8 @@ Append-only record of work on Boricuapunk.
 ## 2026-04-11T08:08:42-04:00
 - Confirmed local dropbox ingest flow as active fallback to Telegram: incoming -> ingest -> processed/duplicates/failed.
 - Marked project state as ready for upcoming larger migration step ("big move") with docs/memory checkpoint.
+
+## 2026-04-11T08:48:54-04:00
+- Created pre-experimental backup artifacts under /home/xsypluto/backups (tarball + patch).
+- Added git checkpoint commit/tag for rollback: c868ee8 / checkpoint-pre-experimental-20260411.
+- Added EXPERIMENTAL-ROLLOUT.md runbook covering VPS autostart and Cloudflare routing options.

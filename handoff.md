@@ -38,3 +38,14 @@
 - Drop input folder: data/dropbox/incoming.
 - Automation script: scripts/dropbox_ingest_watcher.py (duplicates + failed routing enabled).
 - Project state flagged as ready for user-directed "big move" next step.
+
+## 2026-04-11T08:48:54-04:00 experimental rollout prep checkpoint
+- New experimental target context recorded:
+  - Current Windows host: 100.94.216.114:9999
+  - VPS experimental host: /home/xsypluto/projects/boricuapunk on 100.113.155.3
+  - Experimental domain target: boricuapunk.agenorr.com
+- Recovery artifacts created:
+  - /home/xsypluto/backups/boricuapunk-pre-experimental-20260411T084854-0400.tar.gz
+  - /home/xsypluto/backups/boricuapunk-pre-experimental-20260411T084854-0400.patch
+  - git tag checkpoint-pre-experimental-20260411
+- Runbook added: EXPERIMENTAL-ROLLOUT.md (autostart + Cloudflare options + rollback steps).
