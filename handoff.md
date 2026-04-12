@@ -79,3 +79,11 @@
 - Mobile typography/tracking reduced in top nav for safe portrait fit.
 - Hackermouth nav label is now "HM" on mobile and full "Hackermouth" on md+.
 - Verification: 390px iframe overflow probe reports zero header offenders; production build passes.
+
+## 2026-04-12T10:33:23-04:00 ingest review queue checkpoint
+- Added /review page for human QA on low-confidence or unknown image matches.
+- /api/archive/sightings now supports:
+  - `GET ?needsReview=1&threshold=0.6&limit=...`
+  - `PATCH` with `{ sightingId, characterId }` for one-click reassignment
+- Reassignment updates card + match metadata + quotes + hackermouth effects in data/runtime/character-sightings.json.
+- Review link now appears in header and archive route finder; build status passing.

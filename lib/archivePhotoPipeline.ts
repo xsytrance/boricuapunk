@@ -9,7 +9,7 @@ import {
   type ThreatLevel,
 } from "@/types/characters";
 
-type MatchMethod = "vision" | "caption" | "fallback";
+type MatchMethod = "vision" | "caption" | "fallback" | "manual-review";
 
 export type GeneratedQuote = {
   id: string;
@@ -402,6 +402,67 @@ export async function ingestCharacterPhoto(args: {
 export async function listSightings(limit = 40): Promise<UploadedSighting[]> {
   const store = await readStore();
   return store.sightings.slice(0, Math.max(1, Math.min(limit, 200)));
+}
+
+export async function listSightingsNeedingReview(args?: {
+  limit?: number;
+  threshold?: number;
+}): Promise<UploadedSighting[]> {
+  const limit = Math.max(1, Math.min(args?.limit ?? 40, 300));
+  const threshold = clampConfidence(args?.threshold ?? 0.6);
+  const store = await readStore();
+  return store.sightings
+    .filter((sighting) => sighting.card.id === "unknown" || sighting.match.confidence < threshold)
+    .slice(0, limit);
+}
+
+export async function reviewAssignSighting(args: {
+  sightingId: string;
+  characterId: string;
+}): Promise<UploadedSighting> {
+  const store = await readStore();
+  const index = store.sightings.findIndex((sighting) => sighting.id === args.sightingId);
+  if (index < 0) {
+    throw new Error("Sighting not found.");
+  }
+
+  const current = store.sightings[index]!;
+  const normalizedCharacterId = args.characterId.trim().toLowerCase();
+
+  const matchedCharacter = getSagaCharacterById(normalizedCharacterId);
+  const reviewCharacter =
+    matchedCharacter ?? sagaCharacters.find((character) => character.id === "hackermouth") ?? sagaCharacters[0]!;
+
+  const card = matchedCharacter ? cardFromCharacter(matchedCharacter) : unknownCard(current.caption ?? "");
+  const quotesForCard = matchedCharacter
+    ? pickCharacterQuotes(matchedCharacter.id, reviewCharacter)
+    : [
+        {
+          id: shortId("q-unknown"),
+          text: "The archive breathes first and identifies later.",
+          style: "graffiti" as QuoteStyle,
+          speakerName: "Hackermouth",
+        },
+      ];
+
+  const updated: UploadedSighting = {
+    ...current,
+    match: {
+      characterId: matchedCharacter?.id ?? "unknown",
+      confidence: matchedCharacter ? 0.99 : 0.5,
+      reason: matchedCharacter
+        ? `Manually reviewed and assigned to ${matchedCharacter.name}.`
+        : "Manually reviewed and kept as Unknown Signal.",
+      method: "manual-review",
+    },
+    card,
+    quotes: quotesForCard,
+    hackermouthEffects: buildHackermouthEffects(reviewCharacter),
+  };
+
+  store.sightings[index] = updated;
+  await writeStore(store);
+  return updated;
 }
 
 function stableIndex(seed: string, max: number): number {

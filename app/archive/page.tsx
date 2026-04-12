@@ -75,6 +75,13 @@ const pageLinks = [
     category: "world",
     tags: ["mission", "overview", "guide"],
   },
+  {
+    href: "/review",
+    title: "Review Queue",
+    copy: "Human-review queue for low-confidence or unknown image matches.",
+    category: "signals",
+    tags: ["quality control", "reassign", "ingest review"],
+  },
 ];
 
 export default function ArchiveHubPage() {

@@ -55,3 +55,9 @@ Append-only record of work on Boricuapunk.
 - Tightened mobile nav typography/tracking and kept desktop sizing unchanged at larger breakpoints.
 - Shortened Hackermouth label to "HM" on mobile only to remove final-row overflow while preserving full label on md+.
 - Verified with 390px iframe overflow probe (header offenders: 0) and passing production build.
+
+## 2026-04-12T10:33:23-04:00
+- Added review workflow for uncertain image ingest matches: /api/archive/sightings now supports needsReview filtering and PATCH reassignment.
+- Extended archive photo pipeline with review queue helpers and manual assignment updates (card/match/quotes/effects rewrite).
+- Added new /review page with low-confidence queue, character selector, and one-click Assign action.
+- Added header + archive-hub links to Review Queue and verified production build passes.
