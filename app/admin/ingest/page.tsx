@@ -45,6 +45,7 @@ const STYLE_OPTIONS = [
   "3d-render",
   "location-photography",
   "mixed-media",
+  "mystery-unknown",
 ];
 
 const SHOT_OPTIONS = ["unknown", "single-character", "group-shot", "location-only", "object-focus"];

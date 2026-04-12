@@ -65,10 +65,28 @@ export default function CharacterCard({
 
   const glow =
     (factionId && FACTION_GLOW[factionId]) || "rgba(234, 88, 12, 0.45)";
+  const isMysteryOverdrive = tags.includes("mystery") || tags.includes("unknown");
+
+  const triggerMysteryOverdrive = useCallback((tapBoost = false) => {
+    if (!isMysteryOverdrive) return;
+    window.dispatchEvent(new CustomEvent("hackermouth:toast"));
+    if (nextSessionUnit() < 0.82 || tapBoost) {
+      window.dispatchEvent(new CustomEvent("hackermouth:node-expansion"));
+    }
+    if (nextSessionUnit() < 0.66 || tapBoost) {
+      window.dispatchEvent(new CustomEvent("hackermouth:context"));
+    }
+    if (nextSessionUnit() < 0.5 || tapBoost) {
+      window.dispatchEvent(new CustomEvent("hackermouth:hijack"));
+    }
+    if (nextSessionUnit() < 0.6 || tapBoost) {
+      window.dispatchEvent(new CustomEvent("hackermouth:quote-appear"));
+    }
+  }, [isMysteryOverdrive]);
 
   const dispatchArchive = useCallback(() => {
     const now = Date.now();
-    if (now - throttleRef.current < 480) return;
+    if (now - throttleRef.current < 280) return;
     throttleRef.current = now;
     const detail: ArchiveHoverPayload = {
       characterId: id,
@@ -84,11 +102,15 @@ export default function CharacterCard({
         signalActiveRef.current = true;
         pushArchiveSignal();
       }
-      if (nextSessionUnit() < 0.32) {
+      const expansionChance = isMysteryOverdrive ? 0.88 : 0.32;
+      if (nextSessionUnit() < expansionChance) {
         window.dispatchEvent(new CustomEvent("hackermouth:node-expansion"));
       }
+      if (isMysteryOverdrive) {
+        triggerMysteryOverdrive(false);
+      }
     }
-  }, [id, tags, threatLevel, factionId]);
+  }, [id, tags, threatLevel, factionId, isMysteryOverdrive, triggerMysteryOverdrive]);
 
   const clearArchive = useCallback(() => {
     window.dispatchEvent(new CustomEvent("hackermouth:archive-leave"));
@@ -112,6 +134,8 @@ export default function CharacterCard({
       onMouseLeave={clearArchive}
       onFocus={dispatchArchive}
       onBlur={clearArchive}
+      onPointerMove={isMysteryOverdrive ? dispatchArchive : undefined}
+      onPointerDown={isMysteryOverdrive ? () => triggerMysteryOverdrive(true) : undefined}
     >
       <div
         className="pointer-events-none absolute inset-0 z-[1] opacity-0 transition duration-500 group-hover/card:opacity-[0.22]"

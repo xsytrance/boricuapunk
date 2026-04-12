@@ -96,3 +96,9 @@ Append-only record of work on Boricuapunk.
 - Added append-only running rationale log for assignment decisions at `data/runtime/ingest-rationale-log.md` plus API reader route `/api/archive/rationale-log`.
 - Added new `/admin/ingest` panel for end-to-end assignment control (character/location/unknown, style override, shot kind, main-feed toggle) with inline rationale viewing.
 - Updated header and archive route finder with Ingest Admin entry; verified full production build passes.
+
+## 2026-04-12T13:45:35-04:00
+- Added new ingest style bucket `mystery-unknown` (admin-selectable) and normalized unknown/mystery style inputs into that category.
+- Updated character-card HM behavior so `mystery`/`unknown` tagged cards trigger overdrive reactions on hover proximity and tap (more node expansion + cursor hijack/context/toast bursts).
+- Expanded archive signal activation to treat `mystery` tags as high-reactivity targets and increased hover intensity weighting for unknown/mystery tags.
+- Verified production build passes (Next.js 16.2.3).

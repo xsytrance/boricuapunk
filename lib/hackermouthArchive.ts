@@ -65,11 +65,7 @@ function factionTone(factionId?: string): "ally" | "enemy" | "neutral" | "unknow
 }
 
 export function archiveSignalHover(tags: readonly CharacterTag[]): boolean {
-  return (
-    has(tags, "corrupt") ||
-    has(tags, "entity") ||
-    has(tags, "unknown")
-  );
+  return has(tags, "corrupt") || has(tags, "entity") || has(tags, "unknown") || has(tags, "mystery");
 }
 
 /** 0 = calm … 1 = intense */
@@ -80,7 +76,8 @@ export function archiveHoverIntensity(p: ArchiveHoverPayload): number {
   if (has(p.tags, "enemy")) w += 0.25;
   if (has(p.tags, "corrupt")) w += 0.3;
   if (has(p.tags, "entity")) w += 0.2;
-  if (has(p.tags, "unknown")) w += 0.15;
+  if (has(p.tags, "unknown")) w += 0.28;
+  if (has(p.tags, "mystery")) w += 0.26;
   const fa = factionTone(p.factionId);
   if (fa === "enemy") w += 0.2;
   if (fa === "ally") w -= 0.1;

@@ -142,3 +142,12 @@
   - `GET /api/archive/rationale-log`
 - Header/archive hub include direct entry to Ingest Admin.
 - Build status: passing (Next.js 16.2.3).
+
+## 2026-04-12T13:45:35-04:00 mystery-overdrive checkpoint
+- New style category added for ingest/admin controls: `mystery-unknown`.
+  - Unknown/mystery style inputs now normalize into this bucket for cleaner filtering.
+- HM behavior upgraded for mystery/unknown cards (`tags` include `mystery` or `unknown`):
+  - stronger hover-proximity reactions (higher expansion chance)
+  - tap/pointer-down overdrive burst triggers additional HM events (`node-expansion`, `hijack`, `context`, `toast`, `quote-appear`)
+- Archive signal layer now treats `mystery` as a first-class high-reactivity signal tag.
+- Build status: passing (Next.js 16.2.3).

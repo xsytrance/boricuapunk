@@ -22,6 +22,7 @@ export type ArtStyleCategory =
   | "3d-render"
   | "location-photography"
   | "mixed-media"
+  | "mystery-unknown"
   | "unknown";
 export type ShotKind = "single-character" | "group-shot" | "location-only" | "object-focus" | "unknown";
 
@@ -89,6 +90,7 @@ const KNOWN_ART_STYLES: ArtStyleCategory[] = [
   "3d-render",
   "location-photography",
   "mixed-media",
+  "mystery-unknown",
   "unknown",
 ];
 
@@ -120,6 +122,8 @@ function moderationState(sighting: UploadedSighting): "active" | "unassigned" | 
 
 function normalizeArtStyle(value: string | undefined): ArtStyleCategory {
   const normalized = (value || "").trim().toLowerCase();
+  if (!normalized) return "mystery-unknown";
+  if (normalized === "unknown" || normalized === "mystery") return "mystery-unknown";
   if (KNOWN_ART_STYLES.includes(normalized as ArtStyleCategory)) {
     return normalized as ArtStyleCategory;
   }
@@ -132,7 +136,8 @@ function normalizeArtStyle(value: string | undefined): ArtStyleCategory {
   if (normalized.includes("render") || normalized.includes("3d")) return "3d-render";
   if (normalized.includes("location")) return "location-photography";
   if (normalized.includes("mixed")) return "mixed-media";
-  return "unknown";
+  if (normalized.includes("unknown") || normalized.includes("mystery")) return "mystery-unknown";
+  return "mystery-unknown";
 }
 
 function normalizeShotKind(value: string | undefined): ShotKind {
@@ -168,7 +173,7 @@ function classifyFromCaption(caption: string): { artStyle: ArtStyleCategory; sho
                   ? "location-photography"
                   : text.length
                     ? "realistic-photo"
-                    : "unknown";
+                    : "mystery-unknown";
 
   const shotKind: ShotKind = text.includes("group") || text.includes("team") || text.includes("together")
     ? "group-shot"
@@ -536,6 +541,9 @@ export async function ingestCharacterPhoto(args: {
 
   const safeEntityType: MatchEntityType = entityType;
   const safeEntityId = safeEntityType === "unknown" ? "unknown" : entityId;
+  if (safeEntityType === "unknown") {
+    artStyle = "mystery-unknown";
+  }
 
   const card =
     safeEntityType === "character" && matchedCharacter

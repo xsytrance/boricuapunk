@@ -77,7 +77,7 @@ Activation:
 - Without API key, pipeline falls back to caption/manuscript keyword matching.
 - Ingest now also classifies:
   - entity type (`character | location | unknown`)
-  - art style (`action-figure`, `plushie`, `comic-book`, `surreal-illustration`, `realistic-photo`, etc.)
+  - art style (`action-figure`, `plushie`, `comic-book`, `surreal-illustration`, `realistic-photo`, `mystery-unknown`, etc.)
   - shot kind (`single-character`, `group-shot`, `location-only`, `object-focus`)
 
 ## Assignment admin + rationale log
