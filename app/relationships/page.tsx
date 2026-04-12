@@ -19,9 +19,9 @@ const relationships = [
 export default function RelationshipsPage() {
   return (
     <ArchivePageShell
-      eyebrow="Relationship Graph"
+      eyebrow="Power Map"
       title="Connection Map"
-      description="A narrative network for the archive. These links show who matters to whom, which tensions drive the story, and how the universe starts to behave when characters are read together instead of alone."
+      description="A narrative power map for the archive. These links show who matters to whom, which tensions drive the story, and how the universe starts to behave when characters are read together instead of alone."
       meta={["Allies and tensions", "Character-to-character links", "Faction, weapon, and ship bridges"]}
     >
       <div className="grid gap-4 lg:grid-cols-2">

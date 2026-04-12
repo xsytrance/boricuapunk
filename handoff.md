@@ -87,3 +87,9 @@
   - `PATCH` with `{ sightingId, characterId }` for one-click reassignment
 - Reassignment updates card + match metadata + quotes + hackermouth effects in data/runtime/character-sightings.json.
 - Review link now appears in header and archive route finder; build status passing.
+
+## 2026-04-12T10:57:16-04:00 power map naming restore checkpoint
+- Restored Power Map naming in nav + archive hub (formerly labeled Graph/Relationship Graph in some UI copy).
+- Added `/power-map` route alias redirecting to `/relationships` to support old links/bookmarks.
+- Timeline and relationships content style remains aligned with rnc.agenorr.com reference pages.
+- Build status: passing with new alias route.

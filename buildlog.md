@@ -61,3 +61,9 @@ Append-only record of work on Boricuapunk.
 - Extended archive photo pipeline with review queue helpers and manual assignment updates (card/match/quotes/effects rewrite).
 - Added new /review page with low-confidence queue, character selector, and one-click Assign action.
 - Added header + archive-hub links to Review Queue and verified production build passes.
+
+## 2026-04-12T10:57:16-04:00
+- Restored "Power Map" naming across navigation and archive hub while keeping /relationships as canonical route.
+- Added /power-map alias route that redirects to /relationships for backward-compatible links.
+- Updated power map page eyebrow/description language to match prior feature naming.
+- Verified production build passes with /power-map included.

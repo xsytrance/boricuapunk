@@ -33,7 +33,7 @@ export default function Header() {
             Timeline
           </Link>
           <Link href="/relationships" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] lg:inline-flex">
-            Graph
+            Power Map
           </Link>
           <Link
             href="/characters/hackermouth"

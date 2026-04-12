@@ -63,10 +63,10 @@ const pageLinks = [
   },
   {
     href: "/relationships",
-    title: "Relationship Graph",
+    title: "Power Map",
     copy: "Follow the important bonds and conflicts between people, groups, and icons.",
     category: "people",
-    tags: ["connections", "rivalries", "alliances"],
+    tags: ["connections", "rivalries", "alliances", "relationship graph"],
   },
   {
     href: "/about",
