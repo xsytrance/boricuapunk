@@ -44,7 +44,7 @@ export default function HackermouthPersistentOverlay() {
   }, []);
 
   return (
-    <div className="pointer-events-none fixed bottom-4 right-4 z-[85] max-w-[260px] rounded-md border border-[#0f766e]/60 bg-black/75 px-3 py-2 text-[#99f6e4] shadow-[0_0_18px_rgba(20,184,166,0.25)] backdrop-blur-sm">
+    <div className="pointer-events-none fixed bottom-2 right-2 z-[90] max-w-[200px] rounded-md border border-[#0f766e]/60 bg-black/75 px-2 py-1.5 text-[#99f6e4] shadow-[0_0_18px_rgba(20,184,166,0.25)] backdrop-blur-sm sm:bottom-4 sm:right-4 sm:max-w-[260px] sm:px-3 sm:py-2">
       <div className="flex items-center gap-2">
         <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-[#14b8a6]/70 bg-[#042f2e]/85 animate-pulse">
           <span ref={eyeRef} className="relative block h-4 w-4 rounded-full bg-white/95">
