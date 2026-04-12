@@ -616,16 +616,49 @@ body.hm-quote-takeover {
     inset 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
+.hm-node-text-shell {
+  position: relative;
+  border: 1px solid rgba(20, 184, 166, 0.26);
+  border-radius: 6px;
+  padding: 2px 7px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 24, 20, 0.84),
+    rgba(0, 0, 0, 0.85)
+  );
+  box-shadow:
+    inset 0 0 12px rgba(0, 255, 156, 0.12),
+    0 0 12px rgba(0, 255, 156, 0.1);
+}
+
+.hm-node-text-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.04) 0,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.22;
+}
+
 .hm-node-text {
-  letter-spacing: 1px;
-  text-shadow: 0 0 4px rgba(0, 255, 150, 0.6);
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.9px;
+  text-shadow: 0 0 6px rgba(0, 255, 150, 0.65);
   transition: text-shadow 0.35s ease;
 }
 
 .hm-node--near .hm-node-text {
   text-shadow:
-    0 0 8px rgba(0, 255, 150, 0.85),
-    0 0 16px rgba(0, 255, 156, 0.45);
+    0 0 10px rgba(0, 255, 150, 0.9),
+    0 0 18px rgba(0, 255, 156, 0.5);
 }
 
 @keyframes hm-node-eye-pulse {
@@ -699,14 +732,64 @@ body.hm-glitch {
   0%,
   100% {
     opacity: 1;
+    text-shadow:
+      0 0 10px rgba(0, 255, 156, 0.5),
+      0 0 18px rgba(20, 184, 166, 0.25);
   }
-  50% {
-    opacity: 0.78;
+  45% {
+    opacity: 0.8;
+    text-shadow:
+      0 0 16px rgba(0, 255, 156, 0.8),
+      0 0 28px rgba(20, 184, 166, 0.35);
   }
 }
 
 .hm-quote-hackermouth-flicker {
-  animation: hm-quote-flicker 1.15s ease-in-out infinite;
+  animation: hm-quote-flicker 1.35s ease-in-out infinite;
+}
+
+.hm-toast-shell {
+  position: relative;
+  overflow: hidden;
+  animation: hm-toast-in 0.24s ease-out;
+}
+
+.hm-toast-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(74, 222, 128, 0.06) 0%,
+    transparent 45%,
+    rgba(74, 222, 128, 0.03) 100%
+  );
+  pointer-events: none;
+}
+
+.hm-toast-msg {
+  line-height: 1.45;
+  color: #bbf7d0;
+}
+
+@keyframes hm-toast-in {
+  0% {
+    opacity: 0;
+    transform: translateY(7px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hm-quote-hackermouth-flicker,
+  .hm-toast-shell,
+  .hm-node-scroll,
+  .hm-node-eye {
+    animation: none !important;
+  }
 }
 
 /* Archive: corrupt / entity / unknown card hover — light signal breakup */

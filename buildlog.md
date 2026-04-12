@@ -81,3 +81,10 @@ Append-only record of work on Boricuapunk.
 - Added figurine shot-type auto-hints in watcher (`figg_` or `_group`/`-group` => `shotType=group`, otherwise `single`).
 - Added `BORICUAPUNK_FIGURINE_INGEST_URL` env override and startup logging for both character + figurine ingest endpoints.
 - Updated README local dropbox fallback docs with new `fig_` routing and group/single naming conventions.
+
+## 2026-04-12T12:55:01-04:00
+- Ran HM visual cleanup pass across floating node, toast, and Hackermouth quote card for cleaner readability and stronger polish on mobile.
+- Added new HM toast signal header + live timestamp stamp (T+HH:MM:SS) for better in-world telemetry feel.
+- Added `hm-node-text-shell` styling (capsule + scanline overlay) to make floating HM messages clearer against busy page backgrounds.
+- Tuned HM quote flicker to glow-based pulse and added reduced-motion fallback for HM animations.
+- Verified production build passes with all archive/API routes intact.

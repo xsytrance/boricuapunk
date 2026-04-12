@@ -42,6 +42,14 @@ function randomBetween(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
+function formatSignalStamp() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, "0");
+  const mm = String(now.getMinutes()).padStart(2, "0");
+  const ss = String(now.getSeconds()).padStart(2, "0");
+  return `${hh}:${mm}:${ss}`;
+}
+
 function scheduleNextTick(
   fn: () => void,
 ): ReturnType<typeof globalThis.setTimeout> {
@@ -66,6 +74,7 @@ export default function HackermouthProvider({
 }: HackermouthProviderProps) {
   const [cursorCorrupt, setCursorCorrupt] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastStamp, setToastStamp] = useState<string>("");
   const [toastVisible, setToastVisible] = useState(false);
   const cursorCorruptLocked = useRef(false);
   const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -79,6 +88,7 @@ export default function HackermouthProvider({
       toastTimeoutRef.current = null;
     }
     setToastMessage(hackermouthSay(message));
+    setToastStamp(formatSignalStamp());
     setToastVisible(true);
     const hideMs = randomBetween(TOAST_MIN_MS, TOAST_MAX_MS);
     toastTimeoutRef.current = setTimeout(() => {
@@ -267,6 +277,7 @@ export default function HackermouthProvider({
       <TapeOverlay />
       <HackermouthToast
         message={toastMessage ?? ""}
+        stamp={toastStamp}
         visible={toastVisible && !!toastMessage}
       />
       {cursorCorrupt ? (

@@ -469,7 +469,9 @@ export default function HackermouthNode() {
               className={`hm-node-msg-bundle ${messageFlash ? "hm-node-msg-bundle--flash" : ""}`}
             >
               <div className="hm-node-eye" />
-              <div className="hm-node-text">{displayText}</div>
+              <div className="hm-node-text-shell">
+                <div className="hm-node-text">{displayText}</div>
+              </div>
             </div>
           </div>
         </div>

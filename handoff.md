@@ -113,3 +113,15 @@
   - otherwise => `shotType=single`
 - New optional env override: `BORICUAPUNK_FIGURINE_INGEST_URL` (default `http://127.0.0.1:9998/api/archive/figurines`).
 - README updated with naming conventions for mixed drop-folder workflows (characters + figurines).
+
+## 2026-04-12T12:55:01-04:00 HM visual polish checkpoint
+- HM floating node readability pass:
+  - wrapped message text in new `hm-node-text-shell` capsule with subtle scanline overlay
+  - improved contrast against bright/busy backgrounds while keeping existing behavior/events
+- HM toast upgrade:
+  - added telemetry header (`HACKERMOUTH NODE`) and live stamp format (`T+HH:MM:SS`)
+  - retained mobile-first placement and non-interactive overlay behavior
+- HM quote card cleanup:
+  - tighter mobile-safe paddings/spacing, cleaner border treatment, glow-tuned flicker cadence
+- Added reduced-motion safety override for HM core animations (toast, quote flicker, node float/eye pulse).
+- Build status: passing (Next.js 16.2.3).
