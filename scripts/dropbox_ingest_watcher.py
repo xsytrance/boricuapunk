@@ -18,7 +18,7 @@ PROCESSED_DIR = DROP_ROOT / "processed"
 DUPLICATES_DIR = DROP_ROOT / "duplicates"
 FAILED_DIR = DROP_ROOT / "failed"
 INDEX_PATH = ROOT / "data" / "runtime" / "dropbox-ingest-index.json"
-API_URL = os.getenv("BORICUAPUNK_INGEST_URL", "http://127.0.0.1:9999/api/archive/ingest")
+API_URL = os.getenv("BORICUAPUNK_INGEST_URL", "http://127.0.0.1:9998/api/archive/ingest")
 POLL_SECONDS = int(os.getenv("BORICUAPUNK_DROPBOX_POLL_SECONDS", "5"))
 
 SUPPORTED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp", ".tiff"}

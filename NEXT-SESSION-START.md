@@ -4,7 +4,7 @@
 Bring up experimental site at `https://boricuapunk.agenorr.com` routed to VPS app on `100.113.155.3:9998`.
 
 ## Ground truth
-- Stable/current Windows-hosted app: `rnc.agenorr.com` -> `127.0.0.1:9999`
+- Stable/current Windows-hosted app: `rnc.agenorr.com` -> `127.0.0.1:9998`
 - AI host on Windows: `ai.agenorr.com` -> `127.0.0.1:3000`
 - Experimental VPS repo path: `/home/xsypluto/projects/boricuapunk`
 - Branch: `forge-dev`
@@ -16,7 +16,7 @@ credentials-file: C:\Users\ageno\.cloudflared\9a1d36a4-c276-4a9e-8bff-126cc520b3
 
 ingress:
   - hostname: rnc.agenorr.com
-    service: http://127.0.0.1:9999
+    service: http://127.0.0.1:9998
 
   - hostname: ai.agenorr.com
     service: http://127.0.0.1:3000

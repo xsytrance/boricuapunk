@@ -7,7 +7,7 @@ Deploy an experimental Boricuapunk instance from VPS (`100.113.155.3`) at:
 - `https://boricuapunk.agenorr.com`
 
 Current stable site (Windows box) remains:
-- `http://100.94.216.114:9999` (and current `rnc.agenorr.com` mapping)
+- `http://100.94.216.114:9998` (and current `rnc.agenorr.com` mapping)
 
 ## Desired access model
 - Login: Agenor (admin)
@@ -72,13 +72,13 @@ journalctl -u boricuapunk-experimental -f
 
 ### Option B: Cloudflare Tunnel (no direct public VPS IP exposure)
 1. Install `cloudflared` on VPS.
-2. Create tunnel and route hostname `boricuapunk.agenorr.com` to `http://127.0.0.1:9999`.
+2. Create tunnel and route hostname `boricuapunk.agenorr.com` to `http://127.0.0.1:9998`.
 3. Keep tunnel service enabled on boot.
 
 This is usually the easiest secure path if direct ingress is undesired.
 
 ## 4) Reverse proxy (if Option A)
-Use Nginx or Caddy to terminate TLS and proxy to local Next.js port 9999.
+Use Nginx or Caddy to terminate TLS and proxy to local Next.js port 9998.
 
 ## 5) Operational checks
 - `curl -I https://boricuapunk.agenorr.com`

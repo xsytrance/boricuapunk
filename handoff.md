@@ -41,7 +41,7 @@
 
 ## 2026-04-11T08:48:54-04:00 experimental rollout prep checkpoint
 - New experimental target context recorded:
-  - Current Windows host: 100.94.216.114:9999
+  - Current Windows host: 100.94.216.114:9998
   - VPS experimental host: /home/xsypluto/projects/boricuapunk on 100.113.155.3
   - Experimental domain target: boricuapunk.agenorr.com
 - Recovery artifacts created:

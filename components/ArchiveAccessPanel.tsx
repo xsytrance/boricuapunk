@@ -70,7 +70,7 @@ export default function ArchiveAccessPanel({
     mounted && isAccessing ? (
       <div
         className="hm-fs-interrupt-root fixed inset-0 flex flex-col items-center justify-center overflow-hidden px-6 text-center"
-        style={{ zIndex: 9999 }}
+        style={{ zIndex: 9998 }}
         role="alertdialog"
         aria-modal="true"
         aria-live="assertive"
