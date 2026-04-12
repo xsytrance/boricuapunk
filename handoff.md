@@ -73,3 +73,9 @@
 - Added cross-links from index cards: /factions and /locations now deep-link into dossier pages.
 - Added shared location source-of-truth: types/locations.ts (used by index + detail routes).
 - Build status: passing (Next.js 16.2.3); static generation includes faction and location detail paths.
+
+## 2026-04-12T10:04:51-04:00 mobile nav clipping fix checkpoint
+- Header now stacks on mobile and nav links wrap into multiple rows instead of clipping off-screen.
+- Mobile typography/tracking reduced in top nav for safe portrait fit.
+- Hackermouth nav label is now "HM" on mobile and full "Hackermouth" on md+.
+- Verification: 390px iframe overflow probe reports zero header offenders; production build passes.

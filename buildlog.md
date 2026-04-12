@@ -49,3 +49,9 @@ Append-only record of work on Boricuapunk.
 - Added dynamic location detail dossiers at /locations/[slug] with generateStaticParams, faction anchor links, connected-route links, and linked-figure links.
 - Moved location dataset into shared types/locations.ts and updated /locations + /factions index cards to link into new detail routes.
 - Verified production build passes and now statically generates faction/location detail paths.
+
+## 2026-04-12T10:04:51-04:00
+- Fixed mobile top-nav clipping by making header stack on mobile and enabling wrapped nav rows.
+- Tightened mobile nav typography/tracking and kept desktop sizing unchanged at larger breakpoints.
+- Shortened Hackermouth label to "HM" on mobile only to remove final-row overflow while preserving full label on md+.
+- Verified with 390px iframe overflow probe (header offenders: 0) and passing production build.
