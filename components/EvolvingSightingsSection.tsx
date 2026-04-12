@@ -17,6 +17,10 @@ type Sighting = {
     reason: string;
     method: string;
   };
+  classification?: {
+    artStyle?: string;
+    shotKind?: string;
+  };
   hackermouthEffects: string[];
 };
 
@@ -28,7 +32,9 @@ export default function EvolvingSightingsSection({ mobile }: { mobile: boolean }
 
     async function load() {
       try {
-        const response = await fetch("/api/archive/sightings?limit=8", { cache: "no-store" });
+        const response = await fetch("/api/archive/sightings?limit=8&mainOnly=1&consistentMainStyle=1", {
+          cache: "no-store",
+        });
         if (!response.ok) return;
         const payload = (await response.json()) as { sightings?: Sighting[] };
         if (active && Array.isArray(payload.sightings)) {
@@ -79,6 +85,9 @@ export default function EvolvingSightingsSection({ mobile }: { mobile: boolean }
               <p className="text-xs leading-relaxed text-zinc-400 line-clamp-3">{sighting.card.description}</p>
               <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#99f6e4]/80">
                 Match {(sighting.match.confidence * 100).toFixed(0)}% • {sighting.match.method}
+              </p>
+              <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-zinc-500">
+                {(sighting.classification?.artStyle || "unknown").replaceAll("-", " ")} • {(sighting.classification?.shotKind || "unknown").replaceAll("-", " ")}
               </p>
               <p className="text-[10px] text-zinc-500 line-clamp-2">{sighting.hackermouthEffects[0]}</p>
             </div>

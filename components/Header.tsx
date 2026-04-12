@@ -29,6 +29,9 @@ export default function Header() {
           <Link href="/review" className="text-[#fde68a] transition hover:text-[#ffedd5] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
             Review
           </Link>
+          <Link href="/admin/ingest" className="text-[#fca5a5] transition hover:text-[#fee2e2] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
+            Admin
+          </Link>
           <Link href="/factions" className="hidden text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)] md:inline-flex">
             Factions
           </Link>

@@ -88,3 +88,11 @@ Append-only record of work on Boricuapunk.
 - Added `hm-node-text-shell` styling (capsule + scanline overlay) to make floating HM messages clearer against busy page backgrounds.
 - Tuned HM quote flicker to glow-based pulse and added reduced-motion fallback for HM animations.
 - Verified production build passes with all archive/API routes intact.
+
+## 2026-04-12T13:21:57-04:00
+- Expanded character ingest classification to detect and persist entity type (character/location/unknown), art style categories, and shot kind metadata.
+- Upgraded `/api/archive/sightings` with filter/search toggles (`style`, `shotKind`, `entityType`, `entityId`, `mainOnly`, `consistentMainStyle`) and admin PATCH fields.
+- Added style-consistent main feed behavior: homepage evolving sightings now request `mainOnly=1&consistentMainStyle=1` to keep default visuals coherent when possible.
+- Added append-only running rationale log for assignment decisions at `data/runtime/ingest-rationale-log.md` plus API reader route `/api/archive/rationale-log`.
+- Added new `/admin/ingest` panel for end-to-end assignment control (character/location/unknown, style override, shot kind, main-feed toggle) with inline rationale viewing.
+- Updated header and archive route finder with Ingest Admin entry; verified full production build passes.

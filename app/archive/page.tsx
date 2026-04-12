@@ -89,6 +89,13 @@ const pageLinks = [
     category: "signals",
     tags: ["quality control", "reassign", "ingest review"],
   },
+  {
+    href: "/admin/ingest",
+    title: "Ingest Admin",
+    copy: "Full assignment console with style detection, entity toggles, and rationale log review.",
+    category: "signals",
+    tags: ["admin", "art style", "location matching", "assignment control"],
+  },
 ];
 
 export default function ArchiveHubPage() {

@@ -8,8 +8,22 @@ import {
   type CharacterTag,
   type ThreatLevel,
 } from "@/types/characters";
+import { getLocationBySlug, locations } from "@/types/locations";
 
 type MatchMethod = "vision" | "caption" | "fallback" | "manual-review";
+export type MatchEntityType = "character" | "location" | "unknown";
+export type ArtStyleCategory =
+  | "action-figure"
+  | "plushie"
+  | "comic-book"
+  | "surreal-illustration"
+  | "realistic-photo"
+  | "anime-illustration"
+  | "3d-render"
+  | "location-photography"
+  | "mixed-media"
+  | "unknown";
+export type ShotKind = "single-character" | "group-shot" | "location-only" | "object-focus" | "unknown";
 
 export type GeneratedQuote = {
   id: string;
@@ -25,10 +39,18 @@ export type UploadedSighting = {
   imagePath: string;
   caption?: string;
   match: {
+    entityType: MatchEntityType;
+    entityId: string;
     characterId: string;
     confidence: number;
     reason: string;
     method: MatchMethod;
+    clues?: string[];
+  };
+  classification: {
+    artStyle: ArtStyleCategory;
+    shotKind: ShotKind;
+    isMain: boolean;
   };
   card: {
     id: string;
@@ -41,6 +63,11 @@ export type UploadedSighting = {
   };
   quotes: GeneratedQuote[];
   hackermouthEffects: string[];
+  moderation?: {
+    state?: "active" | "unassigned" | "removed";
+    notes?: string;
+    updatedAt?: string;
+  };
 };
 
 type SightingStore = {
@@ -50,6 +77,22 @@ type SightingStore = {
 
 const STORAGE_PATH = path.join(process.cwd(), "data/runtime/character-sightings.json");
 const UPLOADS_DIR = path.join(process.cwd(), "public/uploads/characters");
+const RATIONALE_LOG_PATH = path.join(process.cwd(), "data/runtime/ingest-rationale-log.md");
+
+const KNOWN_ART_STYLES: ArtStyleCategory[] = [
+  "action-figure",
+  "plushie",
+  "comic-book",
+  "surreal-illustration",
+  "realistic-photo",
+  "anime-illustration",
+  "3d-render",
+  "location-photography",
+  "mixed-media",
+  "unknown",
+];
+
+const KNOWN_SHOT_KINDS: ShotKind[] = ["single-character", "group-shot", "location-only", "object-focus", "unknown"];
 
 function shortId(prefix: string): string {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -69,6 +112,91 @@ function clampConfidence(value: number): number {
   if (value < 0) return 0;
   if (value > 1) return 1;
   return value;
+}
+
+function moderationState(sighting: UploadedSighting): "active" | "unassigned" | "removed" {
+  return sighting.moderation?.state ?? "active";
+}
+
+function normalizeArtStyle(value: string | undefined): ArtStyleCategory {
+  const normalized = (value || "").trim().toLowerCase();
+  if (KNOWN_ART_STYLES.includes(normalized as ArtStyleCategory)) {
+    return normalized as ArtStyleCategory;
+  }
+  if (normalized.includes("comic")) return "comic-book";
+  if (normalized.includes("surreal")) return "surreal-illustration";
+  if (normalized.includes("real") || normalized.includes("photo")) return "realistic-photo";
+  if (normalized.includes("action") || normalized.includes("figure")) return "action-figure";
+  if (normalized.includes("plush")) return "plushie";
+  if (normalized.includes("anime")) return "anime-illustration";
+  if (normalized.includes("render") || normalized.includes("3d")) return "3d-render";
+  if (normalized.includes("location")) return "location-photography";
+  if (normalized.includes("mixed")) return "mixed-media";
+  return "unknown";
+}
+
+function normalizeShotKind(value: string | undefined): ShotKind {
+  const normalized = (value || "").trim().toLowerCase();
+  if (KNOWN_SHOT_KINDS.includes(normalized as ShotKind)) {
+    return normalized as ShotKind;
+  }
+  if (normalized.includes("group")) return "group-shot";
+  if (normalized.includes("location")) return "location-only";
+  if (normalized.includes("object")) return "object-focus";
+  if (normalized.includes("single") || normalized.includes("solo")) return "single-character";
+  return "unknown";
+}
+
+function classifyFromCaption(caption: string): { artStyle: ArtStyleCategory; shotKind: ShotKind; clues: string[] } {
+  const text = caption.toLowerCase();
+  const clues: string[] = [];
+
+  const artStyle: ArtStyleCategory =
+    text.includes("action figure") || text.includes("figurine")
+      ? "action-figure"
+      : text.includes("plush") || text.includes("stuffed")
+        ? "plushie"
+        : text.includes("comic") || text.includes("panel")
+          ? "comic-book"
+          : text.includes("surreal") || text.includes("dream")
+            ? "surreal-illustration"
+            : text.includes("anime") || text.includes("manga")
+              ? "anime-illustration"
+              : text.includes("render") || text.includes("cgi") || text.includes("3d")
+                ? "3d-render"
+                : text.includes("location") || text.includes("landscape")
+                  ? "location-photography"
+                  : text.length
+                    ? "realistic-photo"
+                    : "unknown";
+
+  const shotKind: ShotKind = text.includes("group") || text.includes("team") || text.includes("together")
+    ? "group-shot"
+    : text.includes("location") || text.includes("city") || text.includes("street") || text.includes("landscape")
+      ? "location-only"
+      : text.includes("object") || text.includes("item")
+        ? "object-focus"
+        : text.length
+          ? "single-character"
+          : "unknown";
+
+  clues.push(`caption-style:${artStyle}`);
+  clues.push(`caption-shot:${shotKind}`);
+  return { artStyle, shotKind, clues };
+}
+
+async function appendRationaleLog(entry: string) {
+  await fs.mkdir(path.dirname(RATIONALE_LOG_PATH), { recursive: true });
+  await fs.appendFile(RATIONALE_LOG_PATH, `${entry}\n`, "utf8");
+}
+
+function inferSoloFromCaption(caption: string): "solo" | "group" | "unknown" {
+  const text = caption.toLowerCase();
+  const groupTokens = [" group", " team", " crowd", " with ", " and ", " together", "duo", "trio"];
+  const soloTokens = [" solo", " alone", " portrait", "single", " headshot", "close-up"];
+  if (groupTokens.some((token) => text.includes(token))) return "group";
+  if (soloTokens.some((token) => text.includes(token))) return "solo";
+  return "unknown";
 }
 
 function characterText(character: SagaCharacter): string {
@@ -216,9 +344,13 @@ async function writeStore(store: SightingStore): Promise<void> {
 }
 
 type VisionMatch = {
-  characterId: string;
+  entityType: MatchEntityType;
+  entityId: string;
   confidence: number;
   reason: string;
+  artStyle: ArtStyleCategory;
+  shotKind: ShotKind;
+  clues: string[];
 };
 
 async function identifyByVision(args: {
@@ -228,12 +360,18 @@ async function identifyByVision(args: {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return null;
 
-  const candidates = sagaCharacters.slice(0, 60).map((character) => ({
+  const characterCandidates = sagaCharacters.slice(0, 80).map((character) => ({
     id: character.id,
     name: character.name,
     role: character.role,
     description: character.description,
     tags: character.tags,
+  }));
+  const locationCandidates = locations.map((location) => ({
+    id: location.slug,
+    name: location.name,
+    role: location.role,
+    description: location.note,
   }));
 
   const response = await fetch("https://api.openai.com/v1/responses", {
@@ -248,14 +386,14 @@ async function identifyByVision(args: {
         {
           role: "system",
           content:
-            "You classify Boricuapunk character photos against canon manuscript descriptors. Return strict JSON only: {\"characterId\": string, \"confidence\": number 0..1, \"reason\": string}. If uncertain, use characterId \"unknown\".",
+            "You classify Boricuapunk uploads. Return strict JSON only with shape: {\"entityType\":\"character|location|unknown\",\"entityId\":string,\"confidence\":number,\"reason\":string,\"artStyle\":\"action-figure|plushie|comic-book|surreal-illustration|realistic-photo|anime-illustration|3d-render|location-photography|mixed-media|unknown\",\"shotKind\":\"single-character|group-shot|location-only|object-focus|unknown\",\"clues\":string[]}. Use unknown if uncertain.",
         },
         {
           role: "user",
           content: [
             {
               type: "input_text",
-              text: `Caption: ${args.caption || "(none)"}\nCandidates: ${JSON.stringify(candidates)}`,
+              text: `Caption: ${args.caption || "(none)"}\nCharacter candidates: ${JSON.stringify(characterCandidates)}\nLocation candidates: ${JSON.stringify(locationCandidates)}`,
             },
             {
               type: "input_image",
@@ -272,28 +410,33 @@ async function identifyByVision(args: {
   const raw = payload.output_text?.trim();
   if (!raw) return null;
 
-  try {
-    const parsed = JSON.parse(raw) as VisionMatch;
-    if (!parsed.characterId || typeof parsed.characterId !== "string") return null;
-    return {
-      characterId: parsed.characterId,
-      confidence: clampConfidence(parsed.confidence),
-      reason: parsed.reason || "Vision model matched manuscript descriptors.",
-    };
-  } catch {
-    const jsonBlock = raw.match(/\{[\s\S]*\}/)?.[0];
-    if (!jsonBlock) return null;
+  const parse = (value: string): VisionMatch | null => {
     try {
-      const parsed = JSON.parse(jsonBlock) as VisionMatch;
+      const parsed = JSON.parse(value) as Partial<VisionMatch>;
+      const entityType =
+        parsed.entityType === "character" || parsed.entityType === "location" || parsed.entityType === "unknown"
+          ? parsed.entityType
+          : "unknown";
+      const entityId = String(parsed.entityId || "unknown").trim().toLowerCase() || "unknown";
       return {
-        characterId: parsed.characterId,
-        confidence: clampConfidence(parsed.confidence),
-        reason: parsed.reason || "Vision model matched manuscript descriptors.",
+        entityType,
+        entityId,
+        confidence: clampConfidence(Number(parsed.confidence ?? 0.4)),
+        reason: String(parsed.reason || "Vision model matched manuscript descriptors."),
+        artStyle: normalizeArtStyle(parsed.artStyle),
+        shotKind: normalizeShotKind(parsed.shotKind),
+        clues: Array.isArray(parsed.clues) ? parsed.clues.map((item) => String(item)).slice(0, 6) : [],
       };
     } catch {
       return null;
     }
-  }
+  };
+
+  const direct = parse(raw);
+  if (direct) return direct;
+  const jsonBlock = raw.match(/\{[\s\S]*\}/)?.[0];
+  if (!jsonBlock) return null;
+  return parse(jsonBlock);
 }
 
 function cardFromCharacter(character: SagaCharacter) {
@@ -305,6 +448,20 @@ function cardFromCharacter(character: SagaCharacter) {
     faction: character.faction,
     tags: character.tags,
     threatLevel: character.threatLevel,
+  };
+}
+
+function cardFromLocation(locationSlug: string) {
+  const location = getLocationBySlug(locationSlug);
+  if (!location) return null;
+  return {
+    id: location.slug,
+    name: location.name,
+    title: location.role,
+    description: location.note,
+    faction: location.faction,
+    tags: ["observer", "mystery"] as CharacterTag[],
+    threatLevel: "unknown" as ThreatLevel,
   };
 }
 
@@ -343,37 +500,79 @@ export async function ingestCharacterPhoto(args: {
 
   const imageDataUrl = `data:${args.mimeType};base64,${args.imageBuffer.toString("base64")}`;
   const visionMatch = await identifyByVision({ imageDataUrl, caption: safeCaption });
+  const captionClassification = classifyFromCaption(safeCaption);
 
-  let matchCharacterId = visionMatch?.characterId ?? "unknown";
+  let entityType: MatchEntityType = visionMatch?.entityType ?? "character";
+  let entityId = visionMatch?.entityId ?? "unknown";
   let confidence = visionMatch?.confidence ?? 0.25;
   let reason = visionMatch?.reason ?? "No vision API configured; using caption matching fallback.";
   let method: MatchMethod = visionMatch ? "vision" : "fallback";
+  let artStyle = visionMatch?.artStyle ?? captionClassification.artStyle;
+  let shotKind = visionMatch?.shotKind ?? captionClassification.shotKind;
+  const clues = [...(visionMatch?.clues ?? []), ...captionClassification.clues].slice(0, 8);
 
   if (!visionMatch) {
     const fallback = keywordMatch(safeCaption);
-    matchCharacterId = fallback.characterId;
+    entityType = "character";
+    entityId = fallback.characterId;
     confidence = fallback.confidence;
     reason = fallback.reason;
     method = safeCaption ? "caption" : "fallback";
   }
 
-  const matchedCharacter = getSagaCharacterById(matchCharacterId);
-  const card = matchedCharacter ? cardFromCharacter(matchedCharacter) : unknownCard(safeCaption);
-  const quoteSeedCharacter = matchedCharacter ?? sagaCharacters.find((c) => c.id === "hackermouth") ?? sagaCharacters[0]!;
+  const matchedCharacter = entityType === "character" ? getSagaCharacterById(entityId) : undefined;
+  const matchedLocation = entityType === "location" ? getLocationBySlug(entityId) : undefined;
+
+  if (entityType === "location" && !matchedLocation) {
+    entityType = "unknown";
+    entityId = "unknown";
+    confidence = Math.min(confidence, 0.45);
+  }
+  if (entityType === "character" && !matchedCharacter) {
+    entityType = "unknown";
+    entityId = "unknown";
+    confidence = Math.min(confidence, 0.45);
+  }
+
+  const safeEntityType: MatchEntityType = entityType;
+  const safeEntityId = safeEntityType === "unknown" ? "unknown" : entityId;
+
+  const card =
+    safeEntityType === "character" && matchedCharacter
+      ? cardFromCharacter(matchedCharacter)
+      : safeEntityType === "location"
+        ? (cardFromLocation(safeEntityId) ?? unknownCard(safeCaption))
+        : unknownCard(safeCaption);
+
+  const quoteSeedCharacter =
+    safeEntityType === "character" && matchedCharacter
+      ? matchedCharacter
+      : sagaCharacters.find((c) => c.id === "hackermouth") ?? sagaCharacters[0]!;
 
   const generatedQuotes =
-    matchCharacterId === "unknown"
-      ? [
+    safeEntityType === "character" && matchedCharacter
+      ? pickCharacterQuotes(matchedCharacter.id, quoteSeedCharacter)
+      : [
           {
             id: shortId("q-unknown"),
-            text: "The archive breathes first and identifies later.",
+            text:
+              safeEntityType === "location"
+                ? `Location signal locked: ${card.name}. The archive marks this scene as a world anchor.`
+                : "The archive breathes first and identifies later.",
             style: "graffiti" as QuoteStyle,
             speakerName: "Hackermouth",
           },
-        ]
-      : pickCharacterQuotes(matchCharacterId, quoteSeedCharacter);
+        ];
 
   const effects = buildHackermouthEffects(quoteSeedCharacter);
+
+  const soloHint = inferSoloFromCaption(safeCaption);
+  const computedShotKind =
+    shotKind === "unknown" && soloHint === "group"
+      ? "group-shot"
+      : shotKind === "unknown" && safeEntityType === "location"
+        ? "location-only"
+        : shotKind;
 
   const sighting: UploadedSighting = {
     id: shortId("sighting"),
@@ -382,26 +581,143 @@ export async function ingestCharacterPhoto(args: {
     imagePath: `/uploads/characters/${fileName}`,
     caption: safeCaption || undefined,
     match: {
-      characterId: matchedCharacter?.id ?? "unknown",
+      entityType: safeEntityType,
+      entityId: safeEntityId,
+      characterId: safeEntityType === "character" && matchedCharacter ? matchedCharacter.id : "unknown",
       confidence,
       reason,
       method,
+      clues,
+    },
+    classification: {
+      artStyle,
+      shotKind: computedShotKind,
+      isMain: safeEntityType === "character" && computedShotKind !== "group-shot",
     },
     card,
     quotes: generatedQuotes,
     hackermouthEffects: effects,
+    moderation: {
+      state: "active",
+      notes: soloHint === "group" ? "Caption suggests group shot." : undefined,
+      updatedAt: new Date().toISOString(),
+    },
   };
 
   const store = await readStore();
   store.sightings = [sighting, ...store.sightings].slice(0, 300);
   await writeStore(store);
 
+  const rationaleEntityLabel =
+    sighting.match.entityType === "location"
+      ? `location:${sighting.match.entityId}`
+      : sighting.match.entityType === "character"
+        ? `character:${sighting.match.entityId}`
+        : "unknown";
+  const rationaleLine = `- ${sighting.createdAt} | ${sighting.id} | ${rationaleEntityLabel} | style=${sighting.classification.artStyle} | shot=${sighting.classification.shotKind} | confidence=${sighting.match.confidence.toFixed(2)} | ${sighting.match.reason}`;
+  await appendRationaleLog(rationaleLine);
+
   return sighting;
 }
 
-export async function listSightings(limit = 40): Promise<UploadedSighting[]> {
+function normalizeLegacySighting(sighting: UploadedSighting): UploadedSighting {
+  const entityType: MatchEntityType = sighting.match?.entityType
+    ? sighting.match.entityType
+    : sighting.match.characterId && sighting.match.characterId !== "unknown"
+      ? "character"
+      : "unknown";
+  const entityId = sighting.match?.entityId || (entityType === "character" ? sighting.match.characterId : "unknown");
+  const normalized: UploadedSighting = {
+    ...sighting,
+    match: {
+      entityType,
+      entityId,
+      characterId: sighting.match.characterId || "unknown",
+      confidence: sighting.match.confidence,
+      reason: sighting.match.reason,
+      method: sighting.match.method,
+      clues: sighting.match.clues ?? [],
+    },
+    classification: {
+      artStyle: normalizeArtStyle(sighting.classification?.artStyle),
+      shotKind: normalizeShotKind(sighting.classification?.shotKind),
+      isMain: sighting.classification?.isMain ?? (entityType === "character"),
+    },
+  };
+  return normalized;
+}
+
+function pickDominantStyle(sightings: UploadedSighting[]): ArtStyleCategory | null {
+  const counts = new Map<ArtStyleCategory, number>();
+  for (const row of sightings) {
+    if (!row.classification.isMain) continue;
+    const style = row.classification.artStyle;
+    if (style === "unknown") continue;
+    counts.set(style, (counts.get(style) ?? 0) + 1);
+  }
+  let winner: ArtStyleCategory | null = null;
+  let max = 0;
+  for (const [style, count] of counts.entries()) {
+    if (count > max) {
+      winner = style;
+      max = count;
+    }
+  }
+  return winner;
+}
+
+export async function listSightings(args?:
+  | number
+  | {
+      limit?: number;
+      search?: string;
+      style?: ArtStyleCategory | "any";
+      shotKind?: ShotKind | "any";
+      entityType?: MatchEntityType | "any";
+      entityId?: string;
+      mainOnly?: boolean;
+      includeRemoved?: boolean;
+      consistentMainStyle?: boolean;
+    }): Promise<UploadedSighting[]> {
+  const options = typeof args === "number" ? { limit: args } : args ?? {};
+  const limit = Math.max(1, Math.min(options.limit ?? 40, 300));
+  const style = options.style && options.style !== "any" ? normalizeArtStyle(options.style) : null;
+  const shotKind = options.shotKind && options.shotKind !== "any" ? normalizeShotKind(options.shotKind) : null;
+  const entityType = options.entityType && options.entityType !== "any" ? options.entityType : null;
+  const entityId = (options.entityId || "").trim().toLowerCase();
+  const search = (options.search || "").trim().toLowerCase();
+
   const store = await readStore();
-  return store.sightings.slice(0, Math.max(1, Math.min(limit, 200)));
+  let rows = store.sightings.map((row) => normalizeLegacySighting(row));
+
+  if (!options.includeRemoved) {
+    rows = rows.filter((row) => moderationState(row) !== "removed");
+  }
+  if (style) rows = rows.filter((row) => row.classification.artStyle === style);
+  if (shotKind) rows = rows.filter((row) => row.classification.shotKind === shotKind);
+  if (entityType) rows = rows.filter((row) => row.match.entityType === entityType);
+  if (entityId) rows = rows.filter((row) => row.match.entityId === entityId || row.card.id === entityId);
+  if (options.mainOnly) rows = rows.filter((row) => row.classification.isMain);
+
+  if (search) {
+    rows = rows.filter((row) => {
+      const blob = [row.card.name, row.card.title, row.card.description, row.caption ?? "", row.match.reason]
+        .join(" ")
+        .toLowerCase();
+      return blob.includes(search);
+    });
+  }
+
+  if (options.consistentMainStyle) {
+    const dominant = pickDominantStyle(rows);
+    if (dominant) {
+      const consistent = rows.filter((row) => row.classification.artStyle === dominant && row.classification.isMain);
+      const remainder = rows.filter((row) => !(row.classification.artStyle === dominant && row.classification.isMain));
+      rows = [...consistent, ...remainder];
+    }
+  }
+
+  return rows.slice(0, limit);
 }
 
 export async function listSightingsNeedingReview(args?: {
@@ -410,8 +726,8 @@ export async function listSightingsNeedingReview(args?: {
 }): Promise<UploadedSighting[]> {
   const limit = Math.max(1, Math.min(args?.limit ?? 40, 300));
   const threshold = clampConfidence(args?.threshold ?? 0.6);
-  const store = await readStore();
-  return store.sightings
+  const rows = await listSightings({ limit: 500, includeRemoved: false });
+  return rows
     .filter((sighting) => sighting.card.id === "unknown" || sighting.match.confidence < threshold)
     .slice(0, limit);
 }
@@ -420,49 +736,126 @@ export async function reviewAssignSighting(args: {
   sightingId: string;
   characterId: string;
 }): Promise<UploadedSighting> {
+  return adminUpdateSighting({
+    sightingId: args.sightingId,
+    entityType: args.characterId === "unknown" ? "unknown" : "character",
+    entityId: args.characterId,
+  });
+}
+
+export async function adminUpdateSighting(args: {
+  sightingId: string;
+  entityType?: MatchEntityType;
+  entityId?: string;
+  artStyle?: ArtStyleCategory;
+  shotKind?: ShotKind;
+  isMain?: boolean;
+  moderationState?: "active" | "unassigned" | "removed";
+  notes?: string;
+}): Promise<UploadedSighting> {
   const store = await readStore();
   const index = store.sightings.findIndex((sighting) => sighting.id === args.sightingId);
-  if (index < 0) {
-    throw new Error("Sighting not found.");
-  }
+  if (index < 0) throw new Error("Sighting not found.");
 
-  const current = store.sightings[index]!;
-  const normalizedCharacterId = args.characterId.trim().toLowerCase();
+  const current = normalizeLegacySighting(store.sightings[index]!);
+  const nextEntityType = args.entityType ?? current.match.entityType;
+  const nextEntityId = (args.entityId ?? current.match.entityId).trim().toLowerCase();
 
-  const matchedCharacter = getSagaCharacterById(normalizedCharacterId);
+  const matchedCharacter = nextEntityType === "character" ? getSagaCharacterById(nextEntityId) : undefined;
+  const matchedLocation = nextEntityType === "location" ? getLocationBySlug(nextEntityId) : undefined;
+
+  const safeEntityType: MatchEntityType =
+    nextEntityType === "character" && matchedCharacter
+      ? "character"
+      : nextEntityType === "location" && matchedLocation
+        ? "location"
+        : "unknown";
+  const safeEntityId =
+    safeEntityType === "character"
+      ? matchedCharacter!.id
+      : safeEntityType === "location"
+        ? matchedLocation!.slug
+        : "unknown";
+
   const reviewCharacter =
     matchedCharacter ?? sagaCharacters.find((character) => character.id === "hackermouth") ?? sagaCharacters[0]!;
-
-  const card = matchedCharacter ? cardFromCharacter(matchedCharacter) : unknownCard(current.caption ?? "");
-  const quotesForCard = matchedCharacter
-    ? pickCharacterQuotes(matchedCharacter.id, reviewCharacter)
-    : [
-        {
-          id: shortId("q-unknown"),
-          text: "The archive breathes first and identifies later.",
-          style: "graffiti" as QuoteStyle,
-          speakerName: "Hackermouth",
-        },
-      ];
+  const nextCard =
+    safeEntityType === "character"
+      ? cardFromCharacter(matchedCharacter!)
+      : safeEntityType === "location"
+        ? (cardFromLocation(safeEntityId) ?? unknownCard(current.caption ?? ""))
+        : unknownCard(current.caption ?? "");
+  const nextQuotes =
+    safeEntityType === "character"
+      ? pickCharacterQuotes(matchedCharacter!.id, reviewCharacter)
+      : [
+          {
+            id: shortId("q-unknown"),
+            text:
+              safeEntityType === "location"
+                ? `Location signal locked: ${nextCard.name}. The archive marks this scene as a world anchor.`
+                : "The archive breathes first and identifies later.",
+            style: "graffiti" as QuoteStyle,
+            speakerName: "Hackermouth",
+          },
+        ];
 
   const updated: UploadedSighting = {
     ...current,
     match: {
-      characterId: matchedCharacter?.id ?? "unknown",
-      confidence: matchedCharacter ? 0.99 : 0.5,
-      reason: matchedCharacter
-        ? `Manually reviewed and assigned to ${matchedCharacter.name}.`
-        : "Manually reviewed and kept as Unknown Signal.",
+      entityType: safeEntityType,
+      entityId: safeEntityId,
+      characterId: safeEntityType === "character" ? matchedCharacter!.id : "unknown",
+      confidence: safeEntityType === "unknown" ? 0.5 : 0.99,
+      reason:
+        safeEntityType === "character"
+          ? `Manually reviewed and assigned to ${matchedCharacter!.name}.`
+          : safeEntityType === "location"
+            ? `Manually reviewed and assigned to location ${matchedLocation!.name}.`
+            : "Manually reviewed and kept as Unknown Signal.",
       method: "manual-review",
+      clues: ["manual-admin-update"],
     },
-    card,
-    quotes: quotesForCard,
+    classification: {
+      artStyle: args.artStyle ? normalizeArtStyle(args.artStyle) : current.classification.artStyle,
+      shotKind: args.shotKind ? normalizeShotKind(args.shotKind) : current.classification.shotKind,
+      isMain: typeof args.isMain === "boolean" ? args.isMain : current.classification.isMain,
+    },
+    card: nextCard,
+    quotes: nextQuotes,
     hackermouthEffects: buildHackermouthEffects(reviewCharacter),
+    moderation: {
+      state: args.moderationState ?? current.moderation?.state ?? "active",
+      notes: args.notes ?? current.moderation?.notes,
+      updatedAt: new Date().toISOString(),
+    },
   };
 
   store.sightings[index] = updated;
   await writeStore(store);
+
+  const rationaleEntityLabel =
+    updated.match.entityType === "location"
+      ? `location:${updated.match.entityId}`
+      : updated.match.entityType === "character"
+        ? `character:${updated.match.entityId}`
+        : "unknown";
+  await appendRationaleLog(
+    `- ${new Date().toISOString()} | ${updated.id} | admin-update -> ${rationaleEntityLabel} | style=${updated.classification.artStyle} | shot=${updated.classification.shotKind} | ${updated.match.reason}`,
+  );
+
   return updated;
+}
+
+export async function readIngestRationaleLog(limitLines = 240): Promise<string> {
+  await fs.mkdir(path.dirname(RATIONALE_LOG_PATH), { recursive: true });
+  try {
+    const raw = await fs.readFile(RATIONALE_LOG_PATH, "utf8");
+    const lines = raw.split("\n").filter(Boolean);
+    return lines.slice(-Math.max(10, Math.min(limitLines, 1000))).join("\n");
+  } catch {
+    return "";
+  }
 }
 
 function stableIndex(seed: string, max: number): number {

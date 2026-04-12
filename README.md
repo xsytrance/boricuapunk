@@ -75,6 +75,34 @@ Activation:
 - Set OPENAI_API_KEY to enable image-based identification.
 - Optional model override: BORICUAPUNK_VISION_MODEL (default gpt-4.1-mini).
 - Without API key, pipeline falls back to caption/manuscript keyword matching.
+- Ingest now also classifies:
+  - entity type (`character | location | unknown`)
+  - art style (`action-figure`, `plushie`, `comic-book`, `surreal-illustration`, `realistic-photo`, etc.)
+  - shot kind (`single-character`, `group-shot`, `location-only`, `object-focus`)
+
+## Assignment admin + rationale log
+- Admin panel: `/admin/ingest`
+  - filter by search/style/entity type
+  - reassign each photo to character/location/unknown
+  - override style + shot kind
+  - toggle main-feed candidate flag (`isMain`)
+- Rationale log API: `GET /api/archive/rationale-log?limit=160`
+- Runtime rationale file (append-only): `data/runtime/ingest-rationale-log.md`
+
+## Character sightings API filters
+- `GET /api/archive/sightings?limit=...`
+- Optional query params:
+  - `needsReview=1&threshold=0.6`
+  - `search=<text>`
+  - `style=<style-id>`
+  - `shotKind=<shot-kind-id>`
+  - `entityType=character|location|unknown`
+  - `entityId=<id>`
+  - `mainOnly=1`
+  - `consistentMainStyle=1` (prioritizes dominant style for main feed)
+- `PATCH /api/archive/sightings` supports admin updates with:
+  - `sightingId` (required)
+  - optional: `entityType`, `entityId`, `artStyle`, `shotKind`, `isMain`, `moderationState`, `notes`
 
 ## Figurine ingestion and review
 - API route: POST /api/archive/figurines

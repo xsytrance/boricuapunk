@@ -1,4 +1,9 @@
-import { listSightings, listSightingsNeedingReview, reviewAssignSighting } from "@/lib/archivePhotoPipeline";
+import {
+  adminUpdateSighting,
+  listSightings,
+  listSightingsNeedingReview,
+  reviewAssignSighting,
+} from "@/lib/archivePhotoPipeline";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,23 +24,61 @@ export async function GET(request: Request) {
 
   const limit = Number.isFinite(limitValue) ? limitValue : 20;
 
-  const sightings = needsReview
-    ? await listSightingsNeedingReview({ limit, threshold: Number.isFinite(thresholdValue) ? thresholdValue : 0.6 })
-    : await listSightings(limit);
+  if (needsReview) {
+    const sightings = await listSightingsNeedingReview({
+      limit,
+      threshold: Number.isFinite(thresholdValue) ? thresholdValue : 0.6,
+    });
+    return Response.json({ ok: true, sightings });
+  }
+
+  const sightings = await listSightings({
+    limit,
+    search: url.searchParams.get("search") || undefined,
+    style: (url.searchParams.get("style") as never) || undefined,
+    shotKind: (url.searchParams.get("shotKind") as never) || undefined,
+    entityType: (url.searchParams.get("entityType") as never) || undefined,
+    entityId: url.searchParams.get("entityId") || undefined,
+    mainOnly: ["1", "true", "yes"].includes((url.searchParams.get("mainOnly") || "").toLowerCase()),
+    includeRemoved: ["1", "true", "yes"].includes((url.searchParams.get("includeRemoved") || "").toLowerCase()),
+    consistentMainStyle: ["1", "true", "yes"].includes((url.searchParams.get("consistentMainStyle") || "").toLowerCase()),
+  });
 
   return Response.json({ ok: true, sightings });
 }
 
 export async function PATCH(request: Request) {
   try {
-    const body = (await request.json()) as { sightingId?: string; characterId?: string };
+    const body = (await request.json()) as {
+      sightingId?: string;
+      characterId?: string;
+      entityType?: "character" | "location" | "unknown";
+      entityId?: string;
+      artStyle?: string;
+      shotKind?: string;
+      isMain?: boolean;
+      moderationState?: "active" | "unassigned" | "removed";
+      notes?: string;
+    };
     const sightingId = (body.sightingId || "").trim();
-    const characterId = (body.characterId || "").trim();
 
     if (!sightingId) throw fail("sightingId is required.", 400);
-    if (!characterId) throw fail("characterId is required.", 400);
 
-    const sighting = await reviewAssignSighting({ sightingId, characterId });
+    if (body.characterId && !body.entityType && !body.entityId && !body.artStyle && !body.shotKind) {
+      const sighting = await reviewAssignSighting({ sightingId, characterId: body.characterId });
+      return Response.json({ ok: true, sighting });
+    }
+
+    const sighting = await adminUpdateSighting({
+      sightingId,
+      entityType: body.entityType,
+      entityId: body.entityId,
+      artStyle: body.artStyle as never,
+      shotKind: body.shotKind as never,
+      isMain: typeof body.isMain === "boolean" ? body.isMain : undefined,
+      moderationState: body.moderationState,
+      notes: body.notes,
+    });
     return Response.json({ ok: true, sighting });
   } catch (error) {
     const typed = error as ApiError;

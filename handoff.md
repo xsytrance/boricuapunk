@@ -125,3 +125,20 @@
   - tighter mobile-safe paddings/spacing, cleaner border treatment, glow-tuned flicker cadence
 - Added reduced-motion safety override for HM core animations (toast, quote flicker, node float/eye pulse).
 - Build status: passing (Next.js 16.2.3).
+
+## 2026-04-12T13:21:57-04:00 ingest taxonomy + admin control checkpoint
+- Character ingestion now stores richer classification metadata per sighting:
+  - `match.entityType` (`character|location|unknown`) + `match.entityId`
+  - `classification.artStyle` + `classification.shotKind` + `classification.isMain`
+- Vision prompt expanded to classify both character and location candidates and emit art-style/shot-kind labels.
+- `/api/archive/sightings` now supports filter/search toggles and style-coherent feed ordering (`consistentMainStyle=1`).
+- New admin route: `/admin/ingest`
+  - reassign to character/location/unknown
+  - override style + shot kind
+  - toggle main-feed candidate flag
+  - view latest rationale entries
+- New append-only rationale log file + API:
+  - `data/runtime/ingest-rationale-log.md`
+  - `GET /api/archive/rationale-log`
+- Header/archive hub include direct entry to Ingest Admin.
+- Build status: passing (Next.js 16.2.3).
