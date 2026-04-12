@@ -29,7 +29,7 @@ export const hiddenCharacters: Character[] = [
     description:
       "A self-aware defensive intelligence manifesting through tape, screens, and signal.",
     faction: "Unknown",
-    image: "/ui/hackermouth/hackermouth-core.png",
+    image: "/images/hackermouth/hackermouth-user-photo.jpg",
     images: [],
   },
 ];

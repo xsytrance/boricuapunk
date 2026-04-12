@@ -151,3 +151,54 @@
   - tap/pointer-down overdrive burst triggers additional HM events (`node-expansion`, `hijack`, `context`, `toast`, `quote-appear`)
 - Archive signal layer now treats `mystery` as a first-class high-reactivity signal tag.
 - Build status: passing (Next.js 16.2.3).
+
+## 2026-04-12T17:20:43-04:00 Hackermouth terminal-chat UI checkpoint
+- Added dedicated Hackermouth-only chat interface on `/characters/hackermouth` via `HackermouthTerminalChat` (terminal aesthetic, no standard bubble UI).
+- UX details implemented:
+  - black system panel + teal/green monospace text
+  - send label changed to `TRANSMIT`
+  - placeholder set to `Speak. I am already listening.`
+  - assistant output animates with typewriter-style reveal
+- Wiring detail: requests from this UI post to `/api/chat` with `{ character_id: "hackermouth", commit_id: "hackermouth_active", message, history }`.
+- Non-Hackermouth characters continue using existing `CharacterTalkButton` unchanged.
+- Build status: passing (Next.js 16.2.3).
+
+## 2026-04-12T17:31:40-04:00 Hackermouth portrait swap checkpoint
+- Added user-provided portrait file at `public/images/hackermouth/hackermouth-user-photo.jpg`.
+- Updated Hackermouth character image path in both data sources:
+  - `data/characters.ts`
+  - `types/characters.ts`
+- New active image URL: `/images/hackermouth/hackermouth-user-photo.jpg`.
+- Build status: passing (Next.js 16.2.3).
+
+## 2026-04-12T17:49:58-04:00 Hackermouth send-flow fix checkpoint
+- Updated `components/hackermouth/HackermouthTerminalChat.tsx` send mechanics so both TRANSMIT click and Enter key submit the same `handleSend` path.
+- Enter support now matches requested behavior (`Enter` + not `Shift`) and prevents default newline/refresh behavior.
+- Added `<form onSubmit>` safety path to prevent browser default refresh and keep SPA chat behavior stable.
+- Added 20s `AbortController` timeout to prevent stuck `loading=true` from permanently disabling sends when upstream stalls.
+- API validated separately via curl on live endpoint with Hackermouth payload; response returned successfully.
+- Build status: passing (Next.js 16.2.3).
+
+## 2026-04-12T17:57:26-04:00 Hackermouth no-form send checkpoint
+- Removed the form wrapper from Hackermouth terminal send controls per request.
+- Active send wiring is now direct-only:
+  - input `onKeyDown`: `if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }`
+  - button `onClick`: `handleSend()`
+- Button updated to `type="button"` and `disabled={loading}` to eliminate implicit submit refresh paths.
+- Build status: passing; live endpoint curl test for Hackermouth payload returns successful response.
+
+## 2026-04-12T18:14:06-04:00 Hackermouth client-hydration wrapper checkpoint
+- Confirmed `"use client"` is already first line in `HackermouthTerminalChat.tsx`.
+- Added new wrapper `HackermouthTerminalChatWrapper.tsx` with `"use client"` + dynamic import (`ssr: false`) to force client-only render in App Router.
+- Updated `app/characters/[id]/page.tsx` to import wrapper instead of direct chat component.
+- Manual browser validation (localhost target): sent 3 messages successfully via UI; requests/responses now flow.
+- Note: responses currently include remote engine command errors (SSH/history quoting path), but click/Enter send path is now active and functioning.
+
+## 2026-04-12T18:23:41-04:00 Hackermouth stateless payload checkpoint
+- Simplified Hackermouth chat payload in `HackermouthTerminalChat.tsx` to remove `history`; requests now send only:
+  - `character_id: "hackermouth"`
+  - `commit_id: "hackermouth_active"`
+  - `message`
+- Reason: avoids SSH shell quoting breakage from serialized conversation history.
+- Manual browser validation (localhost): 3 sends succeeded with real Hackermouth responses (no command-failure text).
+- Build status: passing (Next.js 16.2.3).

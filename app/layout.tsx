@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Geist, Geist_Mono } from "next/font/google";
 import HackermouthProvider from "@/components/hackermouth/HackermouthProvider";
 import HackermouthNode from "@/components/hackermouth/HackermouthNode";
+import HackermouthPersistentOverlay from "@/components/hackermouth/HackermouthPersistentOverlay";
 import Header from "@/components/Header";
 import "./globals.css";
 
@@ -50,6 +51,7 @@ export default function RootLayout({
             <div className="flex min-h-0 min-w-0 flex-1 flex-col">{children}</div>
           </div>
           <HackermouthNode />
+          <HackermouthPersistentOverlay />
         </HackermouthProvider>
       </body>
     </html>

@@ -97,7 +97,7 @@ export const characters: Character[] = [
     description:
       "Defensive intelligence in tape and signal—sees all, names all, ends all.",
     tags: ["entity", "enemy", "observer", "corrupt", "mystery", "unknown"],
-    image: "/ui/hackermouth/hackermouth-core.png",
+    image: "/images/hackermouth/hackermouth-user-photo.jpg",
     threatLevel: "high",
     presence: "digital",
   },

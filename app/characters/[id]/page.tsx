@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import CharacterProfile from "@/components/CharacterProfile";
 import CharacterQuoteSection from "@/components/CharacterQuoteSection";
+import CharacterTalkButton from "@/components/CharacterTalkButtonWrapper";
+import HackermouthTerminalChat from "@/components/hackermouth/HackermouthTerminalChatWrapper";
 import { getCharacterById } from "@/data/characters";
 import { getQuotesForCharacter } from "@/data/quotes";
 import { getFactionById } from "@/types/factions";
@@ -65,6 +67,11 @@ export default async function CharacterDetailPage({ params }: Props) {
         />
 
         <CharacterQuoteSection characterId={character.id} />
+        {character.id === "hackermouth" ? (
+          <HackermouthTerminalChat />
+        ) : (
+          <CharacterTalkButton characterId={character.id} />
+        )}
       </div>
 
       <section className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">

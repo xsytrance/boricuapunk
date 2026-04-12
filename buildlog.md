@@ -102,3 +102,39 @@ Append-only record of work on Boricuapunk.
 - Updated character-card HM behavior so `mystery`/`unknown` tagged cards trigger overdrive reactions on hover proximity and tap (more node expansion + cursor hijack/context/toast bursts).
 - Expanded archive signal activation to treat `mystery` tags as high-reactivity targets and increased hover intensity weighting for unknown/mystery tags.
 - Verified production build passes (Next.js 16.2.3).
+
+## 2026-04-12T17:20:43-04:00
+- Added dedicated Hackermouth terminal chat UI component at `components/hackermouth/HackermouthTerminalChat.tsx`.
+- Replaced normal character chat only on `/characters/hackermouth` with terminal-style interface (black panel, teal monospace text, `TRANSMIT` button).
+- Input placeholder now reads: `Speak. I am already listening.`
+- Assistant replies render with typewriter-style reveal to feel system-emitted instead of conversational bubbles.
+- Chat payload now uses `character_id: "hackermouth"` and `commit_id: "hackermouth_active"` for Hackermouth page requests.
+- Verified production build passes (Next.js 16.2.3).
+
+## 2026-04-12T17:31:40-04:00
+- Added user-provided Hackermouth portrait image to `public/images/hackermouth/hackermouth-user-photo.jpg`.
+- Updated Hackermouth image references in `data/characters.ts` and `types/characters.ts` to use the new portrait path.
+- Verified production build passes (Next.js 16.2.3).
+
+## 2026-04-12T17:49:58-04:00
+- Fixed Hackermouth terminal send flow in `HackermouthTerminalChat` by standardizing on `handleSend` and form-based submit handling.
+- Added Enter-key send support with guard: `onKeyDown` now sends only on `Enter` when `!shiftKey`.
+- Added `onSubmit` fallback on form (`e.preventDefault(); handleSend()`) so button click and Enter both route through the same path.
+- Added client-side request timeout (`AbortController`, 20s) to prevent stuck `loading` state from blocking future sends.
+- Kept API payload unchanged (`character_id: "hackermouth"`, `commit_id: "hackermouth_active"`) and verified build passes.
+
+## 2026-04-12T17:57:26-04:00
+- Removed form wrapper from Hackermouth terminal chat input/action area to eliminate form-submit refresh behavior.
+- Rewired send controls to direct handlers only: input `onKeyDown` (Enter + !Shift) and button `onClick` -> `handleSend`.
+- Button is now `type="button"` with `disabled={loading}` to avoid any implicit submit path.
+- Verified build passes and confirmed live `/api/chat` response with Hackermouth payload via curl.
+
+## 2026-04-12T18:14:06-04:00
+- Added client-only wrapper `components/hackermouth/HackermouthTerminalChatWrapper.tsx` using dynamic import with `{ ssr: false }`.
+- Switched `/characters/[id]` page import to wrapper component for Hackermouth terminal chat render path.
+- Verified build passes and manually sent 3 Hackermouth messages in-browser (1 click, 1 Enter, 1 click), confirming requests now fire and responses append in chat log.
+
+## 2026-04-12T18:23:41-04:00
+- Updated Hackermouth terminal chat request payload to be stateless: removed `history` from `/api/chat` body and now send only `{ character_id, commit_id, message }`.
+- Kept Hackermouth IDs fixed: `character_id: "hackermouth"`, `commit_id: "hackermouth_active"`.
+- Verified build passes and manually sent 3 Hackermouth messages in browser; all returned actual model responses (no SSH/history quoting error text).
