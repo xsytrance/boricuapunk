@@ -93,3 +93,14 @@
 - Added `/power-map` route alias redirecting to `/relationships` to support old links/bookmarks.
 - Timeline and relationships content style remains aligned with rnc.agenorr.com reference pages.
 - Build status: passing with new alias route.
+
+## 2026-04-12T12:22:15-04:00 figurines pipeline checkpoint
+- Added `/figurines` and `/figurines/review` pages for shelf-photo ingest + QA reassignment workflow.
+- Added `/api/archive/figurines` route with:
+  - `GET` list + `needsReview` filtering
+  - `POST` ingest (supports `shotType=single|group`)
+  - `PATCH` manual character assignment
+- New storage/runtime paths: `public/uploads/figurines/*` and `data/runtime/figurine-sightings.json`.
+- Matching uses vision if configured; otherwise caption descriptor ranking with stronger weighting for name/id/role tokens.
+- Group shots are supported but confidence-damped to encourage review safety.
+- Build status: passing with figurine API/UI routes included.

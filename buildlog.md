@@ -67,3 +67,11 @@ Append-only record of work on Boricuapunk.
 - Added /power-map alias route that redirects to /relationships for backward-compatible links.
 - Updated power map page eyebrow/description language to match prior feature naming.
 - Verified production build passes with /power-map included.
+
+## 2026-04-12T12:22:15-04:00
+- Added full Figurines pipeline with single/group shot support and descriptor-based identification.
+- Added new API route family: /api/archive/figurines (GET list/review, POST ingest, PATCH manual reassignment).
+- Added new UI routes: /figurines and /figurines/review, plus nav/archive links and README docs.
+- Tuned caption ranking weights so explicit figurine hints (for example “GRATS”) beat incidental description matches.
+- Validated by ingesting sample group shot; pipeline selected gratitude-frogs-grats with reduced confidence and queued review behavior.
+- Verified production build passes with figurine routes and API included.

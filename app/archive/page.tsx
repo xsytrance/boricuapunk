@@ -41,6 +41,13 @@ const pageLinks = [
     tags: ["quotes", "transmissions", "logs"],
   },
   {
+    href: "/figurines",
+    title: "Figurines",
+    copy: "Ingest shelf photos (single or group) and classify figurines against canon descriptors.",
+    category: "signals",
+    tags: ["collectibles", "shelf intel", "group shot", "review queue"],
+  },
+  {
     href: "/ships",
     title: "Ships & Skycraft",
     copy: "Track the Jibaro and the other vessels that keep the saga in motion.",

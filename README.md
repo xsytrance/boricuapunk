@@ -9,6 +9,8 @@ Current structure:
 - /lore — myth fragments
 - /locations — setting atlas
 - /logs — quote and signal feed
+- /figurines — figurine ingest + shelf intel
+- /figurines/review — low-confidence figurine review queue
 - /ships — skycraft archive with Jibaro
 - /ships/jibaro — dedicated Jibaro detail page
 - /weapons — armory archive
@@ -73,6 +75,18 @@ Activation:
 - Set OPENAI_API_KEY to enable image-based identification.
 - Optional model override: BORICUAPUNK_VISION_MODEL (default gpt-4.1-mini).
 - Without API key, pipeline falls back to caption/manuscript keyword matching.
+
+## Figurine ingestion and review
+- API route: POST /api/archive/figurines
+  - multipart/form-data fields:
+    - photo (or image)
+    - optional caption
+    - optional source (telegram|manual)
+    - optional shotType (single|group)
+- List route: GET /api/archive/figurines?limit=40
+- Review queue: GET /api/archive/figurines?needsReview=1&threshold=0.7
+- Manual reassignment: PATCH /api/archive/figurines with { sightingId, characterId }
+- Group shots are supported but intentionally confidence-damped and routed to review more aggressively.
 
 ## Local folder dropbox ingest fallback (no Telegram)
 - Drop images into: `data/dropbox/incoming/`

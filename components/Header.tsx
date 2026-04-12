@@ -23,6 +23,9 @@ export default function Header() {
           <Link href="/characters" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
             Characters
           </Link>
+          <Link href="/figurines" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
+            Figurines
+          </Link>
           <Link href="/review" className="text-[#fde68a] transition hover:text-[#ffedd5] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
             Review
           </Link>

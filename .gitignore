@@ -56,8 +56,10 @@ next-env.d.ts
 # runtime archive ingestion artifacts
 /data/runtime/*.json
 /public/uploads/characters/*
+/public/uploads/figurines/*
 !/data/runtime/.gitkeep
 !/public/uploads/characters/.gitkeep
+!/public/uploads/figurines/.gitkeep
 
 # local dropbox ingest workflow
 /data/dropbox/incoming/*
