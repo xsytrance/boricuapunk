@@ -19,6 +19,7 @@ DUPLICATES_DIR = DROP_ROOT / "duplicates"
 FAILED_DIR = DROP_ROOT / "failed"
 INDEX_PATH = ROOT / "data" / "runtime" / "dropbox-ingest-index.json"
 API_URL = os.getenv("BORICUAPUNK_INGEST_URL", "http://127.0.0.1:9998/api/archive/ingest")
+FIGURINE_API_URL = os.getenv("BORICUAPUNK_FIGURINE_INGEST_URL", "http://127.0.0.1:9998/api/archive/figurines")
 POLL_SECONDS = int(os.getenv("BORICUAPUNK_DROPBOX_POLL_SECONDS", "5"))
 
 SUPPORTED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp", ".tiff"}
@@ -74,21 +75,22 @@ def safe_move(src: Path, dst_dir: Path) -> Path:
     return candidate
 
 
-def build_multipart(file_path: Path, caption: str) -> Tuple[bytes, str]:
+def build_multipart(file_path: Path, caption: str, extra_fields: Dict[str, str] | None = None) -> Tuple[bytes, str]:
     boundary = f"----boricuapunk-{int(time.time() * 1000)}"
     file_bytes = file_path.read_bytes()
     filename = file_path.name
     mime_type = guess_mime(file_path.suffix.lower())
 
     lines = []
-    lines.append(f"--{boundary}\r\n".encode())
-    lines.append(b'Content-Disposition: form-data; name="source"\r\n\r\n')
-    lines.append(b"manual\r\n")
+    fields = {"source": "manual", "caption": caption}
+    if extra_fields:
+        fields.update(extra_fields)
 
-    lines.append(f"--{boundary}\r\n".encode())
-    lines.append(b'Content-Disposition: form-data; name="caption"\r\n\r\n')
-    lines.append(caption.encode("utf-8", errors="ignore"))
-    lines.append(b"\r\n")
+    for key, value in fields.items():
+        lines.append(f"--{boundary}\r\n".encode())
+        lines.append(f'Content-Disposition: form-data; name="{key}"\r\n\r\n'.encode())
+        lines.append(str(value).encode("utf-8", errors="ignore"))
+        lines.append(b"\r\n")
 
     lines.append(f"--{boundary}\r\n".encode())
     lines.append(
@@ -117,11 +119,31 @@ def guess_mime(ext: str) -> str:
     }.get(ext, "application/octet-stream")
 
 
-def ingest_file(file_path: Path) -> IngestResult:
-    caption = f"dropbox ingest {file_path.stem}"
-    body, content_type = build_multipart(file_path, caption)
+def is_figurine_file(file_path: Path) -> bool:
+    return file_path.stem.lower().startswith("fig_")
 
-    req = urlrequest.Request(API_URL, data=body, method="POST")
+
+def detect_shot_type(file_path: Path) -> str:
+    stem = file_path.stem.lower()
+    group_tokens = ("_group", "-group", " group", "_shelf", "-shelf")
+    if stem.startswith("figg_") or any(token in stem for token in group_tokens):
+        return "group"
+    return "single"
+
+
+def resolve_ingest_target(file_path: Path) -> Tuple[str, Dict[str, str], str]:
+    if is_figurine_file(file_path):
+        shot_type = detect_shot_type(file_path)
+        return FIGURINE_API_URL, {"shotType": shot_type}, f"figurine:{shot_type}"
+    return API_URL, {}, "character"
+
+
+def ingest_file(file_path: Path) -> IngestResult:
+    target_url, extra_fields, target_label = resolve_ingest_target(file_path)
+    caption = f"dropbox ingest {file_path.stem}"
+    body, content_type = build_multipart(file_path, caption, extra_fields)
+
+    req = urlrequest.Request(target_url, data=body, method="POST")
     req.add_header("Content-Type", content_type)
 
     try:
@@ -129,10 +151,10 @@ def ingest_file(file_path: Path) -> IngestResult:
             raw = resp.read().decode("utf-8", errors="replace")
             payload = json.loads(raw)
             if payload.get("ok"):
-                return IngestResult(ok=True, status=resp.status, message="ingested")
-            return IngestResult(ok=False, status=resp.status, message=payload.get("error", "unknown ingest error"))
+                return IngestResult(ok=True, status=resp.status, message=f"ingested ({target_label})")
+            return IngestResult(ok=False, status=resp.status, message=payload.get("error", f"unknown ingest error ({target_label})"))
     except Exception as exc:
-        return IngestResult(ok=False, status=0, message=str(exc))
+        return IngestResult(ok=False, status=0, message=f"{target_label}: {exc}")
 
 
 def process_one(file_path: Path, index: Dict) -> None:
@@ -175,7 +197,8 @@ def main() -> int:
     index = load_index()
 
     print(f"watching: {INCOMING_DIR}")
-    print(f"ingest API: {API_URL}")
+    print(f"character ingest API: {API_URL}")
+    print(f"figurine ingest API (prefix fig_): {FIGURINE_API_URL}")
 
     if once:
         scan_once(index)

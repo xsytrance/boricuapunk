@@ -75,3 +75,9 @@ Append-only record of work on Boricuapunk.
 - Tuned caption ranking weights so explicit figurine hints (for example “GRATS”) beat incidental description matches.
 - Validated by ingesting sample group shot; pipeline selected gratitude-frogs-grats with reduced confidence and queued review behavior.
 - Verified production build passes with figurine routes and API included.
+
+## 2026-04-12T12:28:21-04:00
+- Extended scripts/dropbox_ingest_watcher.py with filename-based routing: files prefixed `fig_` now auto-post to `/api/archive/figurines`.
+- Added figurine shot-type auto-hints in watcher (`figg_` or `_group`/`-group` => `shotType=group`, otherwise `single`).
+- Added `BORICUAPUNK_FIGURINE_INGEST_URL` env override and startup logging for both character + figurine ingest endpoints.
+- Updated README local dropbox fallback docs with new `fig_` routing and group/single naming conventions.

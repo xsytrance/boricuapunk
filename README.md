@@ -92,13 +92,18 @@ Activation:
 - Drop images into: `data/dropbox/incoming/`
 - Start watcher: `python3 scripts/dropbox_ingest_watcher.py`
 - One-shot pass (no loop): `python3 scripts/dropbox_ingest_watcher.py --once`
-- The watcher calls `/api/archive/ingest` and then moves files:
+- Filename routing in incoming folder:
+  - `fig_*.jpg/png/...` -> `/api/archive/figurines` (auto figurine ingest)
+  - everything else -> `/api/archive/ingest` (character ingest)
+  - figurine shotType defaults to `single`; use `figg_` or include `_group`/`-group` in filename for `shotType=group`
+- After ingest, watcher moves files:
   - success -> `data/dropbox/processed/`
   - exact duplicate (SHA256) -> `data/dropbox/duplicates/`
   - ingest failure -> `data/dropbox/failed/`
 - Duplicate index file: `data/runtime/dropbox-ingest-index.json`
 - Optional env overrides:
   - `BORICUAPUNK_INGEST_URL` (default `http://127.0.0.1:9998/api/archive/ingest`)
+  - `BORICUAPUNK_FIGURINE_INGEST_URL` (default `http://127.0.0.1:9998/api/archive/figurines`)
   - `BORICUAPUNK_DROPBOX_POLL_SECONDS` (default `5`)
 
 ## Notes

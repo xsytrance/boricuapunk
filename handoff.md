@@ -104,3 +104,12 @@
 - Matching uses vision if configured; otherwise caption descriptor ranking with stronger weighting for name/id/role tokens.
 - Group shots are supported but confidence-damped to encourage review safety.
 - Build status: passing with figurine API/UI routes included.
+
+## 2026-04-12T12:28:21-04:00 dropbox figurine auto-route checkpoint
+- Updated `scripts/dropbox_ingest_watcher.py` so incoming filenames prefixed `fig_` are ingested through `/api/archive/figurines` automatically.
+- Non-`fig_` files continue using `/api/archive/ingest` (character pipeline).
+- Added shotType hinting from filename for figurines:
+  - `figg_...` or names containing `_group` / `-group` => `shotType=group`
+  - otherwise => `shotType=single`
+- New optional env override: `BORICUAPUNK_FIGURINE_INGEST_URL` (default `http://127.0.0.1:9998/api/archive/figurines`).
+- README updated with naming conventions for mixed drop-folder workflows (characters + figurines).
