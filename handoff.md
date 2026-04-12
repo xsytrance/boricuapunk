@@ -9,7 +9,7 @@
 - Telegram webhook auto-ingestion implemented.
 
 ## Runtime / environment
-- Local dev target: http://127.0.0.1:9999
+- Local dev target: http://127.0.0.1:9998
 - Public endpoint target: https://rnc.agenorr.com
 - GitHub pushes in this environment use PAT auth.
 
@@ -31,7 +31,7 @@
 - Watcher script: scripts/dropbox_ingest_watcher.py.
 - Processed files move to data/dropbox/processed; exact duplicates move to data/dropbox/duplicates; failures move to data/dropbox/failed.
 - Duplicate index persisted at data/runtime/dropbox-ingest-index.json.
-- Ingest target defaults to http://127.0.0.1:9999/api/archive/ingest (override with BORICUAPUNK_INGEST_URL).
+- Ingest target defaults to http://127.0.0.1:9998/api/archive/ingest (override with BORICUAPUNK_INGEST_URL).
 
 ## 2026-04-11T08:08:42-04:00 readiness checkpoint
 - Preferred ingest path now supports local folder drop workflow (no Telegram dependency).
@@ -59,3 +59,17 @@
   2) Restart cloudflared on Windows
   3) Ensure VPS app is running/autostarting on 9998
   4) Validate https://boricuapunk.agenorr.com and API routes
+
+## 2026-04-12T09:39:36-04:00 archive discovery checkpoint
+- Added /archive Route Finder block (search + category filter) to speed navigation across growing routes.
+- Route metadata now includes category/tags for filterable archive discovery.
+- Local/default references now consistently point to port 9998 in README + handoff ingest/runtime lines.
+- Build status: passing (Next.js 16.2.3); route set unchanged except behavior upgrade on /archive.
+
+## 2026-04-12T09:49:16-04:00 faction/location detail expansion checkpoint
+- Added new detail route families:
+  - /factions/[id] (SSG via generateStaticParams)
+  - /locations/[slug] (SSG via generateStaticParams)
+- Added cross-links from index cards: /factions and /locations now deep-link into dossier pages.
+- Added shared location source-of-truth: types/locations.ts (used by index + detail routes).
+- Build status: passing (Next.js 16.2.3); static generation includes faction and location detail paths.

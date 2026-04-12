@@ -1,71 +1,6 @@
 import Link from "next/link";
 import ArchivePageShell from "@/components/ArchivePageShell";
-
-const locations = [
-  {
-    name: "Flower City",
-    role: "Primary cityscape",
-    faction: "Flower City Interests",
-    note: "A neon-parasol power zone where elegance and cruelty share the same hallway.",
-    links: ["/lore", "/factions"],
-  },
-  {
-    name: "People of Pisces",
-    role: "Seven-story ale joint",
-    faction: "People of Pisces",
-    note: "A musician’s nest, a board for gigs, and one of the saga’s most memorable meeting grounds.",
-    links: ["/characters", "/logs"],
-  },
-  {
-    name: "Central Socket",
-    role: "Mythic infrastructure",
-    faction: "Red Noodle Clan",
-    note: "The stolen heart of the archive’s tech mythology—where betrayal and protocol overlap.",
-    links: ["/lore", "/logs"],
-  },
-  {
-    name: "Piano Factory",
-    role: "Acoustic power plant",
-    faction: "Skywave Collective",
-    note: "Ventilation, jazz, and judgment. The building itself feels like an instrument with a memory.",
-    links: ["/lore", "/factions"],
-  },
-  {
-    name: "Salt Ring Enclave",
-    role: "Dockside treaty zone",
-    faction: "Salt Ring Enclave",
-    note: "Brine, rust, silence, and blacked-out windows—where bargains last longer than names.",
-    links: ["/factions", "/logs"],
-  },
-  {
-    name: "Bamboo Mountain",
-    role: "Kismet ridge",
-    faction: "House of Yabu",
-    note: "A stage for ancestral power, grief, and the kind of lineage that changes your hand on the weapon.",
-    links: ["/lore", "/characters"],
-  },
-  {
-    name: "Boricuapunk Archive",
-    role: "Living dossier system",
-    faction: "Red Noodle Clan",
-    note: "The site’s own in-world frame: not a museum, but an active archive under construction.",
-    links: ["/archive", "/about"],
-  },
-  {
-    name: "Old San Juan Sprawl",
-    role: "Harbor network",
-    faction: "Dockside Syndicate",
-    note: "Debts travel fast here. Tides do the accounting.",
-    links: ["/factions", "/characters"],
-  },
-  {
-    name: "Jibaro Dock & Launch Arc",
-    role: "Skycraft origin site",
-    faction: "Red Noodle Clan",
-    note: "The natural place to think about the Jibaro, its repairs, and the ship’s place in the archive’s motion.",
-    links: ["/ships", "/timeline", "/relationships"],
-  },
-];
+import { locations } from "@/types/locations";
 
 export default function LocationsPage() {
   return (
@@ -89,13 +24,21 @@ export default function LocationsPage() {
               {location.role}
             </p>
             <h2 className="mt-3 font-[family-name:var(--font-display)] text-2xl uppercase tracking-[0.04em] text-[#fecaca]">
-              {location.name}
+              <Link href={`/locations/${location.slug}`} className="transition hover:text-[#ffedd5]">
+                {location.name}
+              </Link>
             </h2>
             <p className="mt-2 text-sm font-bold uppercase tracking-[0.18em] text-[#fde68a]">
               {location.faction}
             </p>
             <p className="mt-3 text-sm leading-relaxed text-zinc-400">{location.note}</p>
             <div className="mt-4 flex flex-wrap gap-2">
+              <Link
+                href={`/locations/${location.slug}`}
+                className="rounded border border-[#f97316]/70 bg-black/65 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[#ffedd5] transition hover:border-[#fb923c]"
+              >
+                open dossier
+              </Link>
               {location.links.map((href) => (
                 <Link
                   key={href}

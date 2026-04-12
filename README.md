@@ -31,7 +31,7 @@ Production build includes:
 - /rnc/chat
 
 ## Run locally
-- npm run dev (http://127.0.0.1:9999)
+- npm run dev (http://127.0.0.1:9998)
 - npm run build
 - npm run start
 
@@ -84,7 +84,7 @@ Activation:
   - ingest failure -> `data/dropbox/failed/`
 - Duplicate index file: `data/runtime/dropbox-ingest-index.json`
 - Optional env overrides:
-  - `BORICUAPUNK_INGEST_URL` (default `http://127.0.0.1:9999/api/archive/ingest`)
+  - `BORICUAPUNK_INGEST_URL` (default `http://127.0.0.1:9998/api/archive/ingest`)
   - `BORICUAPUNK_DROPBOX_POLL_SECONDS` (default `5`)
 
 ## Notes

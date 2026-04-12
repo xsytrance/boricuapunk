@@ -36,7 +36,9 @@ export default function FactionsPage() {
                     {faction.id}
                   </p>
                   <h2 className="mt-2 font-[family-name:var(--font-display)] text-3xl uppercase tracking-[0.04em] text-[#fecaca]">
-                    {faction.name}
+                    <Link href={`/factions/${faction.id}`} className="transition hover:text-[#ffedd5]">
+                      {faction.name}
+                    </Link>
                   </h2>
                 </div>
                 <span
@@ -51,6 +53,13 @@ export default function FactionsPage() {
               <p className="mt-4 text-sm leading-relaxed text-zinc-400 md:text-base">
                 {faction.description}
               </p>
+
+              <Link
+                href={`/factions/${faction.id}`}
+                className="mt-4 inline-flex rounded border border-[#f97316]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffedd5] transition hover:border-[#fb923c]"
+              >
+                open dossier
+              </Link>
 
               <div className="mt-5 border-t border-[#451a1a]/70 pt-4">
                 <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-600">

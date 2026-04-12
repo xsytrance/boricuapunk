@@ -37,3 +37,15 @@ Append-only record of work on Boricuapunk.
 ## 2026-04-11T11:54:37-04:00
 - Updated experimental rollout docs to use VPS app port 9998 (not 9999).
 - Prepared session-reset handoff package for next chat with exact Cloudflare ingress block and remaining activation steps.
+
+## 2026-04-12T09:39:36-04:00
+- Added Archive Route Finder on /archive with mobile-safe search + category filter for faster navigation.
+- Tagged archive hub routes with categories/tags to support route discovery (people/power/story/world/signals/arsenal).
+- Synced docs/runtime defaults to 9998 where still listing 9999 (README + handoff ingest/local URL references).
+- Verified production build passes and includes /archive with unchanged route map coverage.
+
+## 2026-04-12T09:49:16-04:00
+- Added dynamic faction detail dossiers at /factions/[id] with generateStaticParams, alignment badge, member links, and location cross-links.
+- Added dynamic location detail dossiers at /locations/[slug] with generateStaticParams, faction anchor links, connected-route links, and linked-figure links.
+- Moved location dataset into shared types/locations.ts and updated /locations + /factions index cards to link into new detail routes.
+- Verified production build passes and now statically generates faction/location detail paths.
