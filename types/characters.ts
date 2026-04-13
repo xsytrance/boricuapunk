@@ -248,14 +248,37 @@ export const characters: Character[] = [
   {
     id: "tang-nia-obing",
     name: "Tang Nia Obing",
-    role: "Slain beauty of Bamboo Mountain",
+    role: "First Jatte Ren",
     description:
-      "Memory that steers Tonyo’s comet; Lily Pad sin carved into saga as loss, not footnote.",
-    tags: ["legend", "mystery", "spiritual", "ally"],
+      "Rabbit-eared cyberhominid and self-reliant woman-at-arms, reawakened in Hangetsu City and driven by instinct, grief, and the whisper of Receperint mi.",
+    tags: ["legend", "mystery", "spiritual", "ally", "warrior"],
     image: "/characters/placeholder-1.svg",
     faction: "red-noodle-clan",
-    threatLevel: "unknown",
-    presence: "myth",
+    threatLevel: "high",
+    presence: "physical",
+  },
+  {
+    id: "virina-brila",
+    name: "Virina Brila",
+    role: "The coveted blade",
+    description:
+      "Inky black-haired road synthesizer and modern flute-playing punk of Flower City, haunted by a dream blade until her anomaly form is revealed.",
+    tags: ["human", "mystery", "spiritual", "legend"],
+    image: "/characters/placeholder-2.svg",
+    faction: "flower-city-court",
+    threatLevel: "high",
+    presence: "physical",
+  },
+  {
+    id: "oranga-danto",
+    name: "Oranga Danto",
+    role: "Head of State",
+    description:
+      "Elected handshaker who staged relief theatrics while Borincano suffered, turning governance into spectacle and making himself a target.",
+    tags: ["human", "corrupt", "enemy", "observer"],
+    image: "/characters/placeholder-3.svg",
+    threatLevel: "medium",
+    presence: "physical",
   },
   {
     id: "neverminds",
