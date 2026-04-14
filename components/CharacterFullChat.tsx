@@ -38,50 +38,26 @@ function TypewriterLine({ text, animate }: { text: string; animate: boolean }) {
   }, [animate, text]);
 
   return (
-    <p className="break-words text-xs leading-relaxed text-[#fecaca] md:text-sm">
+    <p className="break-words text-sm leading-relaxed text-[#fecaca] md:text-base">
       {text.slice(0, visibleCount)}
       {animate && visibleCount < text.length ? (
-        <span className="ml-0.5 inline-block h-3 w-1 animate-pulse bg-[#fb923c] align-middle" />
+        <span className="ml-0.5 inline-block h-3 w-1 animate-pulse bg-[#fb923c] align-middle md:h-4" />
       ) : null}
     </p>
   );
 }
 
-const TYPED_PLACEHOLDER_FULL = "Speak. I am already listening.";
-
 type Props = {
   characterId: string;
-  /** When true (e.g. after haunted reveal), types the immersive placeholder once on mount. */
-  typedPlaceholderOnMount?: boolean;
-  /** When false, hides the link to `/chat/[id]` (full-page route). */
-  showFullExperienceLink?: boolean;
+  characterName: string;
 };
 
-export default function CharacterTalkButton({
-  characterId,
-  typedPlaceholderOnMount = false,
-  showFullExperienceLink = true,
-}: Props) {
+export default function CharacterFullChat({ characterId, characterName }: Props) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const nextIdRef = useRef(1);
   const logRef = useRef<HTMLDivElement | null>(null);
-  const [typedPlaceholder, setTypedPlaceholder] = useState("");
-
-  useEffect(() => {
-    if (!typedPlaceholderOnMount) {
-      setTypedPlaceholder("");
-      return;
-    }
-    let i = 0;
-    const id = window.setInterval(() => {
-      i += 1;
-      setTypedPlaceholder(TYPED_PLACEHOLDER_FULL.slice(0, i));
-      if (i >= TYPED_PLACEHOLDER_FULL.length) window.clearInterval(id);
-    }, 28);
-    return () => window.clearInterval(id);
-  }, [typedPlaceholderOnMount]);
 
   const latestAssistantId = useMemo(() => {
     for (let i = messages.length - 1; i >= 0; i -= 1) {
@@ -146,20 +122,33 @@ export default function CharacterTalkButton({
   }
 
   return (
-    <section className="rounded-md border-[3px] border-[#7f1d1d]/70 bg-black/60 p-5 font-mono shadow-[inset_0_0_34px_rgba(0,0,0,0.65),0_0_40px_rgba(194,65,12,0.12)] md:p-6">
-      <div className="flex items-center justify-between border-b border-[#9a3412]/70 pb-2">
-        <p className="text-[10px] font-bold uppercase tracking-[0.38em] text-[#fb923c]">Character Chat</p>
-        <span className="text-[10px] uppercase tracking-[0.18em] text-[#fde68a]/90">live signal</span>
+    <div className="flex min-h-[100dvh] flex-col bg-[#050505] px-3 pb-6 pt-4 font-mono md:px-6 md:pt-6">
+      <div className="mb-4 shrink-0">
+        <Link
+          href={`/characters/${characterId}`}
+          className="inline-block text-[10px] font-bold uppercase tracking-[0.28em] text-[#c2410c] transition hover:text-[#fb923c]"
+        >
+          ← Back to dossier
+        </Link>
       </div>
+
+      <header className="shrink-0 text-center">
+        <h1 className="font-[family-name:var(--font-display)] text-3xl uppercase tracking-[0.08em] text-[#fecaca] [text-shadow:0_0_32px_rgba(251,146,60,0.55),0_0_60px_rgba(194,65,12,0.35)] md:text-4xl">
+          {characterName}
+        </h1>
+        <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#fde68a]/90 md:text-xs">
+          People of Pisces — a seven-story musician&apos;s tavern
+        </p>
+      </header>
 
       <div
         ref={logRef}
-        className="mt-4 min-h-[400px] overflow-y-auto rounded border border-[#9a3412]/70 bg-black/65 p-4 shadow-[inset_0_0_24px_rgba(0,0,0,0.5)]"
+        className="mx-auto mt-6 h-[80vh] min-h-[240px] w-full max-w-4xl shrink-0 overflow-y-auto rounded-md border-[3px] border-[#9a3412]/80 bg-black/70 p-4 shadow-[inset_0_0_40px_rgba(0,0,0,0.65),0_0_36px_rgba(194,65,12,0.12)] md:p-5"
       >
         {messages.length === 0 ? (
           <p className="text-sm text-zinc-500">Start a conversation...</p>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {messages.map((message) => (
               <div key={message.id}>
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#fb923c]">
@@ -168,7 +157,7 @@ export default function CharacterTalkButton({
                 {message.role === "assistant" ? (
                   <TypewriterLine text={message.content} animate={latestAssistantId === message.id} />
                 ) : (
-                  <p className="mt-1 break-words text-sm leading-relaxed text-zinc-300">{message.content}</p>
+                  <p className="mt-1 break-words text-sm leading-relaxed text-zinc-300 md:text-base">{message.content}</p>
                 )}
               </div>
             ))}
@@ -179,7 +168,7 @@ export default function CharacterTalkButton({
         )}
       </div>
 
-      <div className="mt-4 flex gap-2">
+      <div className="mx-auto mt-4 flex w-full max-w-4xl shrink-0 gap-2">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -189,7 +178,7 @@ export default function CharacterTalkButton({
               void handleSend();
             }
           }}
-          placeholder={typedPlaceholderOnMount ? typedPlaceholder || " " : "Say something..."}
+          placeholder="Speak. I am already listening."
           className="w-full rounded border border-[#9a3412]/70 bg-[#0a0a0a] px-4 py-3 text-sm text-zinc-200 outline-none placeholder:text-zinc-600 focus:border-[#f97316]"
         />
         <button
@@ -198,22 +187,11 @@ export default function CharacterTalkButton({
             void handleSend();
           }}
           disabled={!input.trim() || loading}
-          className="rounded border border-[#9a3412]/70 bg-gradient-to-b from-[#7c2d12] to-[#431407] px-6 py-3 font-mono text-sm font-bold uppercase tracking-[0.2em] text-[#fde68a] transition hover:border-[#f97316] hover:from-[#9a3412] hover:to-[#7c2d12] disabled:opacity-50 disabled:hover:border-[#9a3412]/70 disabled:hover:from-[#7c2d12] disabled:to-[#431407]"
+          className="rounded border border-[#9a3412]/70 bg-gradient-to-b from-[#7c2d12] to-[#431407] px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#fde68a] transition hover:border-[#f97316] hover:from-[#9a3412] hover:to-[#7c2d12] disabled:opacity-50 md:px-6 md:text-sm"
         >
           Send
         </button>
       </div>
-
-      {showFullExperienceLink ? (
-        <div className="mt-3 flex justify-end">
-          <Link
-            href={`/chat/${characterId}`}
-            className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#c2410c] transition hover:text-[#fb923c]"
-          >
-            Enter full experience →
-          </Link>
-        </div>
-      ) : null}
-    </section>
+    </div>
   );
 }

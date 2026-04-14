@@ -3,7 +3,7 @@ import { Bebas_Neue, Geist, Geist_Mono } from "next/font/google";
 import HackermouthProvider from "@/components/hackermouth/HackermouthProvider";
 import HackermouthNode from "@/components/hackermouth/HackermouthNode";
 import HackermouthPersistentOverlay from "@/components/hackermouth/HackermouthPersistentOverlay";
-import Header from "@/components/Header";
+import ConditionalHeader from "@/components/ConditionalHeader";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -47,7 +47,7 @@ export default function RootLayout({
             id="hm-app-shell"
             className="relative flex min-h-screen w-full flex-col overflow-hidden transition-transform duration-75 ease-out will-change-transform"
           >
-            <Header />
+            <ConditionalHeader />
             <div className="flex min-h-0 min-w-0 flex-1 flex-col">{children}</div>
           </div>
           <HackermouthNode />
