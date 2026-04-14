@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Geist, Geist_Mono } from "next/font/google";
 import HackermouthProvider from "@/components/hackermouth/HackermouthProvider";
 import HackermouthNode from "@/components/hackermouth/HackermouthNode";
@@ -29,6 +29,11 @@ export const metadata: Metadata = {
   },
   description:
     "A living archive for the Red Noodle Clan universe — characters, factions, lore, locations, and logs.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
