@@ -16,10 +16,10 @@ export default function CharacterTalkButtonWrapper({ characterId }: Props) {
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
-    const id = window.requestAnimationFrame(() => {
+    const id = window.setTimeout(() => {
       setEntered(true);
-    });
-    return () => window.cancelAnimationFrame(id);
+    }, 50);
+    return () => window.clearTimeout(id);
   }, []);
 
   return (
