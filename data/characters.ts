@@ -45,7 +45,7 @@ export const characters: Character[] = [
       primary: "/images/manus/manus-hero.png",
       gallery: ["/images/manus/manus-alt.png"],
     },
-    image: "/images/manus/manus-hero.png",
+    image: "/characters/manus-artwork-01.jpg",
     images: ["/images/manus/manus-hero.png", "/images/manus/manus-alt.png"],
     faction: "Red Noodle Clan",
     tag: "CLASSIFIED // WATCHER",

@@ -65,8 +65,22 @@ export default function CharacterFullChat({ characterId, characterName }: Props)
   const character = getCharacterById(characterId);
   const displayName = character?.name ?? characterName;
   const faction = character?.faction ?? "Unknown";
-  const imageSrc = character?.image ?? "/characters/placeholder-1.svg";
   const statusTag = character?.tag ?? "CLASSIFIED";
+  const bannerCandidates = useMemo(() => {
+    const list = [
+      character?.image || "",
+      "/images/manus/manus-hero.png",
+      "/characters/manus-neco.svg",
+    ].filter(Boolean);
+    return Array.from(new Set(list));
+  }, [character?.image]);
+  const [bannerIndex, setBannerIndex] = useState(0);
+
+  useEffect(() => {
+    setBannerIndex(0);
+  }, [characterId, bannerCandidates]);
+
+  const bannerSrc = bannerCandidates[bannerIndex] ?? "/characters/manus-neco.svg";
 
   const latestAssistantId = useMemo(() => {
     for (let i = messages.length - 1; i >= 0; i -= 1) {
@@ -131,7 +145,7 @@ export default function CharacterFullChat({ characterId, characterName }: Props)
   }
 
   return (
-    <div className="relative h-[100dvh] overflow-hidden bg-[#050505] font-mono text-stone-200">
+    <div className="relative flex h-[100dvh] flex-col overflow-hidden bg-[#050505] font-mono text-stone-200">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0 opacity-20"
@@ -141,62 +155,73 @@ export default function CharacterFullChat({ characterId, characterName }: Props)
         }}
       />
 
-      <div className="relative z-10 flex h-full flex-col">
-        <header className="h-[72px] shrink-0 border-b border-[#7f1d1d]/80 bg-black/85 px-3">
-          <div className="grid h-full grid-cols-[auto_1fr_auto] items-center gap-2">
+      <div className="relative z-10 flex h-full min-h-0 flex-col">
+        <header className="h-[72px] max-h-[80px] shrink-0 border-b border-[#7f1d1d]/80 bg-black/88 px-3">
+          <div className="flex h-full items-center justify-between gap-2">
             <Link
               href={`/characters/${characterId}`}
-              className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#fb923c] transition hover:text-[#fde68a]"
+              className="shrink-0 text-[10px] font-bold uppercase tracking-[0.18em] text-[#fb923c] transition hover:text-[#fde68a]"
             >
               ← Back
             </Link>
 
-            <p className="truncate text-center font-[family-name:var(--font-display)] text-lg uppercase tracking-[0.08em] text-[#fecaca]">
-              {displayName}
-            </p>
-
-            <span className="rounded border border-[#9a3412]/70 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-[#fde68a]">
-              {statusTag}
-            </span>
+            <div className="flex min-w-0 items-center gap-2">
+              <p className="truncate text-sm font-[family-name:var(--font-display)] uppercase tracking-[0.08em] text-[#fecaca]">
+                {displayName}
+              </p>
+              <span className="shrink-0 rounded border border-[#9a3412]/70 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-[#fde68a]">
+                {statusTag}
+              </span>
+            </div>
           </div>
         </header>
 
-        <section className="relative h-[108px] shrink-0 overflow-hidden border-b border-[#7f1d1d]/70">
-          <Image src={imageSrc} alt={displayName} fill className="object-cover object-center" unoptimized priority />
+        <section className="relative h-[110px] max-h-[120px] shrink-0 overflow-hidden border-b border-[#7f1d1d]/70">
+          <Image
+            src={bannerSrc}
+            alt={displayName}
+            fill
+            className="object-cover object-center"
+            unoptimized
+            priority
+            onError={() => {
+              setBannerIndex((prev) => {
+                const next = prev + 1;
+                return next < bannerCandidates.length ? next : prev;
+              });
+            }}
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/25" />
-          <div className="absolute inset-x-0 bottom-0 p-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#fb923c]">{SCENE_LABEL}</p>
-            <p className="mt-1 text-[11px] uppercase tracking-[0.14em] text-[#fecaca]/90">{faction}</p>
+          <div className="absolute inset-x-0 bottom-0 p-2.5">
+            <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#fb923c]">{SCENE_LABEL}</p>
+            <p className="mt-0.5 text-[10px] uppercase tracking-[0.12em] text-[#fecaca]/90">{faction}</p>
           </div>
         </section>
 
-        <div
-          ref={logRef}
-          className="min-h-0 flex-1 overflow-y-auto px-3 py-3"
-        >
-        {messages.length === 0 ? (
-          <p className="text-xs uppercase tracking-[0.2em] text-[#fb923c]/85">[SIGNAL OPEN — SPEAK]</p>
-        ) : (
-          <div className="space-y-4">
-            {messages.map((message) => (
-              <div key={message.id}>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#fb923c]">
-                  {message.role === "user" ? "[You]" : `[${characterId}]`}
+        <div ref={logRef} className="min-h-0 flex-1 overflow-y-auto px-3 py-3">
+          {messages.length === 0 ? (
+            <p className="text-xs uppercase tracking-[0.2em] text-[#fb923c]/85">[SIGNAL OPEN — SPEAK]</p>
+          ) : (
+            <div className="space-y-4">
+              {messages.map((message) => (
+                <div key={message.id}>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#fb923c]">
+                    {message.role === "user" ? "[You]" : `[${characterId}]`}
+                  </p>
+                  {message.role === "assistant" ? (
+                    <TypewriterLine text={message.content} animate={latestAssistantId === message.id} />
+                  ) : (
+                    <p className="mt-1 break-words text-sm leading-relaxed text-zinc-300">{message.content}</p>
+                  )}
+                </div>
+              ))}
+              {loading ? (
+                <p className="animate-pulse text-xs uppercase tracking-[0.16em] text-[#fb923c]">
+                  [SIGNAL] decoding response...
                 </p>
-                {message.role === "assistant" ? (
-                  <TypewriterLine text={message.content} animate={latestAssistantId === message.id} />
-                ) : (
-                  <p className="mt-1 break-words text-sm leading-relaxed text-zinc-300">{message.content}</p>
-                )}
-              </div>
-            ))}
-            {loading ? (
-              <p className="animate-pulse text-xs uppercase tracking-[0.16em] text-[#fb923c]">
-                [SIGNAL] decoding response...
-              </p>
-            ) : null}
-          </div>
-        )}
+              ) : null}
+            </div>
+          )}
         </div>
 
         <div className="sticky bottom-0 shrink-0 border-t border-[#9a3412]/80 bg-black/92 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
