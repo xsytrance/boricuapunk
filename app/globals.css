@@ -822,19 +822,3 @@ body.hm-archive-signal {
 .archive-card-pulse {
   animation: archive-card-pulse-kf 2.8s ease-in-out infinite;
 }
-
-/* Haunted chat discovery — Hackermouth quote bleed */
-@keyframes pob-quote-flicker {
-  0% {
-    opacity: 0.35;
-    filter: brightness(0.9);
-  }
-  100% {
-    opacity: 1;
-    filter: brightness(1.25);
-  }
-}
-
-.pob-quote-flicker-line {
-  animation: pob-quote-flicker 0.9s ease-in-out infinite alternate;
-}
