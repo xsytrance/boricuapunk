@@ -18,7 +18,9 @@ function fail(message: string, status: number): ApiError {
 }
 
 function sh(value: string): string {
-  return `'${value.replace(/'/g, `'\"'\"'`)}'`;
+  // Single-quote for POSIX shells, escaping apostrophes as: '\''.
+  // This avoids embedded double quotes that can break our surrounding bash -lc "...".
+  return `'${value.replace(/'/g, "'\\''")}'`;
 }
 
 export async function POST(request: Request) {
