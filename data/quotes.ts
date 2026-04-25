@@ -31,6 +31,30 @@ export const quotes: Quote[] = [
     style: "streetfighter",
   },
   {
+    id: "q-lemon-1",
+    characterId: "exiled-lemon-monk",
+    text: "Memory cannot be slain. It can only be taught how to breathe without drowning the living.",
+    style: "streetfighter",
+  },
+  {
+    id: "q-lemon-2",
+    characterId: "exiled-lemon-monk",
+    text: "I was exiled for breaking the seal. The seal deserved exile more than I did.",
+    style: "graffiti",
+  },
+  {
+    id: "q-lemon-3",
+    characterId: "exiled-lemon-monk",
+    text: "A lemon is a sun with discipline. Hold it long enough and even grief remembers its shape.",
+    style: "graffiti",
+  },
+  {
+    id: "q-lemon-4",
+    characterId: "exiled-lemon-monk",
+    text: "My blade does not erase the wound. It peels the lie wrapped around it.",
+    style: "streetfighter",
+  },
+  {
     id: "q-vera-1",
     characterId: "vera-cordoba",
     text: "You want a signal? Touch the rail and pray.",
@@ -228,6 +252,15 @@ export const quotes: Quote[] = [
 
 export function getQuotesForCharacter(characterId: string): Quote[] {
   return quotes.filter((q) => q.characterId === characterId);
+}
+
+export function getRandomQuoteForCharacter(
+  characterId: string,
+): Quote | undefined {
+  const pool = getQuotesForCharacter(characterId);
+  if (!pool.length) return undefined;
+  const index = Math.floor(randomUnit() * pool.length);
+  return pool[index]!;
 }
 
 function randomUnit(): number {

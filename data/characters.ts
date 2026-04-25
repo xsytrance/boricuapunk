@@ -36,6 +36,18 @@ export const hiddenCharacters: Character[] = [
 
 export const characters: Character[] = [
   {
+    id: "exiled-lemon-monk",
+    name: "The Exiled Lemon Monk",
+    title: "Citrus Heretic // Keeper of the Hongo Codex",
+    description:
+      "Banished from the Rain Circuit for preserving too much memory and refusing to let the Hongo Codex remain sealed. When ancestral data floods Neo-Borinken, he answers with citrus wards, golden sanctuaries, and a blade that peels corruption away without harming truth.",
+    image: "/images/characters/exiled-lemon-monk.jpg",
+    images: ["/images/characters/exiled-lemon-monk.jpg"],
+    faction: "Red Noodle Clan",
+    tag: "EXILE // MEMORY WARDEN",
+    stats: { wardcraft: 10, memory: 10, mercy: 8, threat: "high" },
+  },
+  {
     id: "manus-neco",
     name: "Manus Neco",
     title: "The Flat-Footed Astronaut",

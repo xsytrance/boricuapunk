@@ -8,6 +8,7 @@ import { characters as sagaCharacters } from "@/types/characters";
 const DOSSIER_IDS = new Set(legacyDossierIds.map((c) => c.id));
 const ALL_FACTION = "all";
 const MANUSCRIPT_PRIORITY = [
+  "exiled-lemon-monk",
   "hackermouth",
   "manus-neco",
   "the-jibaro",

@@ -1,28 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import QuoteDisplay from "@/components/QuoteDisplay";
 import { getCharacterById } from "@/data/characters";
-import { getRandomQuote, type Quote } from "@/data/quotes";
+import { getRandomQuote, getRandomQuoteForCharacter, type Quote } from "@/data/quotes";
 import { getSagaCharacterById } from "@/types/characters";
 
 type Props = {
-  /** Page subject; reserved for future “prefer this character’s pool” logic */
+  /** Page subject; quotes should prefer this character’s own pool on refresh. */
   characterId: string;
 };
 
 export default function CharacterQuoteSection({ characterId }: Props) {
   const pathname = usePathname();
-  const [quote, setQuote] = useState<Quote | null>(null);
+  const quote = useMemo<Quote | null>(() => {
+    void pathname;
+    return getRandomQuoteForCharacter(characterId) ?? getRandomQuote();
+  }, [pathname, characterId]);
 
   useEffect(() => {
-    const q = getRandomQuote();
-    setQuote(q);
+    if (!quote) return;
 
     let takeoverTimer: number | undefined;
 
-    if (q?.characterId === "hackermouth") {
+    if (quote.characterId === "hackermouth") {
       document.body.classList.add("hm-quote-takeover");
 
       takeoverTimer = window.setTimeout(() => {
@@ -36,7 +38,7 @@ export default function CharacterQuoteSection({ characterId }: Props) {
       if (takeoverTimer !== undefined) window.clearTimeout(takeoverTimer);
       document.body.classList.remove("hm-quote-takeover");
     };
-  }, [pathname, characterId]);
+  }, [quote]);
 
   if (!quote) return null;
 

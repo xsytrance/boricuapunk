@@ -95,5 +95,11 @@ export const factions: Faction[] = [
 ];
 
 export function getFactionById(id: string): Faction | undefined {
-  return factions.find((f) => f.id === id);
+  const normalized = id.trim().toLowerCase();
+  return factions.find(
+    (f) =>
+      f.id === id ||
+      f.id.toLowerCase() === normalized ||
+      f.name.toLowerCase() === normalized,
+  );
 }

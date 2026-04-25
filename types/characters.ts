@@ -31,6 +31,18 @@ export type Character = {
 /** Archive roster: manuscript + expanded-saga + archive continuities. */
 export const characters: Character[] = [
   {
+    id: "exiled-lemon-monk",
+    name: "The Exiled Lemon Monk",
+    role: "Citrus heretic and Hongo Codex warden",
+    description:
+      "Banished for preserving too much memory; steadies Neo-Borinken with citrus wards, sanctuary spheres, and a blade that cuts corruption while preserving truth.",
+    tags: ["human", "warrior", "spiritual", "legend", "ally", "mystery"],
+    image: "/images/characters/exiled-lemon-monk.jpg",
+    faction: "red-noodle-clan",
+    threatLevel: "high",
+    presence: "physical",
+  },
+  {
     id: "manus-neco",
     name: "Manus Neco",
     role: "The flat-footed astronaut",
