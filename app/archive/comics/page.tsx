@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 
 export default function ComicsPage() {
   const [uploading, setUploading] = useState(false);
@@ -9,13 +9,13 @@ export default function ComicsPage() {
   const [uploadedUrl, setUploadedUrl] = useState('');
   const [error, setError] = useState('');
 
-  const handleUpload = async (e) => {
+  const handleUpload = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setUploading(true);
     setError('');
     
     const formData = new FormData();
-    const fileInput = document.getElementById('comic-upload');
+    const fileInput = document.getElementById('comic-upload') as HTMLInputElement | null;
     
     if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
       setError('Please select a file to upload');
@@ -27,7 +27,7 @@ export default function ComicsPage() {
     formData.append('file', file);
     
     try {
-      const response = await fetch('/api/uploads', {
+      const response = await fetch('/archive/api/uploads', {
         method: 'POST',
         body: formData,
       });
@@ -41,7 +41,7 @@ export default function ComicsPage() {
       setUploadComplete(true);
       setUploadedUrl(result.fileUrl);
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : 'Upload failed');
     } finally {
       setUploading(false);
     }

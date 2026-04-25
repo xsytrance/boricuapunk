@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { getRandomQuote, type Quote } from "@/data/quotes";
 import QuoteDisplay from "@/components/QuoteDisplay";
+import { getCharacterById } from "@/data/characters";
+import { getRandomQuote, type Quote } from "@/data/quotes";
+import { getSagaCharacterById } from "@/types/characters";
 
 const commandCards = [
   {
@@ -41,6 +43,9 @@ const sacredSystems = [
 
 export default function Home() {
   const [quote] = useState<Quote>(() => getRandomQuote());
+  const dossier = getCharacterById(quote.characterId);
+  const saga = getSagaCharacterById(quote.characterId);
+  const speakerName = quote.speakerName ?? dossier?.name ?? saga?.name ?? "Unknown Speaker";
 
   return (
     <main className="flex min-h-0 w-full min-w-0 flex-1 flex-col">
@@ -233,7 +238,7 @@ export default function Home() {
             {quote ? (
               <QuoteDisplay
                 text={quote.text}
-                characterName={quote.speakerName}
+                characterName={speakerName}
                 characterId={quote.characterId}
                 style={quote.style}
                 className="lg:scale-[1.02] lg:shadow-[0_0_48px_rgba(234,88,12,0.24),0_0_1px_rgba(251,146,60,0.55)]"
