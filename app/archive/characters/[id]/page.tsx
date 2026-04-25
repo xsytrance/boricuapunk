@@ -33,8 +33,6 @@ export default async function CharacterDetailPage({ params }: Props) {
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,0.95fr)] lg:items-start lg:gap-12 xl:gap-16">
         <div className="lg:col-span-3 rounded-md border border-[#064e3b]/40 bg-black/30 p-4 text-sm leading-relaxed text-[#99f6e4]/85 shadow-[inset_0_0_24px_rgba(0,0,0,0.4)]">
-          Hackermouth is treated as manuscript canon in the local reference copy. Any future archive content should stay
-          consistent with that central signal.
         </div>
         <div className="relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-md border-[3px] border-[#c2410c] bg-black shadow-[0_0_40px_rgba(234,88,12,0.35),inset_0_0_50px_rgba(0,0,0,0.5)] lg:max-w-none">
           <div className="pointer-events-none absolute inset-x-0 top-0 z-20 bg-[#042f2e]/90 px-3 py-2 text-center font-mono text-[9px] font-bold uppercase tracking-[0.35em] text-[#5eead4]">
