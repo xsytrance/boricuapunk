@@ -26,7 +26,7 @@ export default function Home() {
           </div>
           <div className="flex items-center space-x-4">
             <a
-              href="/archive/archive/"
+              href="/archive/"
               className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
             >
               View Archived Site
@@ -134,7 +134,7 @@ export default function Home() {
           {/* Call to action */}
           <div className="mt-12 text-center">
             <Link
-              href="/archive/archive/"
+              href="/archive/"
               className="rounded border border-[#9a3412]/70 bg-black/65 px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
             >
               Explore the Full Archive

@@ -147,7 +147,7 @@ export default function ComicsPage() {
           </div>
           
           {/* Manus Neco Comic Preview */}
-          <Link href="/comics/manus-neco-1" className="group">
+          <Link href="/archive/comics/manus-neco-1" className="group">
             <div className="bg-black/30 border border-[#064e3b]/40 rounded-xl p-6 hover:bg-black/40 transition-colors flex flex-col items-center">
               <div className="w-32 h-32 bg-gradient-to-r from-[#c2410c]/30 to-[#7f1d1d]/30 flex items-center justify-center rounded-lg mb-4">
                 <div className="w-4 h-4 bg-[#5eead4]/50 rounded mx-1 my-1"></div>
@@ -162,7 +162,7 @@ export default function ComicsPage() {
           </Link>
           
           {/* Hackermouth Comic Preview */}
-          <Link href="/comics/hackermouth-watch" className="group">
+          <Link href="/archive/comics/hackermouth-watch" className="group">
             <div className="bg-black/30 border border-[#064e3b]/40 rounded-xl p-6 hover:bg-black/40 transition-colors flex flex-col items-center">
               <div className="w-32 h-32 bg-gradient-to-r from-[#064e3b]/30 to-[#5eead4]/30 flex items-center justify-center rounded-lg mb-4">
                 <div className="w-2 h-2 bg-[#fdba74]/50 rounded mx-0.5 my-0.5"></div>

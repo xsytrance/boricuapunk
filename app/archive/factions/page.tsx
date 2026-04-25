@@ -88,7 +88,7 @@ export default function FactionsPage() {
           useful context.
         </p>
         <Link
-          href="/relationships"
+          href="/archive/relationships"
           className="mt-4 inline-flex rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
         >
           Open relationship graph

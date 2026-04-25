@@ -241,7 +241,7 @@ export default function HomeLanding() {
               </p>
             </div>
             <a
-              href="/characters/hackermouth"
+              href="/archive/characters/hackermouth"
               className="inline-flex items-center justify-center rounded border border-[#14b8a6]/80 bg-[#042f2e]/90 px-4 py-2 font-mono text-xs font-bold uppercase tracking-[0.22em] text-[#99f6e4] transition hover:border-[#5eead4] hover:text-[#ecfeff]"
             >
               Open Hackermouth dossier

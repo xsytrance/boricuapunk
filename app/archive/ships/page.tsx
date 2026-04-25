@@ -60,7 +60,7 @@ export default function ShipsPage() {
           return isJibaro ? (
             <Link
               key={ship.name}
-              href="/ships/jibaro"
+              href="/archive/ships/jibaro"
               className="rounded-md border-[3px] border-[#7f1d1d]/70 bg-gradient-to-b from-[#160909] to-[#050505] p-5 shadow-[inset_0_0_32px_rgba(0,0,0,0.72)] transition hover:border-[#f97316] md:p-6"
             >
               <p className="font-mono text-[10px] uppercase tracking-[0.36em] text-[#fb923c]">

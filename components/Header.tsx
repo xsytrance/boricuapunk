@@ -45,23 +45,23 @@ export default function Header() {
         <Link href="/archive" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
           Archive
         </Link>
-        <Link href="/characters" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
+        <Link href="/archive/characters" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
           Characters
         </Link>
-        <Link href="/factions" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
+        <Link href="/archive/factions" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
           Factions
         </Link>
-        <Link href="/timeline" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
+        <Link href="/archive/timeline" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
           Timeline
         </Link>
-        <Link href="/comics" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
+        <Link href="/archive/comics" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
           Comics
         </Link>
-        <Link href="/relationships" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
+        <Link href="/archive/relationships" className="text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]">
           Graph
         </Link>
         <Link
-          href="/characters/hackermouth"
+          href="/archive/characters/hackermouth"
           className="text-[#5eead4] transition hover:text-[#99f6e4] hover:drop-shadow-[0_0_10px_rgba(45,212,191,0.85)]"
         >
           Hackermouth
@@ -96,31 +96,31 @@ export default function Header() {
                 Archive
               </Link>
               <Link
-                href="/characters"
+                href="/archive/characters"
                 className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]"
               >
                 Characters
               </Link>
               <Link
-                href="/factions"
+                href="/archive/factions"
                 className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]"
               >
                 Factions
               </Link>
               <Link
-                href="/timeline"
+                href="/archive/timeline"
                 className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]"
               >
                 Timeline
               </Link>
               <Link
-                href="/relationships"
+                href="/archive/relationships"
                 className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 transition hover:text-[#fdba74] hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.75)]"
               >
                 Graph
               </Link>
               <Link
-                href="/characters/hackermouth"
+                href="/archive/characters/hackermouth"
                 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#5eead4] transition hover:text-[#99f6e4] hover:drop-shadow-[0_0_10px_rgba(45,212,191,0.85)]"
               >
                 Hackermouth

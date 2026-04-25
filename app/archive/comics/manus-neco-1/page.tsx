@@ -6,7 +6,7 @@ export default function ManusNecoComic() {
     <main className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-black/95 text-[#e0e0e0] py-12">
       <div className="mx-auto max-w-4xl px-4">
         <nav className="mb-8 flex items-center space-x-4">
-          <Link href="/comics" className="text-zinc-500 hover:text-[#fdba74]">
+          <Link href="/archive/comics" className="text-zinc-500 hover:text-[#fdba74]">
             ← Back to Comics
           </Link>
         </nav>

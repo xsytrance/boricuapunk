@@ -44,9 +44,9 @@ export default function SpadaVirinaPage() {
             Related routes
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            <Link href="/weapons" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Weapons</Link>
-            <Link href="/relationships" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Relationships</Link>
-            <Link href="/characters/manus-neco" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Manus</Link>
+            <Link href="/archive/weapons" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Weapons</Link>
+            <Link href="/archive/relationships" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Relationships</Link>
+            <Link href="/archive/characters/manus-neco" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Manus</Link>
           </div>
         </div>
       </section>

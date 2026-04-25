@@ -24,7 +24,7 @@ export default async function CharacterDetailPage({ params }: Props) {
           Archive
         </Link>
         <span className="text-zinc-700">/</span>
-        <Link href="/characters" className="text-[#fdba74] transition hover:text-[#fecaca]">
+        <Link href="/archive/characters" className="text-[#fdba74] transition hover:text-[#fecaca]">
           Characters
         </Link>
         <span className="text-zinc-700">/</span>
@@ -72,12 +72,12 @@ export default async function CharacterDetailPage({ params }: Props) {
           </p>
           <div className="mt-4 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.18em]">
             <Link href="/archive" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Archive Hub</Link>
-            <Link href="/characters" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Character Archive</Link>
-            <Link href="/factions" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Factions</Link>
-            <Link href="/locations" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Locations</Link>
-            <Link href="/ships" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Ships</Link>
-            <Link href="/weapons" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Weapons</Link>
-            <Link href="/logs" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Logs</Link>
+            <Link href="/archive/characters" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Character Archive</Link>
+            <Link href="/archive/factions" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Factions</Link>
+            <Link href="/archive/locations" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Locations</Link>
+            <Link href="/archive/ships" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Ships</Link>
+            <Link href="/archive/weapons" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Weapons</Link>
+            <Link href="/archive/logs" className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]">Logs</Link>
           </div>
         </div>
 
@@ -92,7 +92,7 @@ export default async function CharacterDetailPage({ params }: Props) {
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-zinc-400">{faction.description}</p>
               <Link
-                href="/factions"
+                href="/archive/factions"
                 className="mt-4 inline-flex rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
               >
                 Open faction index

@@ -14,7 +14,7 @@ export default function CharacterNotFound() {
           This identity does not exist in the archive.
         </p>
         <Link
-          href="/characters"
+          href="/archive/characters"
           className="mt-10 inline-block border-[3px] border-[#7f1d1d] bg-black px-8 py-3.5 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#fb923c] shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] transition hover:border-[#ea580c] hover:shadow-[0_0_28px_rgba(234,88,12,0.45)]"
         >
           Return to roster
