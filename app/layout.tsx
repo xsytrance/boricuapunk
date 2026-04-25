@@ -29,7 +29,7 @@ export default function RootLayout({
                 View Archived Site
               </a>
               <a
-                href="https://t.me/manusneco_bot"
+                href="https://t.me/kodenbushi_bot"
                 className="rounded border border-[#9a3412]/70 bg-black/65 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
               >
                 Telegram Bot

@@ -99,7 +99,7 @@ export default function Home() {
 
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="https://t.me/manusneco_bot"
+                  href="https://t.me/kodenbushi_bot"
                   className="inline-flex items-center justify-center rounded-full border border-[#f97316]/70 bg-[#180701]/80 px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#fff7ed] transition hover:border-[#fdba74] hover:text-[#ffffff]"
                 >
                   Open Telegram Bot
@@ -252,7 +252,7 @@ export default function Home() {
 
           <div className="mt-6 flex flex-wrap gap-3">
             <a
-              href="https://t.me/manusneco_bot"
+              href="https://t.me/kodenbushi_bot"
               className="inline-flex items-center justify-center rounded-full border border-[#14b8a6]/40 bg-[#042f2e]/60 px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#99f6e4] transition hover:border-[#5eead4] hover:text-[#ecfeff]"
             >
               Send a command in Telegram
