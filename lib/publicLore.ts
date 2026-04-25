@@ -49,7 +49,7 @@ export const publicCharacters: PublicCharacter[] = [
     summary:
       "Banished from the Rain Circuit for preserving too much memory, he now stands between Neo-Borinken and the violent flood of ancestral data unleashed by the Hongo Codex.",
     biography: [
-      "The books name him clearly in Agenor RAIN CIRCUIT: the Exiled Lemon Monk rises during the memory flood with citrus relics shining like suns in rain.",
+      "The books name him clearly in RAIN CIRCUIT: the Exiled Lemon Monk rises during the memory flood with citrus relics shining like suns in rain.",
       "He was banished for preserving too much memory and for refusing to let the Hongo Codex remain sealed. That exile became his authority, not his shame.",
       "When corruption twists memory into a weapon, the Lemon Monk answers with citrus wards, sanctuary spheres, and a blade that peels lies away while preserving the truth beneath them.",
     ],
