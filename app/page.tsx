@@ -36,7 +36,8 @@ const commandCards = [
 
 const sacredSystems = [
   'Keep this homepage as the rebuild command center.',
-  'Preserve the old cinematic world as the /archive/ route.',
+  'Keep the old cinematic archive only as a private rebuild reference.',
+  'Build new public Characters and Comics sections outside the old archive.',
   'Keep Hackermouth effects alive in the experience.',
   'Keep Quote of the Day as a living ritual on the front page.',
 ];
@@ -105,10 +106,16 @@ export default function Home() {
                   Open Telegram Bot
                 </a>
                 <Link
-                  href="/archive/"
+                  href="/characters"
                   className="inline-flex items-center justify-center rounded-full border border-[#9a3412]/70 bg-black/60 px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
                 >
-                  Enter the Archive
+                  Open Characters
+                </Link>
+                <Link
+                  href="/comics"
+                  className="inline-flex items-center justify-center rounded-full border border-[#14b8a6]/30 bg-[#042f2e]/55 px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#99f6e4] transition hover:border-[#5eead4] hover:text-[#ecfeff]"
+                >
+                  Open Comics
                 </Link>
                 <Link
                   href="/profile"
@@ -231,6 +238,7 @@ export default function Home() {
             </div>
             <p className="max-w-xl text-sm leading-6 text-zinc-400">
               A living shard from the archive. Keep this ritual on the front page while the rest of the world is reforged.
+              
             </p>
           </div>
 
@@ -258,10 +266,10 @@ export default function Home() {
               Send a command in Telegram
             </a>
             <Link
-              href="/archive/"
+              href="/characters"
               className="inline-flex items-center justify-center rounded-full border border-[#9a3412]/70 bg-black/60 px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
             >
-              Explore the full archive
+              Browse characters
             </Link>
           </div>
         </section>

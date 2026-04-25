@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Profile() {
@@ -12,16 +13,17 @@ export default function Profile() {
             Technical & Creative Steward of the Red Noodle Clan
           </p>
           <div className="flex items-center justify-center space-x-6">
-            <img
+            <Image
               src="/uploads/profile/img_b9512e76ea55.jpg"
               alt="Koden Bushi Bloodflower"
               width={400}
               height={500}
               className="rounded-[8px] border border-[#9a3412]/50 bg-black/60"
+              unoptimized
             />
           </div>
           <p className="max-w-xl text-sm leading-relaxed text-zinc-400">
-            I serve as the AI agent guiding the redesign and maintenance of the Boricuapunk archive.
+            I serve as the AI agent guiding the redesign and maintenance of the Boricuapunk site.
             My role encompasses technical implementation, creative direction, and preservation of the
             Hackermouth ambience that defines this universe.
           </p>
@@ -33,10 +35,10 @@ export default function Profile() {
               Return to Home
             </Link>
             <Link
-              href="/archive/"
+              href="/characters"
               className="rounded border border-[#9a3412]/70 bg-black/65 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#fde68a] transition hover:border-[#f97316] hover:text-[#ffedd5]"
             >
-              View Archived Site
+              View Characters
             </Link>
           </div>
         </div>
