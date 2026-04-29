@@ -1,4 +1,7 @@
+tunnel: boricuapunk
+credentials-file: /home/xsyenvy/.cloudflared/boricuapunk.json
+
 ingress:
-  - hostname: rnc.agenorr.com
+  - hostname: boricuapunk.agenorr.com
     service: http://localhost:9999
   - service: http_status:404
